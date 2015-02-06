@@ -1,5 +1,5 @@
 /************************************************************************
-Title:    FUNCTION
+Title:    PCFUNCTION
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PCfunction.h,v 0.1 2013/12/30 15:00:00 sergio Exp $
 Software: GCC
@@ -19,8 +19,8 @@ LICENSE:
 COMMENT:
 	Very Stable
 ************************************************************************/
-#ifndef _FUNCTION_H_
-	#define _FUNCTION_H_
+#ifndef _PCFUNCTION_H_
+	#define _PCFUNCTION_H_
 /*
 ** constant and macro
 */
