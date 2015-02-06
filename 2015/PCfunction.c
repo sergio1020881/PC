@@ -1,5 +1,5 @@
 /*************************************************************************
-Title:    FUNCTION
+Title:    PCFUNCTION
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PCfunction.c,v 0.1 2013/12/30 15:00:00 sergio Exp $
 Software: GCC
