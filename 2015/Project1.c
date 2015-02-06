@@ -34,7 +34,6 @@
 #define high 1
 #define LOW 0
 #define low 0
-
 /***OBJECTS***/
 /***MY OBJECT***/
 struct ficheiro{
@@ -49,7 +48,6 @@ struct ficheiro{
 typedef struct ficheiro file;
 /***Constructor***/
 file filecreate(char *filename);
-
 /***MY OBJECT***/
 struct routine{
 	//Local Variables
@@ -70,76 +68,44 @@ struct routine{
 typedef struct routine FSM;
 /***Constructor***/
 FSM fsmstart(int *eeprom, int sizeeeprom, int prog);
-
-/***MY OBJECT***/
-struct logica{
-	//Local Variables
-	int *mem;
-	int sizeeeprom;
-	int sizeblock;
-	int page;
-	int recall;
-	int output;
-	//Local Function pointers
-	int (*read)(struct logica *r, int input);
-	int (*learn)(struct logica *r, int input, int output);
-	int (*quant)(struct logica *r);
-	int (*remove)(struct logica *r, int input);
-	int (*deleteall)(struct logica *r);
-	int (*get)(struct logica *r);
-	int (*diff)(int xi, int xf);
-};
-typedef struct logica LOGIC;
-/***Constructor***/
-LOGIC LogicCreate(int *eeprom, int sizeeeprom, int prog);
-
 /*****GLOBAL VARIABLES*****/
 int eeprom1[83];
 int eeprom2[83];
 /*****Procedure and Function*****/
-
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
-
 int main(int argc, char *argv[])
 {
 	char *cmd;
 	int number3;
 	int number1;
 	int number2;
-	//char* str=NULL;
+	char* str=NULL;
 	//char* token[10];
-
-	//file f=filecreate("file.txt");
-	//str=func.ftos(f.open(&f));
-	//printf("%s\n\n",str);
-	//func.strtotok(str,token," ");
-	//free(str);
-	//f.close(&f);
-
 /*******************************************************/
 	FUNC func=FUNCenable();
 	FSM r = fsmstart(eeprom1, 83, 1);
 	//LOGIC l = LogicCreate(eeprom2, 83, 1);
-
 	/***************************/
+	file f=filecreate("file.txt");
+	str=func.ftos(f.open(&f));
+	printf("%s\n\n",str);
+	//func.strtotok(str,token," ");
+	free(str);
+	f.close(&f);
+/********************************************************/
 	printf("MAYIA\n");
 	number3=func.mayia(0,1,4);
 	printf("num1: %d num2: %d magic: %d\n",1,1,number3);
-
 	/***************************/
 	printf("quant %d ",r.quant(&r));
 	printf("sizeeeprom: %d \n", r.sizeeeprom);
-
 	// Cycle
 	while(TRUE){
 		printf("write string with number\n");
 		cmd=func.fltos(stdin);
 		number1=func.getnum(cmd);
-		
 		printf("number: %d  match: %d\n", number1,func.pinmatch(3,number1,1));
-		
-		
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q"))
 			goto end;
 		if(!strcmp(cmd,"learn") || !strcmp(cmd,"l")){
@@ -171,27 +137,21 @@ int main(int argc, char *argv[])
 		//l.read(&l,number1);
 		r.read(&r,number1,r.get(&r));
 	}
-	
 	/******/
 	end:
 		//system("PAUSE");
 		return 0;
 }
-
 /****************************************************/
-
 /***CONSTRUCTOR OF OBJECTS START***/
 file filecreate(char *filename)
 {
 	/***local variables***/
-
 	/***Declare Functions***/
 	int FILEclose(struct ficheiro *f);
 	FILE* FILEopen(struct ficheiro *f);
-
 	/******/
 	struct ficheiro f;
-
 	//Inicialize varibles
 	strcpy(f.filename,filename);
 	strcpy(f.permision,"rw");//setting as default
@@ -203,16 +163,13 @@ file filecreate(char *filename)
 	if(f.fp==NULL){
 		printf("ficheiro at fopen");
 	}
-
 	//return result
 	return f;
 }
-
 /***FSM***/
 FSM fsmstart(int *eeprom, int sizeeeprom, int prog)
 {
 	int cells;
-
 	/***Declare Functions***/
 	int FSMread(struct routine *r, int input, int feedback);
 	int FSMlearn(struct routine *r, int input, int next, int feedback);
@@ -242,44 +199,6 @@ FSM fsmstart(int *eeprom, int sizeeeprom, int prog)
 	/******/
 	return r;
 }
-
-/***FSM***/
-LOGIC LogicCreate(int *eeprom, int sizeeeprom, int prog)
-{
-	int cells;
-	/***Declare Functions***/
-	int LOGICread(struct logica *r, int input);
-	int LOGIClearn(struct logica *r, int input, int output);
-	int FSMquant(struct logica *r);
-	int LOGICremove(struct logica *r, int input);
-	int FSMdeleteall(struct logica *r);
-	int FSMdiff(int xi, int xf);
-
-	/***Create Object***/
-	struct logica l;
-
-	//Inicialize varibles
-	l.mem=eeprom;
-	l.sizeblock=4;
-	cells=sizeeeprom/l.sizeblock;
-	l.sizeeeprom=cells*l.sizeblock;
-	l.page=prog;
-	l.recall=0;
-	l.output=0;
-
-	//Functions pointers or Vtable to declared functions
-	l.read=LOGICread;
-	l.learn=LOGIClearn;
-	l.quant=FSMquant;
-	l.remove=LOGICremove;
-	l.deleteall=FSMdeleteall;
-	l.diff=FSMdiff;
-
-	/******/
-	return l;
-}
-/***CONSTRUCTOR OF OBJECTS STOP***/
-
 /***read***/
 int FSMread(struct routine *r, int input, int feedback)
 {
@@ -311,37 +230,6 @@ int FSMread(struct routine *r, int input, int feedback)
 	}
 	printf("Page %d Eoutput -> %d\n",r->page,r->present);
 	return r->present;
-}
-/***read***/
-int LOGICread(struct logica *r, int input)
-{
-	int i1;
-	int i2;
-	int block[r->sizeblock];
-	int keyfound;
-	int diferenca;
-	diferenca=r->diff(r->recall,input); // previne redundancia
-	if(diferenca){//in reality there is no repetition of closed contact or open
-		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->page){
-				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
-					block[i2]=*(r->mem+i1+i2);
-				}
-				keyfound=(block[1]==(diferenca&input) && block[2]==diferenca);//bool
-				printf("diferenca&input: %d diferenca: %d\n",block[1],diferenca);
-				if(keyfound){
-					r->output=block[3];
-					printf("read found\n");
-					break;
-				}else{
-					printf("read not found\n");
-				}
-			}
-		}
-		r->recall=input;
-	}
-	printf("Page %d Eoutput -> %d\n",r->page,r->output);
-	return r->output;
 }
 /***learn***/
 int FSMlearn(struct routine *r, int input, int next, int feedback)
@@ -388,49 +276,6 @@ int FSMlearn(struct routine *r, int input, int next, int feedback)
 	printf("learn status: %d\n",status);
 	return status;
 }
-/***learn***/
-int LOGIClearn(struct logica *r, int input, int output)
-{
-	int i1;
-	int i2;
-	int block[r->sizeblock];
-	int keyfound;
-	int status=0;
-	int diferenca;
-	diferenca=r->diff(r->recall,input);
-	if(diferenca){
-		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->page){
-				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
-					block[i2]=*(r->mem+i1+i2);
-				}
-				keyfound=(block[1]==(diferenca&input) && block[3]==diferenca);//bool
-				if(keyfound){
-					status=1;//not permited
-					break;
-				}
-			}
-			status=3;//not existente
-		}
-	}
-	if(status==3){
-		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==EMPTY){
-				*(r->mem+i1)=r->page;
-				*(r->mem+i1+1)=(diferenca&input);
-				*(r->mem+i1+2)=diferenca;
-				*(r->mem+i1+3)=output;
-				printf("diferenca&input: %d diferenca: %d\n",(diferenca&input),diferenca);
-				status=2;//created
-				break;
-			}
-			status=4;//not possible
-		}
-	}
-	r->recall=input;
-	printf("learn status: %d\n",status);
-	return status;
-}
 /***quant***/
 int FSMquant(struct routine *r)
 {
@@ -462,35 +307,6 @@ int FSMremove(struct routine *r, int input, int present)
 				}
 				keyfound=(block[1]==(diferenca&input) && block[2]==present &&
 				block[3]==diferenca);//bool
-				if(keyfound){
-					*(r->mem+i1)=EMPTY;
-					status=1;//removed
-					break;
-				}
-			}
-		}
-		r->recall=input;
-	}
-	printf("remove status: %d\n",status);
-	return status;
-}
-/***remove***/
-int LOGICremove(struct logica *r, int input)
-{
-	int i1;
-	int i2;
-	int block[r->sizeblock];
-	int keyfound;
-	int status=0;
-	int diferenca;
-	diferenca=r->diff(r->recall,input);
-	if(diferenca){
-		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->page){
-				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
-					block[i2]=*(r->mem+i1+i2);
-				}
-				keyfound=(block[1]==(diferenca&input) && block[2]==diferenca);//bool
 				if(keyfound){
 					*(r->mem+i1)=EMPTY;
 					status=1;//removed
