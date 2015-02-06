@@ -29,7 +29,7 @@
 //#include"ssfiledescriptor.h"
 /***Definition and Macros***/
 #define TRUE 1
-#define EMPTY 0 //on a pc vectores are at zero therfore empty is zero.
+#define EMPTY 0 //on a pc vectores are at zero therefore empty is zero.
 #define HIGH 1
 #define high 1
 #define LOW 0
