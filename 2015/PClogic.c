@@ -1,7 +1,7 @@
 /*************************************************************************
-Title:    LOGIC
+Title:    PCLOGIC
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: logic.c,v 0.1 2013/12/30 15:00:00 sergio Exp $
+File:     $Id: PClogic.c,v 0.1 2015/02/06 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -12,7 +12,7 @@ USAGE:
 NOTES:
     Based on Atmel Application Note AVR306
 LICENSE:
-    Copyright (C) 2013
+    Copyright (C) 2015
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -30,25 +30,25 @@ COMMENT:
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
 // calloc free realloc malloc
-#include <stdlib.h>
+//#include <stdlib.h>
 // strcpy strcmp strcat memcmp
-#include <string.h>
+//#include <string.h>
 // termios tcflush
 //#include <termios.h>
 // nanosleep sleep
-#include <time.h>
+//#include <time.h>
 // tcflsuh read write close
 //#include <unistd.h>
 // perror
-#include <errno.h>
+//#include <errno.h>
 // open
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+//#include <sys/types.h>
+//#include <sys/stat.h>
+//#include <fcntl.h>
 //#include <stdio_ext.h>
-#include <math.h>
+//#include <math.h>
 /***/
-#include"logic.h"
+#include"PClogic.h"
 /*
 ** constant and macro
 */
