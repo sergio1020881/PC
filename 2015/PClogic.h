@@ -1,13 +1,13 @@
 /************************************************************************
-Title:    LOGIC
+Title:    PCLOGIC
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: logic.h,v 0.1 2013/12/30 15:00:00 sergio Exp $
+File:     $Id: PClogic.h,v 0.1 2015/02/06 14:00:00 sergio Exp $
 Software: GCC
 Hardware: 
 License:  GNU General Public License 
 Usage:    
 LICENSE:
-    Copyright (C) 2014
+    Copyright (C) 2015
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -19,8 +19,8 @@ LICENSE:
 COMMENT:
 	Very Stable
 ************************************************************************/
-#ifndef _LOGIC_H_
-	#define _LOGIC_H_
+#ifndef _PCLOGIC_H_
+	#define _PCLOGIC_H_
 /*
 ** constant and macro
 */
