@@ -1,5 +1,5 @@
 /*
-* Reseach
+* Research
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 25-01-2015 14:30
@@ -26,6 +26,7 @@
 #include <math.h>
 //personal library
 #include"PCfunction.h"
+#include"PClogic.h"
 //#include"ssfiledescriptor.h"
 /***Definition and Macros***/
 #define TRUE 1
