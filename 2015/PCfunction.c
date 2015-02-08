@@ -1,16 +1,14 @@
 /**************************************************************************
 Title:    PCFUNCTION
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PCfunction.c,v 0.1 2015/02/06 14:00:00 sergio Exp $
+File:     $Id: PCfunction.c, v 0.1 2015/02/06 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
 DESCRIPTION:
 	PC emulation
 USAGE:
-    Refere to the header file function.h for a description of the routines. 
 NOTES:
-    Based on Atmel Application Note AVR306
 LICENSE:
     Copyright (C) 2015
     This program is free software; you can redistribute it and/or modify
