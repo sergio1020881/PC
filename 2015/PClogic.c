@@ -7,10 +7,8 @@ Hardware:
 License:  GNU General Public License        
 DESCRIPTION:
 	PC emulation
-USAGE:
-    Refere to the header file function.h for a description of the routines. 
+USAGE: 
 NOTES:
-    Based on Atmel Application Note AVR306
 LICENSE:
     Copyright (C) 2015
     This program is free software; you can redistribute it and/or modify
@@ -60,11 +58,11 @@ char LOGICstr[16];
 /*
 ** procedure and function header
 */
-int LOGICread(struct LOGIC *r, int input);
-int LOGIClearn(struct LOGIC *r, int input, int output);
-int LOGICquant(struct LOGIC *r);
-int LOGICremove(struct LOGIC *r, int input);
-int LOGICdeleteall(struct LOGIC *r);
+int LOGICread(struct logic *r, int input);
+int LOGIClearn(struct logic *r, int input, int output);
+int LOGICquant(struct logic *r);
+int LOGICremove(struct logic *r, int input);
+int LOGICdeleteall(struct logic *r);
 int LOGICdiff(int xi, int xf);	
 /*
 ** Object Inicialize
@@ -74,7 +72,7 @@ LOGIC LOGICenable(int *eeprom, int sizeeeprom, int prog)
 	int cells;
 	/***Declare Functions***/
 	/***Create Object***/
-	struct LOGIC l;
+	LOGIC l;
 	//Inicialize variables
 	l.mem=eeprom;
 	l.sizeblock=4;
@@ -97,7 +95,7 @@ LOGIC LOGICenable(int *eeprom, int sizeeeprom, int prog)
 ** procedure and function
 */
 /***read***/
-int LOGICread(struct LOGIC *r, int input)
+int LOGICread(struct logic *r, int input)
 {
 	int i1;
 	int i2;
@@ -128,7 +126,7 @@ int LOGICread(struct LOGIC *r, int input)
 	return r->output;
 }
 /***learn***/
-int LOGIClearn(struct LOGIC *r, int input, int output)
+int LOGIClearn(struct logic *r, int input, int output)
 {
 	int i1;
 	int i2;
@@ -171,7 +169,7 @@ int LOGIClearn(struct LOGIC *r, int input, int output)
 	return status;
 }
 /***quant***/
-int LOGICquant(struct LOGIC *r)
+int LOGICquant(struct logic *r)
 {
 	int i1;
 	int programmed;
@@ -184,7 +182,7 @@ int LOGICquant(struct LOGIC *r)
 	return programmed;
 }
 /***remove***/
-int LOGICremove(struct LOGIC *r, int input)
+int LOGICremove(struct logic *r, int input)
 {
 	int i1;
 	int i2;
@@ -213,7 +211,7 @@ int LOGICremove(struct LOGIC *r, int input)
 	return status;
 }
 /***deleteall***/
-int LOGICdeleteall(struct LOGIC *r)
+int LOGICdeleteall(struct logic *r)
 {
 	int i1;
 	int status=0;
