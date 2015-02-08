@@ -27,7 +27,7 @@ COMMENT:
 /*
 ** variable
 */
-struct LOGIC{
+struct logic{
 	//Local Variables
 	int *mem;
 	int sizeeeprom;
@@ -36,15 +36,15 @@ struct LOGIC{
 	int recall;
 	int output;
 	//Local Function pointers
-	int (*read)(struct LOGIC *r, int input);
-	int (*learn)(struct LOGIC *r, int input, int output);
-	int (*quant)(struct LOGIC *r);
-	int (*remove)(struct LOGIC *r, int input);
-	int (*deleteall)(struct LOGIC *r);
-	int (*get)(struct LOGIC *r);
+	int (*read)(struct logic *r, int input);
+	int (*learn)(struct logic *r, int input, int output);
+	int (*quant)(struct logic *r);
+	int (*remove)(struct logic *r, int input);
+	int (*deleteall)(struct logic *r);
+	int (*get)(struct logic *r);
 	int (*diff)(int xi, int xf);
 };
-typedef struct LOGIC LOGIC;
+typedef struct logic LOGIC;
 /*
 ** procedure and function header
 */
