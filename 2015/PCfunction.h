@@ -27,7 +27,7 @@ COMMENT:
 /*
 ** variable
 */
-struct FUNC{
+struct func{
 	/***PROTOTYPES VTABLE***/
 	int (*stringlength)(const char string[]);
 	void (*reverse)(char s[]);
@@ -45,7 +45,7 @@ struct FUNC{
 	int (*hl)(int xi, int xf);
 	int (*diff)(int xi, int xf);
 };
-typedef struct FUNC FUNC;
+typedef struct func FUNC;
 /*
 ** procedure and function header
 */
