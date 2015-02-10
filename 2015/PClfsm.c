@@ -61,6 +61,9 @@ COMMENT:
 ** variable
 */
 char LFSMstr[16];
+/*int mem[]=
+{pin state, feedback, pin mask, output}
+*/
 /*
 ** procedure and function header
 */
@@ -110,7 +113,7 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 	int block[r->sizeblock];
 	int keyfound;
 	int diferenca;
-	diferenca=r->diff(r->recall,input);
+	diferenca=r->diff(r->recall,input); // diferenca igual a mask
 	if(diferenca){//in reality there is no repetition of closed contact or open
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
 			if(*(r->mem+i1)==r->page){
@@ -118,7 +121,7 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 					block[i2]=*(r->mem+i1+i2);
 				}
 				keyfound=(block[1]==(diferenca&input) && block[2]==feedback &&
-				block[3]==diferenca);//bool
+				block[3]==diferenca);//bool, block[3] is masked bits, block[1] is bits state
 				printf("diferenca&input: %d diferenca: %d\n",block[1],diferenca);
 				if(keyfound){
 					r->present=block[4];
