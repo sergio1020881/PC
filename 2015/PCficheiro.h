@@ -34,6 +34,8 @@ struct ficheiro{
 	char permision[8];
 	// Function Pointers
 	int (*close)(struct ficheiro *f);
+	int (*colocarchar)(struct ficheiro *f, int c);
+	int (*colocarstring)(struct ficheiro *f, const char* s);
 	FILE* (*open)(struct ficheiro *f);
 };
 typedef struct ficheiro FICHEIRO;
