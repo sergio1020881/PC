@@ -1,7 +1,7 @@
 /************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.h,v 0.1 2015/02/06 14:00:00 sergio Exp $
+File:     $Id: PClfsm.h,v 0.1 2015/02/16 14:00:00 sergio Exp $
 Software: GCC
 Hardware: 
 License:  GNU General Public License 
@@ -17,7 +17,7 @@ LICENSE:
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 COMMENT:
-	Very Stable
+	review
 ************************************************************************/
 #ifndef _PCLFSM_H_
 	#define _PCLFSM_H_
@@ -33,8 +33,8 @@ struct lfsm{
 	int sizeeeprom;
 	int sizeblock;
 	int page;
-	int recall;
-	int present;
+	int block[5];
+	int input;
 	//Function Pointers
 	int (*read)(struct lfsm *r, int input, int feedback);
 	int (*learn)(struct lfsm *r, int input, int next, int feedback);
