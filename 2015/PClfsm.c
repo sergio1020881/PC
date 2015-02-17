@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2015/02/06 14:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2015/02/16 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -20,7 +20,7 @@ LICENSE:
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 COMMENT:
-	Very Stable
+	review
 *************************************************************************/
 /*
 ** library
@@ -51,12 +51,11 @@ COMMENT:
 ** constant and macro
 */
 #define EMPTY 0
-#define TRUE 1
-#define EMPTY 0 //on a pc vectores are at zero therefore empty is zero.
-#define HIGH 1
-#define high 1
-#define LOW 0
-#define low 0
+#define LFSM_page 0
+#define LFSM_mask 1
+#define LFSM_maskedinput 2
+#define LFSM_feedback 3
+#define LFSM_output 4
 /*
 ** variable
 */
@@ -67,6 +66,7 @@ char LFSMstr[16];
 /*
 ** procedure and function header
 */
+int LFSMdiff(int xi, int xf);
 /*
 ** Object Inicialize
 */
@@ -80,7 +80,6 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 	int LFSMremove(struct lfsm *r, int input, int present);
 	int LFSMdeleteall(struct lfsm *r);
 	int LFSMstate(struct lfsm *r);
-	int LFSMdiff(int xi, int xf);
 	/***Create Object***/
 	LFSM r;
 	//Inicialize varibles
@@ -88,9 +87,15 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 	r.sizeblock=5;
 	cells=sizeeeprom/r.sizeblock;
 	r.sizeeeprom=cells*r.sizeblock;
-	r.page=prog;
-	r.recall=0;
-	r.present=0;
+	r.block[LFSM_page]=prog;
+	r.block[LFSM_mask]=0;//mask
+	r.block[LFSM_maskedinput]=0;//maskedinput
+	r.block[LFSM_feedback]=0;//feedback
+	r.block[LFSM_output]=0;//output
+	//r.block[5]=0;//not used
+	//r.block[6]=0;//not used
+	//r.block[7]=0;//not used
+	r.input=0;
 	//Function Vtable
 	r.read=LFSMread;
 	r.learn=LFSMlearn;
@@ -112,30 +117,31 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 	int i2;
 	int block[r->sizeblock];
 	int keyfound;
-	int diferenca;
-	diferenca=r->diff(r->recall,input); // diferenca igual a mask
-	if(diferenca){//in reality there is no repetition of closed contact or open
+	int mask;
+	mask=LFSMdiff(r->input,input);
+	if(mask){//in reality there is no repetition of closed contact or open [oneshot]
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->page){
+			if(*(r->mem+i1)==r->block[LFSM_page]){
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
-				keyfound=(block[1]==(diferenca&input) && block[2]==feedback &&
-				block[3]==diferenca);//bool, block[3] is masked bits, block[1] is bits state
-				printf("diferenca&input: %d diferenca: %d\n",block[1],diferenca);
+				keyfound=(block[LFSM_mask]==mask && block[LFSM_maskedinput]==(mask&input) && block[LFSM_feedback]==feedback);//bool, block[1] is masked bits, block[1] is bits state
 				if(keyfound){
-					r->present=block[4];
-					printf("read found\n");
+					r->block[LFSM_output]=block[LFSM_output];
+					printf("Found\n");
+					printf("%d -> %d -> %d -> %d\n",block[LFSM_mask],block[LFSM_maskedinput],block[LFSM_feedback],block[LFSM_output]);
+					r->input=input;//detailed
 					break;
 				}else{
-					printf("read not found\n");
+					printf("Not found\n");
+					printf("%d -> %d -> %d -> %d\n",block[LFSM_mask],block[LFSM_maskedinput],block[LFSM_feedback],block[LFSM_output]);
 				}
 			}
 		}
-		r->recall=input;
+		//r->input=input;//necessary
 	}
-	printf("Page %d Eoutput -> %d\n",r->page,r->present);
-	return r->present;
+	printf("->->->->->->-> %d\n",r->block[LFSM_output]);
+	return r->block[LFSM_output];
 }
 /***learn***/
 int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
@@ -145,16 +151,15 @@ int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
 	int block[r->sizeblock];
 	int keyfound;
 	int status=0;
-	int diferenca;
-	diferenca=r->diff(r->recall,input);
-	if(diferenca){
+	int mask;
+	mask=LFSMdiff(r->input,input); // difference is the mask, diference is a filter.
+	if(mask){
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->page){
+			if(*(r->mem+i1)==r->block[LFSM_page]){
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
-				keyfound=(block[1]==(diferenca&input) && block[2]==feedback &&
-				block[3]==diferenca);//bool
+				keyfound=(block[LFSM_mask]==mask && block[LFSM_maskedinput]==(mask&input) && block[LFSM_feedback]==feedback);//bool
 				if(keyfound){
 					status=1;//not permited
 					break;
@@ -166,19 +171,18 @@ int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
 	if(status==3){
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
 			if(*(r->mem+i1)==EMPTY){
-				*(r->mem+i1)=r->page;
-				*(r->mem+i1+1)=(diferenca&input);
-				*(r->mem+i1+2)=feedback;
-				*(r->mem+i1+3)=diferenca;
+				*(r->mem+i1)=r->block[LFSM_page];
+				*(r->mem+i1+1)=mask;
+				*(r->mem+i1+2)=(mask&input);
+				*(r->mem+i1+3)=feedback;
 				*(r->mem+i1+4)=next;
-				printf("diferenca&input: %d diferenca: %d\n",(diferenca&input),diferenca);
 				status=2;//created
 				break;
 			}
 			status=4;//not possible
 		}
 	}
-	r->recall=input;
+	//r->input=input;
 	printf("learn status: %d\n",status);
 	return status;
 }
@@ -203,16 +207,15 @@ int LFSMremove(struct lfsm *r, int input, int present)
 	int block[r->sizeblock];
 	int keyfound;
 	int status=0;
-	int diferenca;
-	diferenca=r->diff(r->recall,input);
-	if(diferenca){
+	int mask;
+	mask=LFSMdiff(r->input,input);
+	if(mask){
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->page){
+			if(*(r->mem+i1)==r->block[LFSM_page]){
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
-				keyfound=(block[1]==(diferenca&input) && block[2]==present &&
-				block[3]==diferenca);//bool
+				keyfound=(block[LFSM_mask]==mask && block[LFSM_maskedinput]==(mask&input) && block[LFSM_feedback]==present);//bool
 				if(keyfound){
 					*(r->mem+i1)=EMPTY;
 					status=1;//removed
@@ -220,7 +223,7 @@ int LFSMremove(struct lfsm *r, int input, int present)
 				}
 			}
 		}
-		r->recall=input;
+		r->input=input;
 	}
 	printf("remove status: %d\n",status);
 	return status;
@@ -244,8 +247,8 @@ int LFSMdeleteall(struct lfsm *r)
 /***get***/
 int LFSMstate(struct lfsm *r)
 {
-	//printf("FSMget: %d\n",r->present);
-	return r->present;
+	//printf("FSMget: %d\n",r->block[LFSM_output]);
+	return r->block[LFSM_output];
 }
 /***diff***/
 int LFSMdiff(int xi, int xf)
