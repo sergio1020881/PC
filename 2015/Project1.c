@@ -57,7 +57,10 @@ int main(int argc, char *argv[])
 	//LOGIC l = LOGICenable(eeprom2, 83, 1);
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
-	str=func.ftos(f.open(&f));
+	//f.colocarchar(&f,'A');
+	//f.colocarchar(&f,'\0');
+	//f.colocarstring(&f,"qualquer coisa");
+	str=func.fltos(f.open(&f));
 	printf("%s\n\n",str);
 	//func.strtotok(str,token," ");
 	free(str);
@@ -67,14 +70,14 @@ int main(int argc, char *argv[])
 	number3=func.mayia(0,1,4);
 	printf("num1: %d num2: %d magic: %d\n",1,1,number3);
 	//
-	printf("quant %d ",r.quant(&r));
+	//printf("quant %d ",r.quant(&r));
 	printf("sizeeeprom: %d \n", r.sizeeeprom);
 	// Cycle
 	while(TRUE){
 		printf("write string with number\n");
 		cmd=func.fltos(stdin);
 		number1=func.getnum(cmd);
-		printf("number: %d  match: %d\n", number1,func.pinmatch(3,number1,1));
+		//printf("number: %d  match: %d\n", number1,func.pinmatch(3,number1,HIGH));
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q"))
 			goto end;
 		if(!strcmp(cmd,"learn") || !strcmp(cmd,"l")){
@@ -90,9 +93,10 @@ int main(int argc, char *argv[])
 			r.learn(&r,number1,number2,r.get(&r));
 		}
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"h")){
-			r.quant(&r);
+			printf("there are %d programmed.\n",r.quant(&r));
 		}
 		if(!strcmp(cmd,"delete all") || !strcmp(cmd,"d")){
+			printf("all have been deleted.\n");
 			r.deleteall(&r);
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"r")){
