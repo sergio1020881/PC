@@ -71,6 +71,7 @@ int FUNCpinmatch(int match, int pin, int HL);
 int FUNClh(int xi, int xf);
 int FUNChl(int xi, int xf);
 int FUNCdiff(int xi, int xf);
+void FUNCprint_binary(int number);
 /*
 ** Object Inicialize
 */
@@ -92,6 +93,7 @@ FUNC FUNCenable( void )
 	func.lh=FUNClh;
 	func.hl=FUNChl;
 	func.diff=FUNCdiff;
+	func.print_binary=FUNCprint_binary;
 	return func;
 }
 /*
@@ -282,6 +284,25 @@ int FUNChl(int xi, int xf)
 int FUNCdiff(int xi, int xf)
 {
 	return xi^xf;
+}
+void FUNCprint_binary(int number)
+{
+    int_to_bin(number);
+	putc('\n',stdout);
+}
+void print_binary(int number)
+{
+    if(number){
+		print_binary(number>>1);
+        putc((number & 1) ? '1' : '0',stdout);
+	}
+}
+void int_to_bin(int number)
+{
+	int i;
+    for(i=128;i;i>>=1){
+	putc((number & i) ? '1' : '0',stdout);
+	}
 }
 /*
 ** interrupt
