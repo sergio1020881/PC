@@ -47,6 +47,7 @@ COMMENT:
 //#include <math.h>
 /***/
 #include"PClfsm.h"
+#include"PCfunction.h"
 /*
 ** constant and macro
 */
@@ -118,6 +119,7 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 	int block[r->sizeblock];
 	int keyfound;
 	int mask;
+	FUNC func=FUNCenable();
 	mask=LFSMdiff(r->input,input);
 	if(mask){//in reality there is no repetition of closed contact or open [oneshot]
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
@@ -125,22 +127,37 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
-				keyfound=(block[LFSM_mask]==mask && block[LFSM_maskedinput]==(mask&input) && block[LFSM_feedback]==feedback);//bool, block[1] is masked bits, block[1] is bits state
+				keyfound=(
+					block[LFSM_mask]==mask && 
+					block[LFSM_maskedinput]==(mask&input) 
+					&& block[LFSM_feedback]==feedback);//bool, block[1] is masked bits, block[1] is bits state
 				if(keyfound){
 					r->block[LFSM_output]=block[LFSM_output];
 					printf("Found\n");
-					printf("%d -> %d -> %d -> %d\n",block[LFSM_mask],block[LFSM_maskedinput],block[LFSM_feedback],block[LFSM_output]);
+					int_to_bin(block[LFSM_mask]);
+					printf("->");
+					int_to_bin(block[LFSM_maskedinput]);
+					printf("->");
+					int_to_bin(block[LFSM_feedback]);
+					printf("->");
+					int_to_bin(block[LFSM_output]);
+					printf("\n");
 					r->input=input;//detailed
 					break;
 				}else{
-					printf("Not found\n");
-					printf("%d -> %d -> %d -> %d\n",block[LFSM_mask],block[LFSM_maskedinput],block[LFSM_feedback],block[LFSM_output]);
+					//printf("Not found\n");
+					//printf("%d -> %d -> %d -> %d\n",block[LFSM_mask],block[LFSM_maskedinput],block[LFSM_feedback],block[LFSM_output]);
 				}
+			}else{
 			}
 		}
-		//r->input=input;//necessary
+			//r->input=input;//necessary
+	}else{
+		printf("Repeated input.\n");
 	}
-	printf("->->->->->->-> %d\n",r->block[LFSM_output]);
+	//printf("->->->->->->-> %d\n",r->block[LFSM_output]);
+	printf("->->->->->->-> ");
+	func.print_binary(r->block[LFSM_output]);
 	return r->block[LFSM_output];
 }
 /***learn***/
@@ -183,7 +200,25 @@ int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
 		}
 	}
 	//r->input=input;
-	printf("learn status: %d\n",status);
+	switch (status){
+		case 0:
+			printf("repeated input not allowed.\n");
+			break;
+		case 1:
+			printf("already existent.\n");
+			break;
+		case 2:
+			printf("succesfully added.\n");
+			break;
+		case 3:
+			printf("going to try add new program.\n");
+			break;
+		case 4:
+			printf("memmory full.\n");
+			break;
+		default:
+			break;
+	}
 	return status;
 }
 /***quant***/
