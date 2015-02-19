@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 		printf("write string with number\n");
 		cmd=func.fltos(stdin);
 		number1=func.getnum(cmd);
+		func.print_binary(number1);
 		//printf("number: %d  match: %d\n", number1,func.pinmatch(3,number1,HIGH));
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q"))
 			goto end;
@@ -85,11 +86,13 @@ int main(int argc, char *argv[])
 			cmd=func.fltos(stdin);
 			number1=func.getnum(cmd);
 			//printf("number1:\n%d\n",number1);
+			func.print_binary(number1);
 			printf("enter output data\n");
 			cmd=func.fltos(stdin);
 			number2=func.getnum(cmd);
 			//printf("number2:\n%d\n",number2);
 			//l.learn(&l,number1,number2);
+			func.print_binary(number2);
 			r.learn(&r,number1,number2,r.get(&r));
 		}
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"h")){
