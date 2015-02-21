@@ -88,15 +88,9 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 	r.sizeblock=5;
 	cells=sizeeeprom/r.sizeblock;
 	r.sizeeeprom=cells*r.sizeblock;
-	r.block[LFSM_page]=prog;
-	r.block[LFSM_mask]=0;//mask
-	r.block[LFSM_maskedinput]=0;//maskedinput
-	r.block[LFSM_feedback]=0;//feedback
-	r.block[LFSM_output]=0;//output
-	//r.block[5]=0;//not used
-	//r.block[6]=0;//not used
-	//r.block[7]=0;//not used
-	r.input=0;
+	r.page=prog;//page
+	r.input=0;//input
+	r.output=0;//output
 	//Function Vtable
 	r.read=LFSMread;
 	r.learn=LFSMlearn;
@@ -121,27 +115,21 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 	int mask;
 	FUNC func=FUNCenable();
 	mask=LFSMdiff(r->input,input);
+	printf("-%s-\n",func.print_binary(mask));
 	if(mask){//in reality there is no repetition of closed contact or open [oneshot]
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->block[LFSM_page]){
+			if(*(r->mem+i1)==r->page){
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
 				keyfound=(
 					block[LFSM_mask]==mask && 
-					block[LFSM_maskedinput]==(mask&input) 
-					&& block[LFSM_feedback]==feedback);//bool, block[1] is masked bits, block[1] is bits state
+					block[LFSM_maskedinput]==(mask&input) && 
+					block[LFSM_feedback]==feedback);//bool, block[1] is masked bits, block[1] is bits state
 				if(keyfound){
-					r->block[LFSM_output]=block[LFSM_output];
+					r->output=block[LFSM_output];
 					printf("Found\n");
-					int_to_bin(block[LFSM_mask]);
-					printf("->");
-					int_to_bin(block[LFSM_maskedinput]);
-					printf("->");
-					int_to_bin(block[LFSM_feedback]);
-					printf("->");
-					int_to_bin(block[LFSM_output]);
-					printf("\n");
+					printf("%s->%s->%s\n",func.print_binary(LFSM_mask),func.print_binary(block[LFSM_maskedinput]),func.print_binary(block[LFSM_feedback]));
 					r->input=input;//detailed
 					break;
 				}else{
@@ -156,9 +144,8 @@ int LFSMread(struct lfsm *r, int input, int feedback)
 		printf("Repeated input.\n");
 	}
 	//printf("->->->->->->-> %d\n",r->block[LFSM_output]);
-	printf("->->->->->->-> ");
-	func.print_binary(r->block[LFSM_output]);
-	return r->block[LFSM_output];
+	printf("->->->->->->->->->->->->->->-> %s ",func.print_binary(r->output));
+	return r->output;
 }
 /***learn***/
 int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
@@ -172,7 +159,7 @@ int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
 	mask=LFSMdiff(r->input,input); // difference is the mask, diference is a filter.
 	if(mask){
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->block[LFSM_page]){
+			if(*(r->mem+i1)==r->page){
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
@@ -188,7 +175,7 @@ int LFSMlearn(struct lfsm *r, int input, int next, int feedback)
 	if(status==3){
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
 			if(*(r->mem+i1)==EMPTY){
-				*(r->mem+i1)=r->block[LFSM_page];
+				*(r->mem+i1)=r->page;
 				*(r->mem+i1+1)=mask;
 				*(r->mem+i1+2)=(mask&input);
 				*(r->mem+i1+3)=feedback;
@@ -246,7 +233,7 @@ int LFSMremove(struct lfsm *r, int input, int present)
 	mask=LFSMdiff(r->input,input);
 	if(mask){
 		for(i1=0;i1<r->sizeeeprom;i1+=r->sizeblock){
-			if(*(r->mem+i1)==r->block[LFSM_page]){
+			if(*(r->mem+i1)==r->page){
 				for(i2=0;i2<r->sizeblock;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
@@ -283,7 +270,7 @@ int LFSMdeleteall(struct lfsm *r)
 int LFSMstate(struct lfsm *r)
 {
 	//printf("FSMget: %d\n",r->block[LFSM_output]);
-	return r->block[LFSM_output];
+	return r->output;
 }
 /***diff***/
 int LFSMdiff(int xi, int xf)
