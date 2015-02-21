@@ -33,8 +33,8 @@ struct lfsm{
 	int sizeeeprom;
 	int sizeblock;
 	int page;
-	int block[5];
 	int input;
+	int output;
 	//Function Pointers
 	int (*read)(struct lfsm *r, int input, int feedback);
 	int (*learn)(struct lfsm *r, int input, int next, int feedback);
