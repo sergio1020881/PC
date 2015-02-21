@@ -44,14 +44,12 @@ struct func{
 	int (*lh)(int xi, int xf);
 	int (*hl)(int xi, int xf);
 	int (*diff)(int xi, int xf);
-	void (*print_binary)(int number);
+	char* (*print_binary)(int number);
 };
 typedef struct func FUNC;
 /*
 ** procedure and function header
 */
-void print_binary(int number);
-void int_to_bin(int number);
 FUNC FUNCenable(void);
 #endif
 /***EOF***/
