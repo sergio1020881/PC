@@ -71,7 +71,7 @@ int FUNCpinmatch(int match, int pin, int HL);
 int FUNClh(int xi, int xf);
 int FUNChl(int xi, int xf);
 int FUNCdiff(int xi, int xf);
-void FUNCprint_binary(int number);
+char* FUNCprint_binary(int number);
 /*
 ** Object Inicialize
 */
@@ -285,24 +285,14 @@ int FUNCdiff(int xi, int xf)
 {
 	return xi^xf;
 }
-void FUNCprint_binary(int number)
+char* FUNCprint_binary(int number)
 {
-    int_to_bin(number);
-	putc('\n',stdout);
-}
-void print_binary(int number)
-{
-    if(number){
-		print_binary(number>>1);
-        putc((number & 1) ? '1' : '0',stdout);
+	int i,c;
+    for(i=128,c=0;i;i>>=1,c++){
+	(number & i) ? (FUNCstr[c]='1') : (FUNCstr[c]='0');
 	}
-}
-void int_to_bin(int number)
-{
-	int i;
-    for(i=128;i;i>>=1){
-	putc((number & i) ? '1' : '0',stdout);
-	}
+	FUNCstr[c]='\0';
+	return FUNCstr;
 }
 /*
 ** interrupt
