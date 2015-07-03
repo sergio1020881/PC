@@ -31,7 +31,6 @@ struct lfsm{
 	//Local Variables
 	int *mem;
 	int sizeeeprom;
-	int sizeblock;
 	int page;
 	int input;
 	int output;
