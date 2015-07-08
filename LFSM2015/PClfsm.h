@@ -48,5 +48,4 @@ typedef struct lfsm LFSM;
 */
 LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog);
 #endif
-/******/
 /***EOF***/
