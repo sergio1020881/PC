@@ -50,13 +50,12 @@ COMMENT:
 /*
 ** constant and macro
 */
-#define EMPTY 0
-/***************/
 #define LFSM_page 0
 #define LFSM_feedback 1
 #define LFSM_input 2
 #define LFSM_output 3
 #define BlockSize 4
+#define EMPTY 0
 /*
 ** variable
 */
@@ -112,6 +111,7 @@ int LFSMread(struct lfsm *r, int input)
 	int block[BlockSize];
 	int keyfound;
 	int mask;
+	printf("LFSMread\n");
 	FUNC func=FUNCenable();
 	mask=LFSMdiff(r->input,input);
 	//if(mask){
@@ -121,10 +121,17 @@ int LFSMread(struct lfsm *r, int input)
 				for(i2=0;i2<BlockSize;i2++){//get block from eeprom
 					block[i2]=*(r->mem+i1+i2);
 				}
-				keyfound=(
-					block[LFSM_feedback]==r->output &&
-					block[LFSM_input]==input
-					);//bool
+				if(r->page<128){
+					keyfound=(
+						block[LFSM_feedback]==r->page &&
+						block[LFSM_input]==input
+						);//bool
+				}else{
+					keyfound=(
+						block[LFSM_feedback]==r->output &&
+						block[LFSM_input]==input
+						);//bool
+				}
 				if(keyfound){
 					status=1;
 					break;
@@ -150,7 +157,6 @@ int LFSMread(struct lfsm *r, int input)
 		default:
 			break;
 	}
-	//printf("->->->->->->-> %d\n",r->block[LFSM_output]);
 	printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r->output));
 	return r->output;
 }
@@ -190,7 +196,11 @@ int LFSMlearn(struct lfsm *r, int input, int next)
 			for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 				if(*(r->mem+i1)==EMPTY){
 					*(r->mem+i1)=r->page;
-					*(r->mem+i1+LFSM_feedback)=r->output;
+					if(r->page<128){
+						r->output=r->page;
+						*(r->mem+i1+LFSM_feedback)=r->page;
+					}else
+						*(r->mem+i1+LFSM_feedback)=r->output;
 					*(r->mem+i1+LFSM_input)=input;
 					*(r->mem+i1+LFSM_output)=next;
 					status=3;//created
@@ -200,7 +210,6 @@ int LFSMlearn(struct lfsm *r, int input, int next)
 			}
 		case 3:
 			printf("LFSMlearn succesfully added.\n");
-			
 			break;
 		case 4:
 			printf("LFSMlearn memmory full.\n");
@@ -215,7 +224,7 @@ int LFSMquant(struct lfsm *r)
 {
 	int i1;
 	int programmed;
-	printf("LFSMquant\n");
+	printf("LFSMquant - page - %d\n",r->page);
 	for(i1=0,programmed=0;i1<r->sizeeeprom;i1+=BlockSize){
 		if(*(r->mem+i1)!=EMPTY){
 			printf("%d-%d-%d\n",*(r->mem+i1+LFSM_feedback),*(r->mem+i1+LFSM_input),*(r->mem+i1+LFSM_output));
@@ -283,7 +292,6 @@ int LFSMdeleteall(struct lfsm *r)
 /***get***/
 int LFSMoutput(struct lfsm *r)
 {
-	//printf("FSMget: %d\n",r->block[LFSM_output]);
 	return r->output;
 }
 /***diff***/
@@ -309,7 +317,7 @@ keyfound=(
 	block[LFSM_mask]==mask && 
 	block[LFSM_maskedinput]==(mask&input)
 );//bool, block[1] is masked bits, block[1] is bits state
-**************
+				**************
 
 
 
