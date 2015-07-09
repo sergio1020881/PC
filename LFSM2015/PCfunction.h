@@ -17,7 +17,7 @@ LICENSE:
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 COMMENT:
-	Very Stable
+Very Stable
 ************************************************************************/
 #ifndef _PCFUNCTION_H_
 	#define _PCFUNCTION_H_
