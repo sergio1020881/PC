@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2015/07/03 14:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2015/07/09 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -59,7 +59,8 @@ COMMENT:
 /*
 ** variable
 */
-/*int mem[]=
+/*
+int mem[]=
 {pin state, feedback, pin mask, output}
 */
 /*
@@ -70,8 +71,6 @@ int LFSMlearn(struct lfsm *r, int input, int next);
 int LFSMquant(struct lfsm *r);
 int LFSMremove(struct lfsm *r, int input);
 int LFSMdeleteall(struct lfsm *r);
-int LFSMoutput(struct lfsm *r);
-int LFSMdiff(int xi, int xf);
 /*
 ** Object Inicialize
 */
@@ -79,6 +78,10 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 {
 	/***Local Variable***/
 	int cells;
+	/***Local Function Header***/
+	int LFSMgetoutput(struct lfsm *r);
+	void LFSMsetoutput(struct lfsm *r, int output);
+	int LFSMdiff(int xi, int xf);
 	/***Create Object***/
 	LFSM r;
 	//Inicialize varibles
@@ -94,7 +97,8 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 	r.quant=LFSMquant;
 	r.remove=LFSMremove;
 	r.deleteall=LFSMdeleteall;
-	r.get=LFSMoutput;
+	r.get=LFSMgetoutput;
+	r.set=LFSMsetoutput;
 	r.diff=LFSMdiff;
 	/******/
 	return r;
@@ -113,7 +117,7 @@ int LFSMread(struct lfsm *r, int input)
 	int mask;
 	printf("LFSMread\n");
 	FUNC func=FUNCenable();
-	mask=LFSMdiff(r->input,input);
+	mask=r->diff(r->input,input);
 	//if(mask){
 	//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
 		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
@@ -290,9 +294,14 @@ int LFSMdeleteall(struct lfsm *r)
 	return status;
 }
 /***get***/
-int LFSMoutput(struct lfsm *r)
+int LFSMgetoutput(struct lfsm *r)
 {
 	return r->output;
+}
+/***set***/
+void LFSMsetoutput(struct lfsm *r, int output)
+{
+	r->output=output;
 }
 /***diff***/
 int LFSMdiff(int xi, int xf)
@@ -303,22 +312,17 @@ int LFSMdiff(int xi, int xf)
 ** interrupt
 */
 /***EOF***/
-/**
-NOTES:
-int vect[]=
-{
-mask,mask&pinstate,feedback,output,
-};
-**/
 /***Comments**
 Reality works like this:
 keyfound=(
 	block[LFSM_feedback]==r->output &&
 	block[LFSM_mask]==mask && 
 	block[LFSM_maskedinput]==(mask&input)
-);//bool, block[1] is masked bits, block[1] is bits state
-				**************
-
-
-
+);//bool, block[1] is masked bits, block[1] is bits state				
+**************
+NOTES:
+int vect[]=
+{
+mask,mask&pinstate,feedback,output,
+};
 *************/
