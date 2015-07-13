@@ -3,6 +3,7 @@
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 09-07-2015 14:00
+* Working on it and libraries for use in MCU, new prototype
 */
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
