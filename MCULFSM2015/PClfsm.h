@@ -50,7 +50,7 @@ typedef struct lfsm LFSM;
 /*
 ** procedure and function header
 */
-LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog);
+LFSM LFSMenable(int *eeprom, int sizeeeprom);
 #endif
 /***EOF***/
 /***
