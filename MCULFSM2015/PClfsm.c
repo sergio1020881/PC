@@ -19,7 +19,9 @@ LICENSE:
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 COMMENT:
-	review
+	working on it.
+	working pretty good, trial more.
+	page=1 is dedicated for logic, if page>1 is sequencial program.
 *************************************************************************/
 /*
 ** library
@@ -76,7 +78,7 @@ int LFSMdeleteall(struct lfsm *r);
 /*
 ** Object Inicialize
 */
-LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
+LFSM LFSMenable(int *eeprom, int sizeeeprom)
 {
 	/***Local Variable***/
 	int cells;
@@ -93,7 +95,6 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 	r.mem=eeprom;
 	cells=sizeeeprom/BlockSize;
 	r.sizeeeprom=cells*BlockSize;
-	r.page=prog;//page
 	r.input=0;//input
 	r.output=0;//output
 	//Function Vtable
@@ -134,10 +135,8 @@ int LFSMread(struct lfsm *r, int input)
 					block[i2]=*(r->mem+i1+i2);
 				}
 				/******/
-				//printf("LFSMread: %d-%d-%d-%d\n",(block[LFSM_page]),(block[LFSM_feedback]),(block[LFSM_input]),(block[LFSM_output]));
 				switch(block[LFSM_page]){
 					case 1:
-						//printf("LFSMread_logic\n");
 						keyfound=(
 							//block[LFSM_feedback]==input &&
 							block[LFSM_inhl]==r->hl(r->input,input) && 
@@ -146,7 +145,6 @@ int LFSMread(struct lfsm *r, int input)
 						//it keeps track of previous input, not desired in logic
 						break;
 					default:
-						//printf("LFSMread_sequence\n");
 						keyfound=(
 							block[LFSM_feedback]==r->output &&
 							block[LFSM_inhl]==r->hl(r->input,input) && 
@@ -156,7 +154,6 @@ int LFSMread(struct lfsm *r, int input)
 				};
 				/******/
 				if(keyfound){
-					//printf("LFSMread_Keyfound: %d-%d-%d-%d\n",(block[LFSM_page]),(block[LFSM_feedback]),(block[LFSM_input]),(block[LFSM_output]));
 					status=1;
 					break;
 				}else status=2;
@@ -192,45 +189,35 @@ int LFSMlearn(struct lfsm *r, int input, int next, int page)
 	int block[BlockSize];
 	int keyfound;
 	int status=0;
-	int mask;
 	printf("LFSMlearn\n");
-	mask=r->diff(r->input,input);
-	for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
-		if(*(r->mem+i1)){
-			/******/
-			for(i2=0;i2<BlockSize;i2++){//get block from eeprom
-				block[i2]=*(r->mem+i1+i2);
-			}
-			/******/
-			//printf("LFSMlearn_page %d\n",page);
-			switch(page){
-				case 1:
-					//printf("LFSMlearn_logic\n");
+	if(page>0){
+		if(r->diff(r->input,input)){
+			for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
+				if(*(r->mem+i1)){
+					/******/
+					for(i2=0;i2<BlockSize;i2++){//get block from eeprom
+						block[i2]=*(r->mem+i1+i2);
+					}
+					/******/
+					printf("LFSMlearn_page %d\n",page);
 					keyfound=(
-						block[LFSM_inhl]==r->hl(r->input,input) &&
-						block[LFSM_inlh]==r->lh(r->input,input)
-						);//bool
-					break;
-				default:
-					//printf("LFSMlearn_sequence\n");
-					keyfound=(
-						(block[LFSM_feedback]==r->output &&
-						block[LFSM_inhl]==r->hl(r->input,input) && 
-						block[LFSM_inlh]==r->lh(r->input,input)) ||
-						(block[LFSM_page]==1 &&
-						block[LFSM_inhl]==r->hl(r->input,input) && 
-						block[LFSM_inlh]==r->lh(r->input,input))
-						);//bool
-					break;
-			};
-			//if there is any logic entry, that entry is taken out from lfsm input options
-			/******/
-			if(keyfound){
-				status=1;//not permited
-				break;
+					(block[LFSM_feedback]==r->output &&
+					block[LFSM_inhl]==r->hl(r->input,input) && 
+					block[LFSM_inlh]==r->lh(r->input,input)) ||
+					(block[LFSM_page]==1 &&
+					block[LFSM_inhl]==r->hl(r->input,input) && 
+					block[LFSM_inlh]==r->lh(r->input,input))
+					);//bool
+					//if there is any logic entry, that entry is taken out from lfsm input options
+					/******/
+					if(keyfound){
+						status=1;//not permited
+						break;
+					}
+				}
+			status=2;//not existente
 			}
 		}
-		status=2;//not existente
 	}
 	switch (status){
 		case 0:
@@ -290,9 +277,7 @@ int LFSMremove(struct lfsm *r, int input)
 	int block[BlockSize];
 	int keyfound;
 	int status=0;
-	int mask;
 	printf("LFSMremove\n");
-	mask=r->diff(r->input,input);
 	for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 		if(*(r->mem+i1)){
 			printf("LFSMremove\n");
@@ -302,7 +287,6 @@ int LFSMremove(struct lfsm *r, int input)
 			/******/	
 			switch(block[LFSM_page]){
 				case 1:
-					//printf("LFSMremove_logic\n");
 					keyfound=(
 						block[LFSM_feedback]==input &&
 						block[LFSM_inhl]==r->hl(r->input,input) && 
@@ -310,7 +294,6 @@ int LFSMremove(struct lfsm *r, int input)
 						);//bool
 					break;
 				default:
-					//printf("LFSMremove_sequence\n");
 					keyfound=(
 						block[LFSM_feedback]==r->output &&
 						block[LFSM_inhl]==r->hl(r->input,input) && 
