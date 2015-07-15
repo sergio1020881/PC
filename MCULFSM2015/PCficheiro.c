@@ -70,6 +70,7 @@ FICHEIRO FICHEIROenable(char *filename)
 	FICHEIRO f;
 	//Inicialize varibles
 	strcpy(f.filename,filename);
+	//do a checkup if exists first !
 	strcpy(f.permision,"a+");//setting as default
 	//Functions pointers or Vtable to declared functions
 	f.open=FICHEIROopen;
