@@ -123,10 +123,8 @@ int LFSMread(struct lfsm *r, int input)
 	int status=0;
 	int block[BlockSize];
 	int keyfound;
-	int mask;
 	printf("LFSMread\n");
-	mask=r->diff(r->input,input);
-	if(mask){
+	if(r->diff(r->input,input)){
 	//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
 		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 			if(*(r->mem+i1)){
@@ -263,7 +261,7 @@ int LFSMquant(struct lfsm *r)
 	printf("LFSMquant\n");
 	for(i1=0,programmed=0;i1<r->sizeeeprom;i1+=BlockSize){
 		if(*(r->mem+i1)!=EMPTY){
-			printf("%d-%d-%d-%d-%d-%d\n",*(r->mem+i1+LFSM_page),*(r->mem+i1+LFSM_feedback),*(r->mem+i1+LFSM_inhl),*(r->mem+i1+LFSM_inlh),*(r->mem+i1+LFSM_outhl),*(r->mem+i1+LFSM_outlh));
+			printf("page:%d feedback:%d inhl:%d inlh:%d oulhl:%d outlh:%d\n",*(r->mem+i1+LFSM_page),*(r->mem+i1+LFSM_feedback),*(r->mem+i1+LFSM_inhl),*(r->mem+i1+LFSM_inlh),*(r->mem+i1+LFSM_outhl),*(r->mem+i1+LFSM_outlh));
 			programmed++;
 		}
 	}
