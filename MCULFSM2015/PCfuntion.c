@@ -1,7 +1,7 @@
 /**************************************************************************
 Title:    PCFUNCTION
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PCfunction.c, v 0.1 2015/07/09 14:00:00 sergio Exp $
+File:     $Id: PCfunction.c, v 0.1 2015/08/01 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -79,11 +79,11 @@ char* FUNCputstr(char* str);
 int FUNCgetnum(char* x);
 unsigned int FUNCgetnumv2(char* x);
 int FUNCreadint(int nmin, int nmax);
-int FUNCmayia(int xi, int xf, int nbits);
-int FUNCpinmatch(int match, int pin, int HL);
-int FUNClh(int xi, int xf);
-int FUNChl(int xi, int xf);
-int FUNCdiff(int xi, int xf);
+unsigned int FUNCmayia(unsigned int xi, unsigned int xf, unsigned int nbits);
+unsigned int FUNCpinmatch(unsigned int match, unsigned int pin, unsigned int HL);
+unsigned int FUNClh(unsigned int xi, unsigned int xf);
+unsigned int FUNChl(unsigned int xi, unsigned int xf);
+unsigned int FUNCdiff(unsigned int xi, unsigned int xf);
 char* FUNCprint_binary(int number);
 //char FUNCMM74C923_read(char c);
 /*
@@ -247,11 +247,11 @@ int FUNCreadint(int nmin, int nmax)
 		return num;
 }
 /***magic***/
-int FUNCmayia(int xi, int xf, int nbits)
+unsigned int FUNCmayia(unsigned int xi, unsigned int xf, unsigned int nbits)
 {
-	int mask;
-	int diff;
-	int trans;
+	unsigned int mask;
+	unsigned int diff;
+	unsigned int trans;
 	mask=pow(2,nbits)-1;
 	xi=xi&mask;
 	xf=xf&mask;
@@ -260,9 +260,9 @@ int FUNCmayia(int xi, int xf, int nbits)
 	return (trans<<nbits)|diff;
 }
 /***pinmatch***/
-int FUNCpinmatch(int match, int pin, int HL)
+unsigned int FUNCpinmatch(unsigned int match, unsigned int pin, unsigned int HL)
 {
-	int result;
+	unsigned int result;
 	result=match&pin;
 	if(HL){
 		if(result==match);
@@ -277,23 +277,23 @@ int FUNCpinmatch(int match, int pin, int HL)
 	return result;
 }
 /***lh***/
-int FUNClh(int xi, int xf)
+unsigned int FUNClh(unsigned int xi, unsigned int xf)
 {
-	int i;
+	unsigned int i;
 	i=xf^xi;
 	i&=xf;
 	return i;
 }
 /***hl***/
-int FUNChl(int xi, int xf)
+unsigned int FUNChl(unsigned int xi, unsigned int xf)
 {
-	int i;
+	unsigned int i;
 	i=xf^xi;
 	i&=xi;
 	return i;
 }
 /***diff***/
-int FUNCdiff(int xi, int xf)
+unsigned int FUNCdiff(unsigned int xi, unsigned int xf)
 {
 	return xi^xf;
 }
