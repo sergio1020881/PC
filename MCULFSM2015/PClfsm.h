@@ -1,7 +1,7 @@
 /************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.h,v 0.1 2015/07/09 14:00:00 sergio Exp $
+File:     $Id: PClfsm.h,v 0.1 2015/08/01 14:00:00 sergio Exp $
 Software: GCC
 Hardware: 
 License:  GNU General Public License 
@@ -28,29 +28,29 @@ COMMENT:
 */
 struct lfsm{
 	//Local Variables
-	int *mem;
-	int sizeeeprom;
-	int page;
-	int input;
-	int output;
+	unsigned int *mem;
+	unsigned int sizeeeprom;
+	unsigned int page;
+	unsigned int input;
+	unsigned int output;
 	//Function Pointers
-	int (*read)(struct lfsm *r, int input);
-	int (*learn)(struct lfsm *r, int input, int next, int page);
-	int (*quant)(struct lfsm *r);
-	int (*remove)(struct lfsm *r, int input);
-	int (*deleteall)(struct lfsm *r);
-	int (*get)(struct lfsm *r);
-	void (*set)(struct lfsm *r,int output);
-	int (*lh)(int xi, int xf);
-	int (*hl)(int xi, int xf);
-	int (*outputcalc)(int feeddback, int hl,int lh);
-	int (*diff)(int xi, int xf);
+	unsigned int (*read)(struct lfsm *r, unsigned int input);
+	unsigned int (*learn)(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page);
+	unsigned int (*quant)(struct lfsm *r);
+	unsigned int (*remove)(struct lfsm *r, unsigned int input);
+	unsigned int (*deleteall)(struct lfsm *r);
+	unsigned int (*get)(struct lfsm *r);
+	void (*set)(struct lfsm *r,unsigned int output);
+	unsigned int (*lh)(unsigned int xi, unsigned int xf);
+	unsigned int (*hl)(unsigned int xi, unsigned int xf);
+	unsigned int (*outputcalc)(unsigned int feeddback, unsigned int hl,unsigned int lh);
+	unsigned int (*diff)(unsigned int xi, unsigned int xf);
 };
 typedef struct lfsm LFSM;
 /*
 ** procedure and function header
 */
-LFSM LFSMenable(int *eeprom, int sizeeeprom);
+LFSM LFSMenable(unsigned int *eeprom, unsigned int sizeeeprom);
 #endif
 /***EOF***/
 /***
