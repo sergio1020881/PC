@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2015/07/29 14:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2015/08/01 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -237,8 +237,10 @@ int LFSMlearn(struct lfsm *r, int input, int next, int page)
 						*(r->mem+i1+LFSM_outlh)=r->lh(r->output,next);
 					}else{
 						*(r->mem+i1+LFSM_feedback)=input;
-						*(r->mem+i1+LFSM_outhl)=~next;
-						*(r->mem+i1+LFSM_outlh)=next;
+						*(r->mem+i1+LFSM_outhl)=r->hl(r->output,next);
+						*(r->mem+i1+LFSM_outlh)=r->lh(r->output,next);
+						//*(r->mem+i1+LFSM_outhl)=~next;
+						//*(r->mem+i1+LFSM_outlh)=next;
 					}
 					status=3;//created
 					break;
