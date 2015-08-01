@@ -64,31 +64,31 @@ COMMENT:
 ** variable
 */
 /*
-int mem[]=
+unsigned int mem[]=
 {pin state, feedback, pin mask, output}
 */
 /*
 ** procedure and function header
 */
-int LFSMread(struct lfsm *r, int input);
-int LFSMlearn(struct lfsm *r, int input, int next, int page);
-int LFSMquant(struct lfsm *r);
-int LFSMremove(struct lfsm *r, int input);
-int LFSMdeleteall(struct lfsm *r);
+unsigned int LFSMread(struct lfsm *r, unsigned int input);
+unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page);
+unsigned int LFSMquant(struct lfsm *r);
+unsigned int LFSMremove(struct lfsm *r, unsigned int input);
+unsigned int LFSMdeleteall(struct lfsm *r);
 /*
 ** Object Inicialize
 */
-LFSM LFSMenable(int *eeprom, int sizeeeprom)
+LFSM LFSMenable(unsigned int *eeprom, unsigned int sizeeeprom)
 {
 	/***Local Variable***/
-	int cells;
+	unsigned int cells;
 	/***Local Function Header***/
-	int LFSMgetoutput(struct lfsm *r);
-	void LFSMsetoutput(struct lfsm *r, int output);
-	int LFSMlh(int xi, int xf);
-	int LFSMhl(int xi, int xf);
-	int LFSMoutputcalc(int feedback, int hl, int lh);
-	int LFSMdiff(int xi, int xf);
+	unsigned int LFSMgetoutput(struct lfsm *r);
+	void LFSMsetoutput(struct lfsm *r, unsigned int output);
+	unsigned int LFSMlh(unsigned int xi, unsigned int xf);
+	unsigned int LFSMhl(unsigned int xi, unsigned int xf);
+	unsigned int LFSMoutputcalc(unsigned int feedback, unsigned int hl, unsigned int lh);
+	unsigned int LFSMdiff(unsigned int xi, unsigned int xf);
 	/***Create Object***/
 	LFSM r;
 	//Inicialize varibles
@@ -116,13 +116,13 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom)
 ** procedure and function
 */
 /***read***/
-int LFSMread(struct lfsm *r, int input)
+unsigned int LFSMread(struct lfsm *r, unsigned int input)
 {
-	int i1;
-	int i2;
-	int status=0;
-	int block[BlockSize];
-	int keyfound;
+	unsigned int i1;
+	unsigned int i2;
+	unsigned int status=0;
+	unsigned int block[BlockSize];
+	unsigned int keyfound;
 	printf("LFSMread\n");
 	if(r->diff(r->input,input)){
 	//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
@@ -136,7 +136,7 @@ int LFSMread(struct lfsm *r, int input)
 				switch(block[LFSM_page]){
 					case 1:
 						keyfound=(
-							//block[LFSM_feedback]==input &&
+							//block[LFSM_feedback]==r->output &&
 							block[LFSM_inhl]==r->hl(r->input,input) && 
 							block[LFSM_inlh]==r->lh(r->input,input)
 							);//bool
@@ -180,13 +180,13 @@ int LFSMread(struct lfsm *r, int input)
 	return r->output;
 }
 /***learn***/ 
-int LFSMlearn(struct lfsm *r, int input, int next, int page)
+unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page)
 {
-	int i1;
-	int i2;
-	int block[BlockSize];
-	int keyfound;
-	int status=0;
+	unsigned int i1;
+	unsigned int i2;
+	unsigned int block[BlockSize];
+	unsigned int keyfound;
+	unsigned int status=0;
 	printf("LFSMlearn\n");
 	if(page>0){
 		if(r->diff(r->input,input)){
@@ -229,19 +229,11 @@ int LFSMlearn(struct lfsm *r, int input, int next, int page)
 			for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 				if(*(r->mem+i1)==EMPTY){
 					*(r->mem+i1)=page;
+					*(r->mem+i1+LFSM_feedback)=r->output;
 					*(r->mem+i1+LFSM_inhl)=r->hl(r->input,input);
 					*(r->mem+i1+LFSM_inlh)=r->lh(r->input,input);
-					if(page>1){
-						*(r->mem+i1+LFSM_feedback)=r->output;
-						*(r->mem+i1+LFSM_outhl)=r->hl(r->output,next);
-						*(r->mem+i1+LFSM_outlh)=r->lh(r->output,next);
-					}else{
-						*(r->mem+i1+LFSM_feedback)=input;
-						*(r->mem+i1+LFSM_outhl)=r->hl(r->output,next);
-						*(r->mem+i1+LFSM_outlh)=r->lh(r->output,next);
-						//*(r->mem+i1+LFSM_outhl)=~next;
-						//*(r->mem+i1+LFSM_outlh)=next;
-					}
+					*(r->mem+i1+LFSM_outhl)=r->hl(r->output,next);
+					*(r->mem+i1+LFSM_outlh)=r->lh(r->output,next);
 					status=3;//created
 					break;
 				}
@@ -259,10 +251,10 @@ int LFSMlearn(struct lfsm *r, int input, int next, int page)
 	return status;
 }
 /***quant***/
-int LFSMquant(struct lfsm *r)
+unsigned int LFSMquant(struct lfsm *r)
 {
-	int i1;
-	int programmed;
+	unsigned int i1;
+	unsigned int programmed;
 	printf("LFSMquant\n");
 	for(i1=0,programmed=0;i1<r->sizeeeprom;i1+=BlockSize){
 		if(*(r->mem+i1)!=EMPTY){
@@ -273,13 +265,13 @@ int LFSMquant(struct lfsm *r)
 	return programmed;
 }
 /***remove***/
-int LFSMremove(struct lfsm *r, int input)
+unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 {
-	int i1;
-	int i2;
-	int block[BlockSize];
-	int keyfound;
-	int status=0;
+	unsigned int i1;
+	unsigned int i2;
+	unsigned int block[BlockSize];
+	unsigned int keyfound;
+	unsigned int status=0;
 	printf("LFSMremove\n");
 	for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 		if(*(r->mem+i1)){
@@ -329,10 +321,10 @@ int LFSMremove(struct lfsm *r, int input)
 	return status;
 }
 /***deleteall***/
-int LFSMdeleteall(struct lfsm *r)
+unsigned int LFSMdeleteall(struct lfsm *r)
 {
-	int i1;
-	int status=0;
+	unsigned int i1;
+	unsigned int status=0;
 	if(!status){//not removed
 		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 			if(*(r->mem+i1)){
@@ -345,40 +337,40 @@ int LFSMdeleteall(struct lfsm *r)
 	return status;
 }
 /***get***/
-int LFSMgetoutput(struct lfsm *r)
+unsigned int LFSMgetoutput(struct lfsm *r)
 {
 	return r->output;
 }
 /***set***/
-void LFSMsetoutput(struct lfsm *r, int output)
+void LFSMsetoutput(struct lfsm *r, unsigned int output)
 {
 	r->output=output;
 }
 /***lh***/
-int LFSMlh(int xi, int xf)
+unsigned int LFSMlh(unsigned int xi, unsigned int xf)
 {
-	int i;
+	unsigned int i;
 	i=xf^xi;
 	i&=xf;
 	return i;
 }
 /***hl***/
-int LFSMhl(int xi, int xf)
+unsigned int LFSMhl(unsigned int xi, unsigned int xf)
 {
-	int i;
+	unsigned int i;
 	i=xf^xi;
 	i&=xi;
 	return i;
 }
 /***output***/
-int LFSMoutputcalc(int feedback, int hl, int lh)
+unsigned int LFSMoutputcalc(unsigned int feedback, unsigned int hl, unsigned int lh)
 {
 	feedback|=lh;
 	feedback&=~hl;
 	return feedback;
 }
 /***diff***/
-int LFSMdiff(int xi, int xf)
+unsigned int LFSMdiff(unsigned int xi, unsigned int xf)
 {
 	return xi^xf;
 }
@@ -395,7 +387,7 @@ keyfound=(
 );//bool, block[1] is masked bits, block[1] is bits state				
 **************
 NOTES:
-int vect[]=
+unsigned int vect[]=
 {
 mask,mask&pinstate,feedback,output,
 };
