@@ -199,7 +199,7 @@ char* FUNCputstr(char* str)
 		perror("NULL!\n");
 		return NULL;
 	}
-	for(i=0; (ptr[i] = str[i]); i++){
+	for(i=0; ptr[i]; i++, (ptr[i] = str[i])){
 		if(ptr[i] == '\0')
 			break;
 	}
