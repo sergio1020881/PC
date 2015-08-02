@@ -45,6 +45,9 @@ struct func{
 	unsigned int (*hl)(unsigned int xi, unsigned int xf);
 	unsigned int (*diff)(unsigned int xi, unsigned int xf);
 	char* (*print_binary)(int number);
+	unsigned int (*decimal_binary)(unsigned int n);
+	unsigned int (*binary_decimal)(unsigned int n);
+
 	//char (*mm74c923_read)(char c);
 };
 typedef struct func FUNC;
