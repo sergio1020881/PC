@@ -283,7 +283,7 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 			switch(block[LFSM_page]){
 				case 1:
 					keyfound=(
-						block[LFSM_feedback]==input &&
+						//block[LFSM_feedback]==r->output &&
 						block[LFSM_inhl]==r->hl(r->input,input) && 
 						block[LFSM_inlh]==r->lh(r->input,input)
 						);//bool
