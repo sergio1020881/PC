@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
 	//func.strtotok(str,token," ");
 	free(str);
 	f.close(&f);
+	printf("putstringtest: %s\n", func.putstr("hello world"));
 /********************************************************/
 	printf("MAYIA\n");
 	number3=func.mayia(0,1,4);
@@ -81,10 +82,11 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"learn") || !strcmp(cmd,"l")){
 			printf("enter input\n");
 			cmd=func.fltos(stdin);
+			//number1=func.binary_decimal(func.getnum(cmd));
 			number1=func.getnum(cmd);
 			printf("enter output data\n");
 			cmd=func.fltos(stdin);
-			number2=func.getnum(cmd);
+			number2=func.binary_decimal(func.getnum(cmd));
 			printf("enter page\n");
 			cmd=func.fltos(stdin);
 			number3=func.getnum(cmd);
