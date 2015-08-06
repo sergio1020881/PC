@@ -26,6 +26,18 @@ COMMENT:
 /*
 ** variable
 */
+struct lfsmdata{
+unsigned int page;
+unsigned int feedback;
+unsigned int input;
+unsigned int inhl;
+unsigned int inlh;
+unsigned int output;
+unsigned int outhl;
+unsigned int outlh;
+};
+typedef struct lfsmdata LFSMDATA;
+/******/
 struct lfsm{
 	//Local Variables
 	unsigned int *mem;
