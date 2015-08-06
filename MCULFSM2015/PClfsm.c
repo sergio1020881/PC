@@ -52,14 +52,17 @@ COMMENT:
 /*
 ** constant and macro
 */
+#define EMPTY 0
+/******/
 #define LFSM_page 0
 #define LFSM_feedback 1
-#define LFSM_inhl 2
-#define LFSM_inlh 3
-#define LFSM_outhl 4
-#define LFSM_outlh 5
-#define BlockSize 6
-#define EMPTY 0
+#define LFSM_input 2
+#define LFSM_inhl 3
+#define LFSM_inlh 4
+#define LFSM_output 5
+#define LFSM_outhl 6
+#define LFSM_outlh 7
+#define BlockSize 8
 /*
 ** variable
 */
@@ -125,7 +128,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	unsigned int keyfound;
 	printf("LFSMread\n");
 	if(r->diff(r->input,input)){
-	//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
+		//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
 		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 			if(*(r->mem+i1)){
 				/******/
@@ -136,7 +139,14 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 				switch(block[LFSM_page]){
 					case 1:
 						keyfound=(
-							//block[LFSM_feedback]==r->output &&
+							block[LFSM_inhl]==r->hl(r->input,input) && 
+							block[LFSM_inlh]==r->lh(r->input,input)
+							);//bool
+						//it keeps track of previous input, not desired in logic
+						break;
+					case 2:
+						keyfound=(
+							block[LFSM_feedback]==r->output &&
 							block[LFSM_inhl]==r->hl(r->input,input) && 
 							block[LFSM_inlh]==r->lh(r->input,input)
 							);//bool
@@ -145,6 +155,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 					default:
 						keyfound=(
 							block[LFSM_feedback]==r->output &&
+							block[LFSM_input]==r->input &&
 							block[LFSM_inhl]==r->hl(r->input,input) && 
 							block[LFSM_inlh]==r->lh(r->input,input)
 							);//bool
@@ -199,10 +210,14 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 					/******/
 					printf("LFSMlearn_page %d\n",page);
 					keyfound=(
-					(block[LFSM_feedback]==r->output &&
+					(
+					block[LFSM_feedback]==r->output &&
 					block[LFSM_inhl]==r->hl(r->input,input) && 
-					block[LFSM_inlh]==r->lh(r->input,input)) ||
-					(block[LFSM_page]==1 &&
+					block[LFSM_inlh]==r->lh(r->input,input)
+					)
+						||
+					(
+					block[LFSM_page]==1 &&
 					block[LFSM_inhl]==r->hl(r->input,input) && 
 					block[LFSM_inlh]==r->lh(r->input,input))
 					);//bool
@@ -230,8 +245,10 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 				if(*(r->mem+i1)==EMPTY){
 					*(r->mem+i1)=page;
 					*(r->mem+i1+LFSM_feedback)=r->output;
+					*(r->mem+i1+LFSM_input)=r->input;
 					*(r->mem+i1+LFSM_inhl)=r->hl(r->input,input);
 					*(r->mem+i1+LFSM_inlh)=r->lh(r->input,input);
+					*(r->mem+i1+LFSM_output)=next;
 					*(r->mem+i1+LFSM_outhl)=r->hl(r->output,next);
 					*(r->mem+i1+LFSM_outlh)=r->lh(r->output,next);
 					status=3;//created
@@ -283,7 +300,13 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 			switch(block[LFSM_page]){
 				case 1:
 					keyfound=(
-						//block[LFSM_feedback]==r->output &&
+						block[LFSM_inhl]==r->hl(r->input,input) && 
+						block[LFSM_inlh]==r->lh(r->input,input)
+						);//bool
+					break;
+				case 2:
+					keyfound=(
+						block[LFSM_feedback]==r->output &&
 						block[LFSM_inhl]==r->hl(r->input,input) && 
 						block[LFSM_inlh]==r->lh(r->input,input)
 						);//bool
@@ -291,6 +314,7 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 				default:
 					keyfound=(
 						block[LFSM_feedback]==r->output &&
+						block[LFSM_input]==r->input &&
 						block[LFSM_inhl]==r->hl(r->input,input) && 
 						block[LFSM_inlh]==r->lh(r->input,input)
 						);//bool
@@ -391,4 +415,6 @@ unsigned int vect[]=
 {
 mask,mask&pinstate,feedback,output,
 };
+**************
+try to make more depth choice of database research or option selections.
 *************/
