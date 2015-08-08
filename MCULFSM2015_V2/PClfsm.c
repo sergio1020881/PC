@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2015/08/01 14:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2015/08/07 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -21,7 +21,8 @@ LICENSE:
 COMMENT:
 	working on it.
 	working pretty good, trial more.
-	page=1 is dedicated for logic, if page>1 is sequencial program.
+	page=1 is dedicated for global logic, page=2 local logic, if page>2 is sequencial program.
+	purpose is for machine programming, and encoders. General purpose algorithm.
 *************************************************************************/
 /*
 ** library
@@ -127,7 +128,6 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	unsigned int block[BlockSize];
 	unsigned int keyfound;
 	printf("LFSMread\n");
-	//if(r->diff(r->input,input)){
 		//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
 		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 			if(*(r->mem+i1)){
@@ -168,7 +168,6 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 				}else status=2;
 			}
 		}
-	//}else status=3;
 	switch (status){
 		case 0:
 			printf("LFSMread -> No operation\n");
@@ -200,7 +199,6 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 	unsigned int status=0;
 	printf("LFSMlearn\n");
 	if(page>0){
-		//if(r->diff(r->input,input)){
 			for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
 				if(*(r->mem+i1)){
 					/******/
@@ -239,7 +237,6 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 				}
 			status=2;//not existente
 			}
-		//}
 	}
 	switch (status){
 		case 0:
@@ -366,6 +363,7 @@ unsigned int LFSMdeleteall(struct lfsm *r)
 			}
 		}
 	}
+	r->output=0;
 	printf("LFSMdeleteall deleted\n");
 	return status;
 }
