@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCFICHEIRO
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PCficheiro.c, v 0.1 2015/02/06 14:00:00 sergio Exp $
+File:     $Id: PCficheiro.c, v 0.1 2015/08/09 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -79,8 +79,12 @@ FICHEIRO FICHEIROenable(char *filename)
 	f.close=FICHEIROclose;
 	//procedures
 	f.fp=fopen(f.filename,f.permision);
-	if(f.fp==NULL){
-		perror("ficheiro at fopen");
+	if(f.fp!=NULL){
+		printf("Opening file %s\n",f.filename);
+	}else{
+		perror("Ficheiro at fopen\n");
+		printf("Creating file %s\n",f.filename);
+		f.fp=fopen(f.filename,"a+");
 	}
 	//return result
 	return f;
