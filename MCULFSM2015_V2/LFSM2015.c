@@ -1,10 +1,10 @@
 /*
 * Research
-* LFSM2015.c
+* PCLFSM2015.c
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
-* data: 07-08-2015 14:00
-* 
+* data: 09-08-2015 14:00
+* working on it.
 */
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
@@ -56,9 +56,8 @@ int main(int argc, char *argv[])
 	LFSM r = LFSMenable(eeprom1, 256);
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
-	//f.colocarchar(&f,'A');
-	//f.colocarchar(&f,'\0');
-	//f.colocarstring(&f,"qualquer coisa");
+	f.colocarchar(&f,'A');
+	f.colocarstring(&f,"qualquer coisa");
 	str=func.fltos(f.open(&f));
 	printf("%s\n\n",str);
 	//func.strtotok(str,token," ");
