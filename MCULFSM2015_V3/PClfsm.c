@@ -49,7 +49,6 @@ COMMENT:
 //#include <math.h>
 /***/
 #include"PClfsm.h"
-#include"PCfunction.h"
 /*
 ** constant and macro
 */
