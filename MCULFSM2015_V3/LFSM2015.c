@@ -41,6 +41,9 @@
 /*****GLOBAL VARIABLES*****/
 LFSMDATA MEM[128];
 /*****Procedure and Function*****/
+void* this(void* address){
+	return address;
+}
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 int main(int argc, char *argv[])
@@ -56,13 +59,13 @@ int main(int argc, char *argv[])
 	LFSM r = LFSMenable(MEM, 128);
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
-	f.colocarchar(&f,'A');
-	f.colocarstring(&f,"qualquer coisa");
-	str=func.fltos(f.open(&f));
+	f.colocarchar(this(&f),'A');
+	f.colocarstring(this(&f),"qualquer coisa");
+	str=func.fltos(f.open(this(&f)));
 	printf("%s\n\n",str);
 	//func.strtotok(str,token," ");
 	free(str);
-	f.close(&f);
+	f.close(this(&f));
 	printf("putstringtest: %s\n", func.putstr("hello world"));
 	printf("lfsmdata size: %d\n",sizeof(LFSMDATA));
 /********************************************************/
@@ -91,22 +94,22 @@ int main(int argc, char *argv[])
 			printf("enter page\n");
 			cmd=func.fltos(stdin);
 			number3=func.getnum(cmd);
-			r.learn(&r,number1,number2,number3);
+			r.learn(this(&r),number1,number2,number3);
 		}
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"h")){
-			printf("there are %d programmed.\n",r.quant(&r));
+			printf("there are %d programmed.\n",r.quant(this(&r)));
 		}
 		if(!strcmp(cmd,"delete all") || !strcmp(cmd,"d")){
-			r.deleteall(&r);
+			r.deleteall(this(&r));
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"r")){
 			printf("enter input to remove\n");
 			cmd=func.fltos(stdin);
 			number1=func.getnum(cmd);
 			//l.remove(&l,number1);
-			r.remove(&r,number1);
+			r.remove(this(&r),number1);
 		}
-		printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(&r,number1)));
+		printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(this(&r),number1)));
 	}
 	/******/
 	end:
