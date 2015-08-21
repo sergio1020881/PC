@@ -3,24 +3,26 @@
 #                       MAKEFILE                          #
 #                                                         #
 ###########################################################
+INCLUDE_DIRS =
+LIB-DIRS =
 CC = gcc
 CXX = gcc
-#project name
-TARGET = LFSM.exe
+CDEFS =
 CFLAGS = -c -Wall
 SFLAGS = -S -Wall
-LIBS = -lm
+LIBS = -lm -lpthread -lrt
 MODEL = s
 
-HEADERS = $(wildcard *.h)
-
-OBJECTS = $(patsubst %.c, %.o,$(wildcard *.c))
+TARGET = LFSM.exe
+HFILES = $(wildcard *.h)
+OBJS = $(patsubst %.c, %.o,$(wildcard *.c))
 
 %.o: %.c
 	$(CXX) $(CFLAGS) $< -o $@
 
-$(TARGET): $(OBJECTS)
-	$(CXX) $(OBJECTS) -Wall $(LIBS) -o $@
+.PHONY: clean run all
+
+all: ${TARGET}
 
 clean:
 	-rm -f *.o
@@ -29,3 +31,8 @@ clean:
 
 run : $(TARGET)
 	./$(TARGET)
+
+
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -Wall $(LIBS) -o $@
+
