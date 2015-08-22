@@ -5,7 +5,6 @@
 ###########################################################
 INCLUDE_DIRS =
 LIB-DIRS =
-CC = gcc
 CXX = gcc
 CDEFS =
 CFLAGS = -c -Wall
@@ -17,7 +16,7 @@ TARGET = LFSM.exe
 HFILES = $(wildcard *.h)
 OBJS = $(patsubst %.c, %.o,$(wildcard *.c))
 
-%.o: %.c
+%.o: %.c $(HFILES)
 	$(CXX) $(CFLAGS) $< -o $@
 
 .PHONY: clean run all
@@ -29,10 +28,10 @@ clean:
 	-rm -f *.s
 	-rm -f $(TARGET)
 
-run : $(TARGET)
+run: $(TARGET)
 	./$(TARGET)
 
 
-$(TARGET): $(OBJS)
+$(TARGET): $(HFILES) $(OBJS)
 	$(CXX) $(OBJS) -Wall $(LIBS) -o $@
 
