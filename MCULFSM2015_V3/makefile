@@ -11,6 +11,7 @@ CDEFS =
 CFLAGS = -c -Wall
 SFLAGS = -S -Wall
 LIBS = -lm -lpthread -lrt
+LDLIBS = -lefence -pthread
 MODEL = s
 
 TARGET = LFSM.exe
@@ -30,9 +31,8 @@ clean:
 	-rm -f $(TARGET)
 
 run: $(TARGET)
+	chmod 555 $(TARGET)
 	./$(TARGET)
-
 
 $(TARGET): $(HFILES) $(OBJS)
 	$(CXX) $(OBJS) -Wall $(LIBS) -o $@
-
