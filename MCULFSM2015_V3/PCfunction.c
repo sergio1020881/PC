@@ -340,33 +340,6 @@ unsigned int FUNCbinary_decimal(unsigned int n) /* Function to convert binary to
     return decimal;
 }
 /*
-char FUNCMM74C923_read(char c)
-{
-	char index,lh;
-	//c=*mm74c923_PIN;
-	index=0;
-	FUNC func=FUNCenable();
-	lh=func.lh(FUNCmm74c923_mem,c); // one shot low to high masked bits
-	FUNCmm74c923_mem=c;
-	if(lh&(1<<FUNCMM74C923_DATA_AVAILABLE)){
-		//*mm74c923_DDR=(1<<FUNCMM74C923_OUTPUT_ENABLE);
-		//*mm74c923_PORT&=~(1<<FUNCMM74C923_OUTPUT_ENABLE);
-		//c=*mm74c923_PIN;
-		if(c&1<<FUNCMM74C923_DATA_OUT_A) index|=1; else index&=~1;
-		if(c&1<<FUNCMM74C923_DATA_OUT_B) index|=2; else index&=~2;
-		if(c&1<<FUNCMM74C923_DATA_OUT_C) index|=4; else index&=~4;
-		if(c&1<<FUNCMM74C923_DATA_OUT_D) index|=8; else index&=~8;
-		if(c&1<<FUNCMM74C923_DATA_OUT_E) index|=16; else index&=~16;
-		if(c&1<<FUNCMM74C923_EXTRA_DATA_OUT_PIN) index|=32; else index&=~32;
-		//*mm74c923_DDR&=~(1<<FUNCMM74C923_OUTPUT_ENABLE);
-		//*mm74c923_PORT|=0xFF;
-	}else{
-		index=40;
-	}
-	return FUNCMM74C923_KEY_CODE[index];
-}
-*/
-/*
 ** interrupt
 */
 /***EOF***/

@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	LFSM r = LFSMenable(MEM, 128);
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
-	f.rewind(this(&f));
+	//f.rewind(this(&f));
 	f.colocarchar(this(&f),'A');
 	f.colocarstring(this(&f),"qualquer coisa");
 	str=func.fltos(f.open(this(&f)));
