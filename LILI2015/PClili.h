@@ -27,8 +27,8 @@ COMMENT:
 ** variable
 */
 struct lilidata{
-unsigned int* next;
-unsigned int* back;
+struct lilidata* next;
+struct lilidata* back;
 void* data;
 };
 typedef struct lilidata LILIDATA;
@@ -36,16 +36,15 @@ typedef struct lilidata LILIDATA;
 struct lili{
 	//Local Variables
 	LILIDATA* data;
-	unsigned int* first;
-	unsigned int* last;
+	struct lilidata* target;
 	unsigned int quant;
 	//Function Pointers
-	unsigned int (*play)(struct lfsm *r, unsigned int input);
-	unsigned int (*forward)(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page);
-	unsigned int (*reverse)(struct lfsm *r);
-	unsigned int (*record)(struct lfsm *r);
-	unsigned int (*remove)(struct lfsm *r);
-	unsigned int (*quant)(struct lfsm *r, unsigned int input);
+	void* (*play)(struct lfsm *l);
+	unsigned int (*forward)(struct lfsm *l);
+	unsigned int (*reverse)(struct lfsm *l);
+	unsigned int (*record)(struct lfsm *l);
+	unsigned int (*remove)(struct lfsm *l);
+	unsigned int (*quant)(struct lfsm *l);
 };
 typedef struct lili LILI;
 /*

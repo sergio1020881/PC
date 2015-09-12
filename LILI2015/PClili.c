@@ -56,22 +56,23 @@ COMMENT:
 /*
 ** procedure and function header
 */
-unsigned int LILIplay(struct lili *l, unsigned int input);
-unsigned int LILIforward(struct lili *l, unsigned int input, unsigned int next, unsigned int page);
+void* LILIplay(struct lili *l);
+unsigned int LILIforward(struct lili *l);
 unsigned int LILIreverse(struct lili *l);
-unsigned int LILIrecord(struct lili *l, unsigned int input);
+unsigned int LILIrecord(struct lili *l);
 unsigned int LILIremove(struct lili *l);
 unsigned int LILIquant(struct lili *l);
 /*
 ** Object Inicialize
 */
-LILI LILIenable()
+LILI LILIenable(void)
 {
 	/***Local Variable***/
 	/***Local Function Header***/
 	/***Create Object***/
 	LILI l;
 	//Inicialize variables
+	l.target=NULL;
 	//Function Vtable
 	l.play=LILIplay;
 	l.forward=LILIforward;
@@ -86,12 +87,12 @@ LILI LILIenable()
 ** procedure and function
 */
 /***lead***/
-unsigned int LILIplay(struct lili *l, unsigned int input)
+void* LILIplay(struct lili *l)
 {
-		return 0;
+	return l->data;
 }
 /***learn***/ 
-unsigned int LILIforward(struct lili *l, unsigned int input, unsigned int next, unsigned int page)
+unsigned int LILIforward(struct lili *l)
 {
 	return 0;
 }
@@ -101,7 +102,7 @@ unsigned int LILIreverse(struct lili *l)
 	return 0;
 }
 /***lemove***/
-unsigned int LILIrecord(struct lili *l, unsigned int input)
+unsigned int LILIrecord(struct lili *l)
 {
 	return 0;
 }

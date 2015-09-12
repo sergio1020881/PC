@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
 {
 	char *cmd;
 	char *info;
+	LILI l=LILI LILIenable();
 	/*******************************************************************************************/
 	// Cycle
 	while(TRUE){
@@ -50,12 +51,9 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"play") || !strcmp(cmd,"p")){
 			printf("enter input\n");
 			info=func.fltos(stdin);
-			
-
 		}
 		if(!strcmp(cmd,"forward") || !strcmp(cmd,"f")){
 			printf("there are %d programmed.\n",r.quant(this(&r)));
-
 		}
 		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"rev")){
 			r.deleteall(this(&r));

@@ -36,3 +36,4 @@ run: $(TARGET)
 
 $(TARGET): $(HFILES) $(OBJS)
 	$(CXX) $(OBJS) -Wall $(LIBS) -o $@
+
