@@ -9,6 +9,9 @@
 /*
 *** Library
 */
+/*
+*** Library
+*/
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
 // calloc free realloc malloc
@@ -58,6 +61,10 @@ int main(int argc, char *argv[])
 *** Local variables
 */
 	char *cmd=NULL;
+<<<<<<< HEAD
+=======
+	char *data=NULL;
+>>>>>>> origin/master
 	LILI l=LILIenable();
 	FUNC func=FUNCenable();
 /*
@@ -72,10 +79,17 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"play") || !strcmp(cmd,"p")){
 			printf("data:\n%s\n", l.play(&l));
 		}
+<<<<<<< HEAD
 		if(!strcmp(cmd,"forward") || !strcmp(cmd,"f")){
 			l.forward(&l);
 		}
 		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"r")){
+=======
+		if(!strcmp(cmd,"forward") || !strcmp(cmd,"for")){
+			l.forward(&l);
+		}
+		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"rev")){
+>>>>>>> origin/master
 			l.reverse(&l);
 
 		}
@@ -83,6 +97,7 @@ int main(int argc, char *argv[])
 			printf("enter input to record\n");			
 			cmd=func.fltos(stdin);
 			l.record(&l, cmd);
+<<<<<<< HEAD
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"rm")){
 			l.remove(&l);
@@ -92,6 +107,10 @@ int main(int argc, char *argv[])
 		}
 		if(!strcmp(cmd,"status") || !strcmp(cmd,"s")){
 			l.status(&l);
+=======
+		}
+		if(!strcmp(cmd,"remove") || !strcmp(cmd,"rem")){
+>>>>>>> origin/master
 		}
 	}
 /*
