@@ -72,9 +72,7 @@ LILI LILIenable(void)
 	/***Create Object***/
 	LILI l;
 	//Inicialize variables
-	l.target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
-	l.target->next=l.target->back=l.target;
-	l.data=l.target->data=NULL;
+	l.target=NULL;
 	//Function Vtable
 	l.play=LILIplay;
 	l.forward=LILIforward;
@@ -110,16 +108,23 @@ unsigned int LILIreverse(struct lili *l)
 /***lemove***/
 unsigned int LILIrecord(struct lili *l, char* data)
 {
-	if(l->target->data==NULL){
+	if(l->target==NULL){
+		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+		l->target->next=l->target->back=l->target;
 		l->data=l->target->data=data;
 	}	
 	else{
-		l->target->next=(LILIDATA*)calloc(1,sizeof(LILIDATA));
-		l->target->next->next=l->target->next;
-		l->target->next->back=l->target;
-		l->target->next->data=data;
-		l->target=l->target->next;
-		l->data=l->target->data;
+		if(l->target->next==l->target){
+			l->target->next=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+			l->target->next->next=l->target->next;
+			l->target->next->back=l->target;
+			l->target->next->data=data;
+			/****/			
+			l->target=l->target->next;
+			l->data=l->target->data;	
+		}else{
+			printf("Record only permitted at end of list, append only\n");
+		}
 	}
 	return 0;
 }
