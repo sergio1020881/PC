@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
 	while(TRUE){
 		printf("->->	write string:\n");
 		cmd=func.fltos(stdin);
+		//func.fltosv(stdin, cmd); // does not work why ??
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			goto end;
 		}		
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"record") || !strcmp(cmd,"rec")){
 			printf("enter input to record\n");			
 			cmd=func.fltos(stdin);
+			//func.fltosv(stdin, cmd); // does not work why ??
 			l.record(&l, cmd);
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"rm")){

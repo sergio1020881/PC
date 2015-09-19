@@ -73,6 +73,7 @@ char FUNCMM74C923_KEY_CODE[]={
 int StringLength (const char string[]);
 void Reverse(char s[]);
 char* FUNCfltos(FILE* stream);
+void FUNCfltosv(FILE* stream, char *value);
 char* FUNCftos(FILE* stream);
 int FUNCstrtotok(char* line,char* token[],const char* parser);
 char* FUNCputstr(char* str);
@@ -100,6 +101,7 @@ FUNC FUNCenable( void )
 	func.stringlength=StringLength;
 	func.reverse=Reverse;
 	func.fltos=FUNCfltos;
+	func.fltosv=FUNCfltosv;
 	func.ftos=FUNCftos;
 	func.strtotok=FUNCstrtotok;
 	func.putstr=FUNCputstr;
@@ -139,13 +141,35 @@ void Reverse(char s[])
 		s[j] = c;
 	}
 }
+// FUNCfltosv
+void FUNCfltosv(FILE* stream, char *value)
+{// it just does not work, it dos not accept calloc by passing pointer reference. Why ????
+	int i, block, NBytes;
+	//char *value=NULL;
+	char caracter;
+	for(i=0, block=8, NBytes=0; (caracter=getc(stream)) != EOF; i++){
+		if(i==NBytes){
+			NBytes+=block;
+			value=(char*)realloc(value, NBytes*sizeof(char));
+			if(value==NULL){
+				perror("fltos at calloc");
+				break;
+			}
+		}
+		*(value+i)=caracter;
+		if(caracter=='\n'){
+			*(value+i)='\0';
+			break;
+		}
+	}
+}
 // FUNCfltos
 char* FUNCfltos(FILE* stream)
 {
 	int i, block, NBytes;
 	char caracter;
 	char* value=NULL;
-	for(i=0, block=4, NBytes=0; (caracter=getc(stream)) != EOF; i++){
+	for(i=0, block=8, NBytes=0; (caracter=getc(stream)) != EOF; i++){
 		if(i==NBytes){
 			NBytes+=block;
 			value=(char*)realloc(value, NBytes*sizeof(char));

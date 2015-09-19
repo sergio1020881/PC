@@ -2,7 +2,16 @@
 <settings version="1.0">
 	<category name="PClili.c" />
 	<category name="PClili.h" />
-	<category name="PCfunction.h" />
+	<category name="PCfunction.h">
+		<category name="Window">
+			<property name="Left" type="integer">104</property>
+			<property name="Top" type="integer">104</property>
+			<property name="Right" type="integer">884</property>
+			<property name="Bottom" type="integer">456</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
+		</category>
+	</category>
 	<category name="LILI2015.c">
 		<category name="Window">
 			<property name="Left" type="integer">-8</property>
@@ -11,6 +20,16 @@
 			<property name="Bottom" type="integer">478</property>
 			<property name="Maximized" type="integer">1</property>
 			<property name="Active" type="integer">1</property>
+		</category>
+	</category>
+	<category name="PCfunction.c">
+		<category name="Window">
+			<property name="Left" type="integer">78</property>
+			<property name="Top" type="integer">78</property>
+			<property name="Right" type="integer">1102</property>
+			<property name="Bottom" type="integer">430</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
 		</category>
 	</category>
 </settings>
