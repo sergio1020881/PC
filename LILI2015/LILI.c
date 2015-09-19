@@ -40,39 +40,36 @@
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 int main(int argc, char *argv[])
 {
-	char *cmd;
+	char *cmd=NULL;
+	char *data=NULL;
 	LILI l=LILIenable();
 	FUNC func=FUNCenable();
 	/*******************************************************************************************/
 	// Cycle
 	while(TRUE){
-		printf("write string\n");
+		printf("->->	write string:\n");
 		cmd=func.fltos(stdin);
-		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q"))
-			free(cmd);
+		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			goto end;
+		}		
 		if(!strcmp(cmd,"play") || !strcmp(cmd,"p")){
-			printf("play\n");
-			//info=func.fltos(stdin);
-			printf("data= %s", l.target->data);
-			free(cmd);
+			printf("data= %s\n", l.play(&l));
 		}
 		if(!strcmp(cmd,"forward") || !strcmp(cmd,"f")){
-			//printf("there are %d programmed.\n",l.quant(this(&l)));
-			free(cmd);
+			l.forward(&l);
 		}
 		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"rev")){
-			//r.deleteall(this(&r));
-			free(cmd);
+			l.reverse(&l);
 
 		}
 		if(!strcmp(cmd,"record") || !strcmp(cmd,"rec")){
-			printf("enter input to record\n");
+			printf("enter input to record\n");			
+			cmd=func.fltos(stdin);
+			l.record(&l, cmd);
 			//cmd=func.fltos(stdin);
 			//number1=func.getnum(cmd);
 			//l.remove(&l,number1);
 			//r.remove(this(&r),number1);
-			free(cmd);
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"rem")){
 			//printf("enter input to remove\n");
@@ -80,10 +77,8 @@ int main(int argc, char *argv[])
 			//number1=func.getnum(cmd);
 			//l.remove(&l,number1);
 			//r.remove(this(&r),number1);
-			free(cmd);
 		}
 		//printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(this(&r),number1)));
-		//free(cmd);	
 	}
 	/******/
 	end:
