@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 			goto end;
 		}		
 		if(!strcmp(cmd,"play") || !strcmp(cmd,"p")){
-			printf("data= %s\n", l.play(&l));
+			printf("data:\n%s\n", l.play(&l));
 		}
 		if(!strcmp(cmd,"forward") || !strcmp(cmd,"for")){
 			l.forward(&l);
