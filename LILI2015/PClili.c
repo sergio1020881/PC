@@ -56,10 +56,10 @@ COMMENT:
 /*
 ** procedure and function header
 */
-void* LILIplay(struct lili *l);
+char* LILIplay(struct lili *l);
 unsigned int LILIforward(struct lili *l);
 unsigned int LILIreverse(struct lili *l);
-unsigned int LILIrecord(struct lili *l);
+unsigned int LILIrecord(struct lili *l, char* data);
 unsigned int LILIremove(struct lili *l);
 unsigned int LILIquant(struct lili *l);
 /*
@@ -74,7 +74,7 @@ LILI LILIenable(void)
 	//Inicialize variables
 	l.target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
 	l.target->next=l.target->back=l.target;
-	l.target->data=NULL;
+	l.data=l.target->data=NULL;
 	//Function Vtable
 	l.play=LILIplay;
 	l.forward=LILIforward;
@@ -89,23 +89,38 @@ LILI LILIenable(void)
 ** procedure and function
 */
 /***lead***/
-void* LILIplay(struct lili *l)
+char* LILIplay(struct lili *l)
 {
-	return l->target->data;
+	return l->data;
 }
 /***learn***/ 
 unsigned int LILIforward(struct lili *l)
 {
+	l->target=l->target->next;
+	l->data=l->target->data;
 	return 0;
 }
 /***quant***/
 unsigned int LILIreverse(struct lili *l)
 {
+	l->target=l->target->back;
+	l->data=l->target->data;
 	return 0;
 }
 /***lemove***/
-unsigned int LILIrecord(struct lili *l)
+unsigned int LILIrecord(struct lili *l, char* data)
 {
+	if(l->target->data==NULL){
+		l->data=l->target->data=data;
+	}	
+	else{
+		l->target->next=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+		l->target->next->next=l->target->next;
+		l->target->next->back=l->target;
+		l->target->next->data=data;
+		l->target=l->target->next;
+		l->data=l->target->data;
+	}
 	return 0;
 }
 /***deleteall***/
