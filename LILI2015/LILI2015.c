@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
 		}
 		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"r")){
 			l.reverse(&l);
-
 		}
 		if(!strcmp(cmd,"record") || !strcmp(cmd,"rec")){
 			printf("enter input to record\n");			

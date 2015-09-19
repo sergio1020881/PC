@@ -96,12 +96,7 @@ char* LILIplay(struct lili *l)
 {
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
-<<<<<<< HEAD
-	else
-		return l->data;
-=======
 	return l->data;
->>>>>>> origin/master
 }
 /***learn***/ 
 unsigned int LILIforward(struct lili *l)
@@ -152,11 +147,7 @@ unsigned int LILIrecord(struct lili *l, char* data)
 /***deleteall***/
 unsigned int LILIremove(struct lili *l)
 {
-<<<<<<< HEAD
-	struct lili *ptr;
-=======
 	LILIDATA *ptr;
->>>>>>> origin/master
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
 	else{
