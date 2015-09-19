@@ -148,7 +148,7 @@ unsigned int LILIrecord(struct lili *l, char* data)
 /***deleteall***/
 unsigned int LILIremove(struct lili *l)
 {
-	struct lili *ptr;
+	LILIDATA *ptr;
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
 	else{
