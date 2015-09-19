@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings version="1.0" />
+<settings version="1.0">
+	<category name="PClili.c" />
+	<category name="PClili.h" />
+	<category name="PCfunction.h" />
+	<category name="LILI2015.c">
+		<category name="Window">
+			<property name="Left" type="integer">-8</property>
+			<property name="Top" type="integer">-31</property>
+			<property name="Right" type="integer">1048</property>
+			<property name="Bottom" type="integer">478</property>
+			<property name="Maximized" type="integer">1</property>
+			<property name="Active" type="integer">1</property>
+		</category>
+	</category>
+</settings>

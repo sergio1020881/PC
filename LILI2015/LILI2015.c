@@ -74,9 +74,11 @@ int main(int argc, char *argv[])
 		}
 		if(!strcmp(cmd,"forward") || !strcmp(cmd,"f")){
 			l.forward(&l);
+			printf("data:\n%s\n", l.play(&l));
 		}
 		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"r")){
 			l.reverse(&l);
+			printf("data:\n%s\n", l.play(&l));
 		}
 		if(!strcmp(cmd,"record") || !strcmp(cmd,"rec")){
 			printf("enter input to record\n");			
@@ -85,6 +87,7 @@ int main(int argc, char *argv[])
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"rm")){
 			l.remove(&l);
+			printf("data:\n%s\n", l.play(&l));
 		}
 		if(!strcmp(cmd,"quant") || !strcmp(cmd,"qt")){
 			printf("N:\n%ld\n",l.quant(&l));
