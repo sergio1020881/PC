@@ -73,6 +73,7 @@ LILI LILIenable(void)
 	LILI l;
 	//Inicialize variables
 	l.target=NULL;
+	l.data=NULL;
 	//Function Vtable
 	l.play=LILIplay;
 	l.forward=LILIforward;
