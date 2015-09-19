@@ -96,8 +96,7 @@ char* LILIplay(struct lili *l)
 {
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
-	else
-		return l->data;
+	return l->data;
 }
 /***learn***/ 
 unsigned int LILIforward(struct lili *l)
