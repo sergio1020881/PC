@@ -45,6 +45,7 @@ struct lili{
 	unsigned int (*record)(struct lili *l, char* data);
 	unsigned int (*remove)(struct lili *l);
 	unsigned int (*quant)(struct lili *l);
+	unsigned int (*status)(struct lili *l);
 };
 typedef struct lili LILI;
 /*
