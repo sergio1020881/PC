@@ -1,10 +1,13 @@
-/*
+/*:
 * Research
 * LILI2015.c
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 12-08-2015 14:00
 * just beginning
+*/
+/*
+*** Library
 */
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
@@ -26,26 +29,41 @@
 #include <fcntl.h>
 //#include <stdio_ext.h>
 #include <math.h>
-// personal library
+/*
+** Personal library
+*/
 #include"PClili.h"
 #include"PCfunction.h"
-/***Definition and Macros***/
+/*
+*** Definition and Macros
+*/
 #define TRUE 1
-/*****GLOBAL VARIABLES*****/
-/*****Procedure and Function*****/
+/*
+*** GLOBAL VARIABLES
+*/
+/***
+*** Procedure and Function
+*/
 //void* this(void* address){
 //	return address;
 //}
+/*
+*** Main Algorithm
+*/
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 int main(int argc, char *argv[])
 {
+/*
+*** Local variables
+*/
 	char *cmd=NULL;
 	char *data=NULL;
 	LILI l=LILIenable();
 	FUNC func=FUNCenable();
-	/*******************************************************************************************/
-	// Cycle
+/*
+*** CYCLE ROUTINES
+*/
 	while(TRUE){
 		printf("->->	write string:\n");
 		cmd=func.fltos(stdin);
@@ -55,7 +73,7 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"play") || !strcmp(cmd,"p")){
 			printf("data= %s\n", l.play(&l));
 		}
-		if(!strcmp(cmd,"forward") || !strcmp(cmd,"f")){
+		if(!strcmp(cmd,"forward") || !strcmp(cmd,"for")){
 			l.forward(&l);
 		}
 		if(!strcmp(cmd,"reverse") || !strcmp(cmd,"rev")){
@@ -66,23 +84,21 @@ int main(int argc, char *argv[])
 			printf("enter input to record\n");			
 			cmd=func.fltos(stdin);
 			l.record(&l, cmd);
-			//cmd=func.fltos(stdin);
-			//number1=func.getnum(cmd);
-			//l.remove(&l,number1);
-			//r.remove(this(&r),number1);
 		}
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"rem")){
-			//printf("enter input to remove\n");
-			//cmd=func.fltos(stdin);
-			//number1=func.getnum(cmd);
-			//l.remove(&l,number1);
-			//r.remove(this(&r),number1);
 		}
-		//printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(this(&r),number1)));
 	}
-	/******/
+/*
+*** EXIT
+*/
 	end:
 		//system("PAUSE");
 		return 0;
 }
+/*
+*** Function and procedure
+*/
+/*
+*** Interrupt requestes
+*/
 /***EOF***/
