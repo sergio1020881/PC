@@ -47,6 +47,7 @@ struct lili{
 	unsigned int (*reverse)(struct lili *l);
 	unsigned int (*record)(struct lili *l, char* data);
 	unsigned int (*remove)(struct lili *l);
+	void (*free)(struct lili *l);
 	unsigned int (*quant)(struct lili *l);
 	unsigned int (*status)(struct lili *l);
 };

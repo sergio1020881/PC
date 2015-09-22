@@ -44,9 +44,7 @@
 /***
 *** Procedure and Function
 */
-//void* this(void* address){
-//	return address;
-//}
+void* this(void* address);
 /*
 *** Main Algorithm
 */
@@ -55,9 +53,13 @@
 int main(int argc, char *argv[])
 {
 /*
+** Capture parameters
+*/
+	printf("Running program - %s with - %d parameter\n",argv[0], argc);
+/*
 *** Local variables
 */
-	char *cmd=NULL;
+	char* cmd=NULL;
 	LILI l=LILIenable();
 	FUNC func=FUNCenable();
 /*
@@ -91,8 +93,11 @@ int main(int argc, char *argv[])
 			l.remove(&l);
 			printf("data:\n%s\n", l.play(&l));
 		}
+		if(!strcmp(cmd,"free")){
+			l.free(&l);
+		}
 		if(!strcmp(cmd,"quant") || !strcmp(cmd,"qt")){
-			printf("N:\n%ld\n",l.quant(&l));
+			printf("N:\n%u\n",l.quant(&l));
 		}
 		if(!strcmp(cmd,"status") || !strcmp(cmd,"s")){
 			l.status(&l);
@@ -102,12 +107,16 @@ int main(int argc, char *argv[])
 *** EXIT
 */
 	end:
+		l.free(&l);
 		//system("PAUSE");
 		return 0;
 }
 /*
 *** Function and procedure
 */
+void* this(void* address){
+	return address;
+}
 /*
 *** Interrupt requestes
 */

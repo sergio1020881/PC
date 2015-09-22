@@ -62,6 +62,7 @@ unsigned int LILIforward(struct lili *l);
 unsigned int LILIreverse(struct lili *l);
 unsigned int LILIrecord(struct lili *l, char* data);
 unsigned int LILIremove(struct lili *l);
+void LILIfree(struct lili *l);
 unsigned int LILIquant(struct lili *l);
 unsigned int LILIstatus(struct lili *l);
 /*
@@ -83,6 +84,7 @@ LILI LILIenable(void)
 	l.reverse=LILIreverse;
 	l.record=LILIrecord;
 	l.remove=LILIremove;
+	l.free=LILIfree;
 	l.quant=LILIquant;
 	l.status=LILIstatus;
 	/******/
@@ -91,14 +93,14 @@ LILI LILIenable(void)
 /*
 ** procedure and function
 */
-/***lead***/
+/***play***/
 char* LILIplay(struct lili *l)
 {
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
 	return l->data;
 }
-/***learn***/ 
+/***forward***/ 
 unsigned int LILIforward(struct lili *l)
 {
 	if(l->target==NULL)
@@ -109,7 +111,7 @@ unsigned int LILIforward(struct lili *l)
 	}
 	return 0;
 }
-/***quant***/
+/***reverse***/
 unsigned int LILIreverse(struct lili *l)
 {
 	if(l->target==NULL)
@@ -120,7 +122,7 @@ unsigned int LILIreverse(struct lili *l)
 	}
 	return 0;
 }
-/***lemove***/
+/***record***/
 unsigned int LILIrecord(struct lili *l, char* data)
 {
 	if(l->target==NULL){//INICIALIZE LIST
@@ -144,7 +146,7 @@ unsigned int LILIrecord(struct lili *l, char* data)
 	}
 	return 0;
 }
-/***deleteall***/
+/***remove***/
 unsigned int LILIremove(struct lili *l)
 {
 	LILIDATA *ptr;
@@ -152,13 +154,13 @@ unsigned int LILIremove(struct lili *l)
 		printf("Linked List EMPTY\n");
 	else{
 		if(l->target->next==l->target->back){
-			printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
+			//printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
 			free(l->target);
 			l->target=NULL;
 			l->data=NULL;
 			l->total--;
 		}else if(l->target->back==l->target){
-			printf("troubleshoot: if((l->target->back==l->target) «FIRST IN LIST»\n");//FIRST IN LIST
+			//printf("troubleshoot: if((l->target->back==l->target) «FIRST IN LIST»\n");//FIRST IN LIST
 			ptr=l->target;
 			l->target->next->back=l->target->next;			
 			/****/
@@ -167,7 +169,7 @@ unsigned int LILIremove(struct lili *l)
 			l->total--;
 			free(ptr);
 		}else if(l->target->next==l->target){
-			printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
+			//printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
 			ptr=l->target;			
 			l->target->back->next=l->target->back;
 			/****/
@@ -176,7 +178,7 @@ unsigned int LILIremove(struct lili *l)
 			l->total--;
 			free(ptr);
 		}else{
-			printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
+			//printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
 			ptr=l->target;
 			l->target->next->back=l->target->back;
 			l->target->back->next=l->target->next;
@@ -193,10 +195,18 @@ unsigned int LILIremove(struct lili *l)
 	}
 	return 0;
 }
+/***free***/
+void LILIfree(struct lili *l)
+{
+	while(l->target)
+		LILIremove(l);
+}
+/***quant***/
 unsigned int LILIquant(struct lili *l)
 {
 	return l->total;
 }
+/***status***/
 unsigned int LILIstatus(struct lili *l)
 {
 	if(l->target==NULL)
@@ -208,7 +218,6 @@ unsigned int LILIstatus(struct lili *l)
 	}
 	return 0;
 }
-
 /*
 ** interrupt
 */
