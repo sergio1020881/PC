@@ -88,7 +88,12 @@ FICHEIRO FICHEIROenable(char *filename)
 		printf("Creating file %s\n",f.filename);
 		f.fp=fopen(f.filename,"a+");
 	}
-	f.fd=fileno(f.fp);
+	#ifdef linux
+		f.fd=fileno(f.fp);
+	#elif _WIN32
+		f.fd=_fileno(f.fp);
+	#else
+	#endif
 	if(f.fd<0){
 		perror("Ficheiro filedescriptor not existent\n");
 		//sprintf(f.errcode,"None errno: %d\n", errno);

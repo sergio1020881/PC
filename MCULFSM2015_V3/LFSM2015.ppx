@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings version="1.0">
-	<category name="PClili.c" />
-	<category name="PClili.h" />
-	<category name="PCfunction.h" />
-	<category name="LILI2015.c">
+	<category name="PCficheiro.c">
 		<category name="Window">
 			<property name="Left" type="integer">-8</property>
 			<property name="Top" type="integer">-31</property>
@@ -13,5 +10,14 @@
 			<property name="Active" type="integer">1</property>
 		</category>
 	</category>
-	<category name="PCfunction.c" />
+	<category name="LFSM2015.c">
+		<category name="Window">
+			<property name="Left" type="integer">26</property>
+			<property name="Top" type="integer">26</property>
+			<property name="Right" type="integer">1050</property>
+			<property name="Bottom" type="integer">378</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
+		</category>
+	</category>
 </settings>

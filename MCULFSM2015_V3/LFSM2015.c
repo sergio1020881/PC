@@ -38,6 +38,10 @@
 #define high 1
 #define LOW 0
 #define low 0
+//#ifdef linux
+//#elif _WIN32
+//#else
+//#endif
 /*****GLOBAL VARIABLES*****/
 LFSMDATA MEM[128];
 /*****Procedure and Function*****/
@@ -48,6 +52,13 @@ void* this(void* address){
 // Main Main Main Main Main Main Main Main Main Main Main Main Main Main
 int main(int argc, char *argv[])
 {
+	/*
+	*** Capture arguments
+	*/
+	printf("Running program - %s with - %d arguments", argv[0], argc);
+	/*
+	*** Local variables
+	*/
 	char *cmd;
 	unsigned int number3;
 	unsigned int number1;
@@ -68,7 +79,7 @@ int main(int argc, char *argv[])
 	free(str);
 	f.close(this(&f));
 	printf("putstringtest: %s\n", func.putstr("hello world"));
-	printf("lfsmdata size: %ld\n",sizeof(LFSMDATA));
+	printf("lfsmdata size: %d\n",sizeof(LFSMDATA));
 /********************************************************/
 	printf("MAYIA\n");
 	number3=func.mayia(0,1,4);
@@ -115,6 +126,10 @@ int main(int argc, char *argv[])
 			number1=func.getnum(cmd);
 			//l.remove(&l,number1);
 			r.remove(this(&r),number1);
+		}
+		if(!strcmp(cmd,"options")){
+			printf("learn or l\nquit or q\nhow many or h\ndelete all or d\nremove or r\noptions\n");
+			free(cmd);
 		}
 		printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(this(&r),number1)));
 	free(cmd);
