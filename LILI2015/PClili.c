@@ -96,9 +96,12 @@ LILI LILIenable(void)
 /***play***/
 char* LILIplay(struct lili *l)
 {
-	if(l->target==NULL)
+	if(l->target==NULL){
 		printf("Linked List EMPTY\n");
-	return l->data;
+		return NULL;
+	}else{
+		return *l->data;
+	}
 }
 /***forward***/ 
 unsigned int LILIforward(struct lili *l)
@@ -107,7 +110,7 @@ unsigned int LILIforward(struct lili *l)
 		printf("Linked List EMPTY\n");
 	else{	
 		l->target=l->target->next;
-		l->data=l->target->data;
+		l->data=&l->target->data;
 	}
 	return 0;
 }
@@ -118,7 +121,7 @@ unsigned int LILIreverse(struct lili *l)
 		printf("Linked List EMPTY\n");
 	else{	
 		l->target=l->target->back;
-		l->data=l->target->data;
+		l->data=&l->target->data;
 	}
 	return 0;
 }
@@ -128,7 +131,8 @@ unsigned int LILIrecord(struct lili *l, char* data)
 	if(l->target==NULL){//INICIALIZE LIST
 		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
 		l->target->next=l->target->back=l->target;
-		l->data=l->target->data=data;
+		l->target->data=data;
+		l->data=&l->target->data;
 		l->total++;
 	}else{
 		if(l->target->next==l->target){
@@ -138,7 +142,7 @@ unsigned int LILIrecord(struct lili *l, char* data)
 			l->target->next->data=data;
 			/****/
 			l->target=l->target->next;
-			l->data=l->target->data;
+			l->data=&l->target->data;
 			l->total++;	
 		}else{
 			printf("Record only permitted at end of list, append only\n");
@@ -165,7 +169,7 @@ unsigned int LILIremove(struct lili *l)
 			l->target->next->back=l->target->next;			
 			/****/
 			l->target=l->target->next;
-			l->data=l->target->data;
+			l->data=&l->target->data;
 			l->total--;
 			free(ptr);
 		}else if(l->target->next==l->target){
@@ -174,7 +178,7 @@ unsigned int LILIremove(struct lili *l)
 			l->target->back->next=l->target->back;
 			/****/
 			l->target=l->target->back;
-			l->data=l->target->data;
+			l->data=&l->target->data;
 			l->total--;
 			free(ptr);
 		}else{
@@ -188,7 +192,7 @@ unsigned int LILIremove(struct lili *l)
 			}else{
 				l->target=l->target->next;
 			}
-			l->data=l->target->data;
+			l->data=&l->target->data;
 			l->total--;
 			free(ptr);
 		}
@@ -212,9 +216,16 @@ unsigned int LILIstatus(struct lili *l)
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
 	else{
-		printf("ADDRESSES:\n");
-		printf("l->target: %ld\nl->target->next: %ld\nl->target->back: %ld\nl->target->data: %ld\n",(long int)l->target,(long int)l->target->next,(long int)l->target->back,(long int)l->target->data);
-		printf("target data: %s\n",l->target->data);
+		printf("TARGET ADDRESSES:\n");
+		printf("(long int)l->target: %ld\n(long int)l->target->next: %ld\n(long int)l->target->back: %ld\n(long int)l->target->data: %ld\n",(long int)l->target,(long int)l->target->next,(long int)l->target->back,(long int)l->target->data);
+		printf("DATA ADDRESS:\n");
+		printf("&l->data: %ld\n",(long int)&l->data);
+		printf("l->data: %ld\n",(long int)l->data);
+		printf("(long int)*l->data: %ld\n",(long int)*l->data);
+		printf("(long int)l->target->data: %ld\n",(long int)l->target->data);
+		printf("DATA:\n");
+		printf("**l->data: %c\n",**l->data);
+		printf("*l->data: %s\n",*l->data);
 	}
 	return 0;
 }

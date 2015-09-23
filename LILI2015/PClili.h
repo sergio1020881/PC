@@ -39,7 +39,7 @@ typedef struct lilidata LILIDATA;
 struct lili{
 	//Local Variables
 	LILIDATA* target;
-	char* data;
+	char** data;
 	unsigned int total;
 	//Function Pointers
 	char* (*play)(struct lili *l);
