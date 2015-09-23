@@ -43,13 +43,13 @@ struct lili{
 	unsigned int total;
 	//Function Pointers
 	char* (*play)(struct lili *l);
-	unsigned int (*forward)(struct lili *l);
-	unsigned int (*reverse)(struct lili *l);
-	unsigned int (*record)(struct lili *l, char* data);
-	unsigned int (*remove)(struct lili *l);
+	void (*forward)(struct lili *l);
+	void (*reverse)(struct lili *l);
+	void (*record)(struct lili *l, char* data);
+	void (*remove)(struct lili *l);
 	void (*free)(struct lili *l);
 	unsigned int (*quant)(struct lili *l);
-	unsigned int (*status)(struct lili *l);
+	void (*status)(struct lili *l);
 };
 typedef struct lili LILI;
 /*

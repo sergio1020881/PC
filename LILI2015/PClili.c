@@ -50,7 +50,7 @@ COMMENT:
 ** constant and macro
 */
 #define EMPTY 0
-#define RMFR 0
+#define RMFR 1
 /*
 ** variable
 */
@@ -58,13 +58,13 @@ COMMENT:
 ** procedure and function header
 */
 char* LILIplay(struct lili *l);
-unsigned int LILIforward(struct lili *l);
-unsigned int LILIreverse(struct lili *l);
-unsigned int LILIrecord(struct lili *l, char* data);
-unsigned int LILIremove(struct lili *l);
+void LILIforward(struct lili *l);
+void LILIreverse(struct lili *l);
+void LILIrecord(struct lili *l, char* data);
+void LILIremove(struct lili *l);
 void LILIfree(struct lili *l);
 unsigned int LILIquant(struct lili *l);
-unsigned int LILIstatus(struct lili *l);
+void LILIstatus(struct lili *l);
 /*
 ** Object Inicialize
 */
@@ -104,7 +104,7 @@ char* LILIplay(struct lili *l)
 	}
 }
 /***forward***/ 
-unsigned int LILIforward(struct lili *l)
+void LILIforward(struct lili *l)
 {
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
@@ -112,10 +112,9 @@ unsigned int LILIforward(struct lili *l)
 		l->target=l->target->next;
 		l->data=&l->target->data;
 	}
-	return 0;
 }
 /***reverse***/
-unsigned int LILIreverse(struct lili *l)
+void LILIreverse(struct lili *l)
 {
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
@@ -123,10 +122,9 @@ unsigned int LILIreverse(struct lili *l)
 		l->target=l->target->back;
 		l->data=&l->target->data;
 	}
-	return 0;
 }
 /***record***/
-unsigned int LILIrecord(struct lili *l, char* data)
+void LILIrecord(struct lili *l, char* data)
 {
 	if(l->target==NULL){//INICIALIZE LIST
 		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
@@ -148,23 +146,22 @@ unsigned int LILIrecord(struct lili *l, char* data)
 			printf("Record only permitted at end of list, append only\n");
 		}
 	}
-	return 0;
 }
 /***remove***/
-unsigned int LILIremove(struct lili *l)
+void LILIremove(struct lili *l)
 {
 	LILIDATA *ptr;
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
 	else{
 		if(l->target->next==l->target->back){
-			//printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
+			printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
 			free(l->target);
 			l->target=NULL;
 			l->data=NULL;
 			l->total--;
 		}else if(l->target->back==l->target){
-			//printf("troubleshoot: if((l->target->back==l->target) «FIRST IN LIST»\n");//FIRST IN LIST
+			printf("troubleshoot: if((l->target->back==l->target) «FIRST IN LIST»\n");//FIRST IN LIST
 			ptr=l->target;
 			l->target->next->back=l->target->next;			
 			/****/
@@ -173,7 +170,7 @@ unsigned int LILIremove(struct lili *l)
 			l->total--;
 			free(ptr);
 		}else if(l->target->next==l->target){
-			//printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
+			printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
 			ptr=l->target;			
 			l->target->back->next=l->target->back;
 			/****/
@@ -182,7 +179,7 @@ unsigned int LILIremove(struct lili *l)
 			l->total--;
 			free(ptr);
 		}else{
-			//printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
+			printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
 			ptr=l->target;
 			l->target->next->back=l->target->back;
 			l->target->back->next=l->target->next;
@@ -197,7 +194,6 @@ unsigned int LILIremove(struct lili *l)
 			free(ptr);
 		}
 	}
-	return 0;
 }
 /***free***/
 void LILIfree(struct lili *l)
@@ -211,7 +207,7 @@ unsigned int LILIquant(struct lili *l)
 	return l->total;
 }
 /***status***/
-unsigned int LILIstatus(struct lili *l)
+void LILIstatus(struct lili *l)
 {
 	if(l->target==NULL)
 		printf("Linked List EMPTY\n");
@@ -227,7 +223,6 @@ unsigned int LILIstatus(struct lili *l)
 		printf("**l->data: %c\n",**l->data);
 		printf("*l->data: %s\n",*l->data);
 	}
-	return 0;
 }
 /*
 ** interrupt
