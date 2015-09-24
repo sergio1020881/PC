@@ -2,20 +2,20 @@
 <settings version="1.0">
 	<category name="PClili.c">
 		<category name="Window">
-			<property name="Left" type="integer">-8</property>
-			<property name="Top" type="integer">-31</property>
-			<property name="Right" type="integer">1044</property>
-			<property name="Bottom" type="integer">478</property>
-			<property name="Maximized" type="integer">1</property>
-			<property name="Active" type="integer">1</property>
+			<property name="Left" type="integer">0</property>
+			<property name="Top" type="integer">0</property>
+			<property name="Right" type="integer">1015</property>
+			<property name="Bottom" type="integer">352</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
 		</category>
 	</category>
 	<category name="PClili.h">
 		<category name="Window">
-			<property name="Left" type="integer">52</property>
-			<property name="Top" type="integer">52</property>
-			<property name="Right" type="integer">832</property>
-			<property name="Bottom" type="integer">404</property>
+			<property name="Left" type="integer">26</property>
+			<property name="Top" type="integer">26</property>
+			<property name="Right" type="integer">1041</property>
+			<property name="Bottom" type="integer">378</property>
 			<property name="Maximized" type="integer">0</property>
 			<property name="Active" type="integer">0</property>
 		</category>
@@ -23,12 +23,12 @@
 	<category name="PCfunction.h" />
 	<category name="LILI2015.c">
 		<category name="Window">
-			<property name="Left" type="integer">0</property>
-			<property name="Top" type="integer">0</property>
-			<property name="Right" type="integer">1024</property>
-			<property name="Bottom" type="integer">352</property>
-			<property name="Maximized" type="integer">0</property>
-			<property name="Active" type="integer">0</property>
+			<property name="Left" type="integer">-8</property>
+			<property name="Top" type="integer">-31</property>
+			<property name="Right" type="integer">1036</property>
+			<property name="Bottom" type="integer">478</property>
+			<property name="Maximized" type="integer">1</property>
+			<property name="Active" type="integer">1</property>
 		</category>
 	</category>
 	<category name="PCfunction.c" />

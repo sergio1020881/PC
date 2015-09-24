@@ -1,4 +1,4 @@
-/*:
+/*
 * Research
 * LILI2015.c
 * Nome: sergio santos
