@@ -39,6 +39,8 @@ typedef struct lilidata LILIDATA;
 struct lili{
 	//Local Variables
 	LILIDATA* target;
+	LILIDATA* tail;
+	LILIDATA* head;
 	char** data;
 	unsigned int total;
 	//Function Pointers
@@ -50,6 +52,10 @@ struct lili{
 	void (*free)(struct lili *l);
 	unsigned int (*quant)(struct lili *l);
 	void (*status)(struct lili *l);
+	void (*insert)(struct lili *l, char* data);
+	void (*replace)(struct lili *l, char* data);
+	void (*push)(struct lili *l, char* data);
+	char* (*pop)(struct lili *l);
 };
 typedef struct lili LILI;
 /*

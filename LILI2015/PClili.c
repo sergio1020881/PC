@@ -4,10 +4,10 @@ Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PClili.c, v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
-License:  GNU General Public License
+License:  GNU General Public License        
 DESCRIPTION:
 	PC emulation
-USAGE:
+USAGE: 
 NOTES:
 LICENSE:
     Copyright (C) 2015
@@ -29,7 +29,7 @@ COMMENT:
 // calloc free realloc malloc
 #include <stdlib.h>
 // strcpy strcmp strcat memcmp
-//#include <string.h>
+#include <string.h>
 // termios tcflush
 //#include <termios.h>
 // nanosleep sleep
@@ -65,6 +65,11 @@ void LILIremove(struct lili *l);
 void LILIfree(struct lili *l);
 unsigned int LILIquant(struct lili *l);
 void LILIstatus(struct lili *l);
+/***to be implemented***/
+void LILIinsert(struct lili *l, char* data);
+void LILIreplace(struct lili *l, char* data);
+void LILIpush(struct lili *l, char* data);
+char* LILIpop(struct lili *l);
 /*
 ** Object Inicialize
 */
@@ -76,6 +81,8 @@ LILI LILIenable(void)
 	LILI l;
 	//Inicialize variables
 	l.target=NULL;
+	l.tail=NULL;
+	l.head=NULL;
 	l.data=NULL;
 	l.total=0;
 	//Function Vtable
@@ -87,6 +94,10 @@ LILI LILIenable(void)
 	l.free=LILIfree;
 	l.quant=LILIquant;
 	l.status=LILIstatus;
+	l.insert=LILIinsert;
+	l.replace=LILIreplace;
+	l.push=LILIpush;
+	l.pop=LILIpop;
 	/******/
 	return l;
 }
@@ -130,6 +141,8 @@ void LILIrecord(struct lili *l, char* data)
 		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
 		l->target->next=l->target->back=l->target;
 		l->target->data=data;
+		/***/
+		l->tail=l->head=l->target;
 		l->data=&l->target->data;
 		l->total++;
 	}else{
@@ -140,6 +153,7 @@ void LILIrecord(struct lili *l, char* data)
 			l->target->next->data=data;
 			/****/
 			l->target=l->target->next;
+			l->head=l->target;
 			l->data=&l->target->data;
 			l->total++;	
 		}else{
@@ -156,8 +170,11 @@ void LILIremove(struct lili *l)
 	else{
 		if(l->target->next==l->target->back){
 			printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
+			free(l->target->data);
 			free(l->target);
 			l->target=NULL;
+			l->tail=NULL;
+			l->head=NULL;
 			l->data=NULL;
 			l->total--;
 		}else if(l->target->back==l->target){
@@ -166,8 +183,10 @@ void LILIremove(struct lili *l)
 			l->target->next->back=l->target->next;			
 			/****/
 			l->target=l->target->next;
+			l->tail=l->target;
 			l->data=&l->target->data;
 			l->total--;
+			free(ptr->data);
 			free(ptr);
 		}else if(l->target->next==l->target){
 			printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
@@ -175,8 +194,10 @@ void LILIremove(struct lili *l)
 			l->target->back->next=l->target->back;
 			/****/
 			l->target=l->target->back;
+			l->head=l->target;
 			l->data=&l->target->data;
 			l->total--;
+			free(ptr->data);
 			free(ptr);
 		}else{
 			printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
@@ -191,6 +212,7 @@ void LILIremove(struct lili *l)
 			}
 			l->data=&l->target->data;
 			l->total--;
+			free(ptr->data);
 			free(ptr);
 		}
 	}
@@ -224,7 +246,99 @@ void LILIstatus(struct lili *l)
 		printf("*l->data: %s\n",*l->data);
 	}
 }
+/***insert***/
+void LILIinsert(struct lili *l, char* data)
+{
+	
+}
+/***replace***/
+void LILIreplace(struct lili *l, char* data)
+{
+	if(l->target==NULL){
+		printf("Linked List EMPTY\n");
+	}else{
+		free(l->target->data);
+		l->target->data=data;
+		/****/
+		l->data=&l->target->data;	
+	}
+}
+/***push***/
+void LILIpush(struct lili *l, char* data)
+{
+	LILIDATA* ptr;
+	if(l->target==NULL){//INICIALIZE LIST
+		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+		l->target->next=l->target->back=l->target;
+		l->target->data=data;
+		/***/
+		l->tail=l->head=l->target;
+		l->data=&l->target->data;
+		l->total++;
+	}else{
+		ptr=l->target;
+		l->target=l->head;
+		l->target->next=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+		l->target->next->next=l->target->next;
+		l->target->next->back=l->target;
+		l->target->next->data=data;
+		/****/		
+		l->head=l->target->next;
+		l->target=ptr;
+		l->total++;	
+	}
+}
+/***pop***/
+char* LILIpop(struct lili *l)
+{
+	char* data=NULL;
+	LILIDATA* ptr;
+	if(l->target==NULL){
+		printf("Linked List EMPTY\n");
+	}
+	else{
+		data=(char*)calloc(sizeof(l->head->data),sizeof(char));
+		strcpy(data,l->head->data);
+		if(l->target->next==l->target->back){
+			printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
+			free(l->head->data);			
+			free(l->head);
+			l->target=NULL;
+			l->tail=NULL;
+			l->head=NULL;
+			l->data=NULL;
+			l->total--;
+		}else if(l->target==l->head){
+			printf("troubleshoot: if((l->target==l->head) «LAST IN LIST»\n");//LAST IN LIST
+			l->target->back->next=l->target->back;
+			/****/
+			l->target=l->target->back;			
+			free(l->head->data);
+			free(l->head);
+			l->head=l->target;
+			l->data=&l->target->data;
+			l->total--;
+		}else{
+			printf("troubleshoot: «IN BETWEEN»\n");
+			ptr=l->target;
+			l->target=l->head;
+			l->target->back->next=l->target->back;
+			/****/
+			l->target=l->target->back;
+			free(l->head->data);
+			free(l->head);
+			l->head=l->target;
+			l->target=ptr;
+			l->total--;
+		}
+	}
+	return data;
+}
 /*
 ** interrupt
 */
+/*
+*** Comments
+*/
+//encapsulation mandates repetition of code.
 /***EOF***/

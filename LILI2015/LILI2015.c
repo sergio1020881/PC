@@ -1,4 +1,4 @@
-/*
+/*:
 * Research
 * LILI2015.c
 * Nome: sergio santos
@@ -101,6 +101,19 @@ int main(int argc, char *argv[])
 		}
 		if(!strcmp(cmd,"status") || !strcmp(cmd,"s")){
 			l.status(&l);
+		}
+		if(!strcmp(cmd,"replace") || !strcmp(cmd,"subs")){
+			printf("enter input to substitute\n");			
+			cmd=func.fltos(stdin);
+			l.replace(&l, cmd);
+		}
+		if(!strcmp(cmd,"push")){
+			printf("enter input to push to list\n");			
+			cmd=func.fltos(stdin);
+			l.push(&l, cmd);
+		}
+		if(!strcmp(cmd,"pop")){
+			printf("data:\n%s\n", l.pop(&l));
 		}
 	}
 /*
