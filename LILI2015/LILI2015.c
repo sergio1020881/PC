@@ -115,6 +115,8 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"pop")){
 			printf("data:\n%s\n", l.pop(&l));
 		}
+		if(!strcmp(cmd,"non")){
+		}
 	}
 /*
 *** EXIT

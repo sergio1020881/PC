@@ -169,7 +169,7 @@ void LILIremove(struct lili *l)
 		printf("Linked List EMPTY\n");
 	else{
 		if(l->target->next==l->target->back){
-			printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE			
+			printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE
 			free(l->target->data);
 			free(l->target);
 			l->target=NULL;
@@ -249,7 +249,23 @@ void LILIstatus(struct lili *l)
 /***insert***/
 void LILIinsert(struct lili *l, char* data)
 {
-	
+	if(l->target==NULL){//INICIALIZE LIST
+		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+		l->target->next=l->target->back=l->target;
+		l->target->data=data;
+		/***/
+		l->tail=l->head=l->target;
+		l->data=&l->target->data;
+		l->total++;
+	}if(l->target->next==l->target->back){
+		printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE
+	}else if(l->target->back==l->target){
+		printf("troubleshoot: if((l->target->back==l->target) «FIRST IN LIST»\n");//FIRST IN LIST
+	}else if(l->target->next==l->target){
+		printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
+	}else{
+		printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
+	}
 }
 /***replace***/
 void LILIreplace(struct lili *l, char* data)
