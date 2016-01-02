@@ -51,6 +51,7 @@ COMMENT:
 */
 #define EMPTY 0
 #define RMFR 1
+#define INSFR 1
 /*
 ** variable
 */
@@ -249,22 +250,69 @@ void LILIstatus(struct lili *l)
 /***insert***/
 void LILIinsert(struct lili *l, char* data)
 {
+	LILIDATA* ptr;
+	ptr=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+	ptr->data=data;
 	if(l->target==NULL){//INICIALIZE LIST
-		l->target=(LILIDATA*)calloc(1,sizeof(LILIDATA));
+		l->target=ptr
 		l->target->next=l->target->back=l->target;
-		l->target->data=data;
+		l->target->data=ptr->data;
 		/***/
 		l->tail=l->head=l->target;
 		l->data=&l->target->data;
 		l->total++;
 	}if(l->target->next==l->target->back){
 		printf("troubleshoot: if((l->target->next==l->target->back) «ONLY ONE»\n");//ONLY ONE
+		if(INSFR){
+		
+		
+		
+		
+		}else{
+		
+		
+		
+		
+		}
 	}else if(l->target->back==l->target){
 		printf("troubleshoot: if((l->target->back==l->target) «FIRST IN LIST»\n");//FIRST IN LIST
+		if(INSFR){
+		
+		
+		
+		
+		}else{
+		
+		
+		
+		
+		}
 	}else if(l->target->next==l->target){
 		printf("troubleshoot: if((l->target->next==l->target) «LAST IN LIST»\n");//LAST IN LIST
+		if(INSFR){
+		
+		
+		
+		
+		}else{
+		
+		
+		
+		
+		}
 	}else{
 		printf("troubleshoot: In between «IN BETWEEN»\n");//IN BETWEEN
+		if(INSFR){
+		
+		
+		
+		
+		}else{
+		
+		
+		
+		
+		}
 	}
 }
 /***replace***/

@@ -22,22 +22,22 @@
 	</category>
 	<category name="PClfsm.c">
 		<category name="Window">
-			<property name="Left" type="integer">52</property>
-			<property name="Top" type="integer">52</property>
-			<property name="Right" type="integer">1066</property>
-			<property name="Bottom" type="integer">404</property>
-			<property name="Maximized" type="integer">0</property>
-			<property name="Active" type="integer">0</property>
-		</category>
-	</category>
-	<category name="PClfsm.h">
-		<category name="Window">
 			<property name="Left" type="integer">-8</property>
 			<property name="Top" type="integer">-31</property>
 			<property name="Right" type="integer">1035</property>
 			<property name="Bottom" type="integer">478</property>
 			<property name="Maximized" type="integer">1</property>
 			<property name="Active" type="integer">1</property>
+		</category>
+	</category>
+	<category name="PClfsm.h">
+		<category name="Window">
+			<property name="Left" type="integer">78</property>
+			<property name="Top" type="integer">78</property>
+			<property name="Right" type="integer">1092</property>
+			<property name="Bottom" type="integer">430</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
 		</category>
 	</category>
 </settings>
