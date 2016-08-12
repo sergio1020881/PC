@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2015/07/09 14:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -19,7 +19,10 @@ LICENSE:
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 COMMENT:
-	review
+	working on it.
+	working pretty good, trial more.
+	page=1 is dedicated for global logic, page=2 local logic, if page>2 is sequencial program.
+	purpose is for machine programming, and encoders. General purpose algorithm.
 *************************************************************************/
 /*
 ** library
@@ -46,49 +49,44 @@ COMMENT:
 //#include <math.h>
 /***/
 #include"PClfsm.h"
-#include"PCfunction.h"
 /*
 ** constant and macro
 */
-#define LFSM_page 0
-#define LFSM_feedback 1
-#define LFSM_input 2
-#define LFSM_output 3
-#define BlockSize 4
 #define EMPTY 0
 /*
 ** variable
 */
+LFSMDATA data;
 /*
-int mem[]=
+unsigned int mem[]=
 {pin state, feedback, pin mask, output}
 */
 /*
 ** procedure and function header
 */
-int LFSMread(struct lfsm *r, int input);
-int LFSMlearn(struct lfsm *r, int input, int next);
-int LFSMquant(struct lfsm *r);
-int LFSMremove(struct lfsm *r, int input);
-int LFSMdeleteall(struct lfsm *r);
+unsigned int LFSMread(struct lfsm *r, unsigned int input);
+unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page);
+unsigned int LFSMquant(struct lfsm *r);
+unsigned int LFSMremove(struct lfsm *r, unsigned int input);
+unsigned int LFSMdeleteall(struct lfsm *r);
 /*
 ** Object Inicialize
 */
-LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
+LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 {
 	/***Local Variable***/
-	int cells;
 	/***Local Function Header***/
-	int LFSMgetoutput(struct lfsm *r);
-	void LFSMsetoutput(struct lfsm *r, int output);
-	int LFSMdiff(int xi, int xf);
+	unsigned int LFSMgetoutput(struct lfsm *r);
+	void LFSMsetoutput(struct lfsm *r, unsigned int output);
+	unsigned int LFSMlh(unsigned int xi, unsigned int xf);
+	unsigned int LFSMhl(unsigned int xi, unsigned int xf);
+	unsigned int LFSMoutputcalc(unsigned int feedback, unsigned int hl, unsigned int lh);
+	unsigned int LFSMdiff(unsigned int xi, unsigned int xf);
 	/***Create Object***/
 	LFSM r;
-	//Inicialize varibles
+	//Inicialize variables
 	r.mem=eeprom;
-	cells=sizeeeprom/BlockSize;
-	r.sizeeeprom=cells*BlockSize;
-	r.page=prog;//page
+	r.sizeeeprom=sizeeeprom;
 	r.input=0;//input
 	r.output=0;//output
 	//Function Vtable
@@ -99,6 +97,9 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 	r.deleteall=LFSMdeleteall;
 	r.get=LFSMgetoutput;
 	r.set=LFSMsetoutput;
+	r.lh=LFSMlh;
+	r.hl=LFSMhl;
+	r.outputcalc=LFSMoutputcalc;
 	r.diff=LFSMdiff;
 	/******/
 	return r;
@@ -107,50 +108,57 @@ LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog)
 ** procedure and function
 */
 /***read***/
-int LFSMread(struct lfsm *r, int input)
+unsigned int LFSMread(struct lfsm *r, unsigned int input)
 {
-	int i1;
-	int i2;
-	int status=0;
-	int block[BlockSize];
-	int keyfound;
-	int mask;
+	unsigned int i1;
+	unsigned int status=0;
+	unsigned int keyfound;
 	printf("LFSMread\n");
-	FUNC func=FUNCenable();
-	mask=r->diff(r->input,input);
-	//if(mask){
-	//in reality there is no repetition of readings [oneshot], use this condition in MCU aplications
-		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
-			if(*(r->mem+i1)==r->page){
-				for(i2=0;i2<BlockSize;i2++){//get block from eeprom
-					block[i2]=*(r->mem+i1+i2);
-				}
-				if(r->page<128){
+	for(i1=0;i1<r->sizeeeprom;i1++){
+		data=r->mem[i1];//upload eeprom data
+		if(data.page){
+			/******/
+			switch(r->mem[i1].page){
+				case 1:
 					keyfound=(
-						block[LFSM_feedback]==r->page &&
-						block[LFSM_input]==input
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
 						);//bool
-				}else{
-					keyfound=(
-						block[LFSM_feedback]==r->output &&
-						block[LFSM_input]==input
-						);//bool
-				}
-				if(keyfound){
-					status=1;
+					//it keeps track of previous input, not desired in logic
 					break;
-				}else status=2;
-			}
+				case 2:
+					keyfound=(
+						data.feedback==r->output &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						);//bool
+					//it keeps track of previous input, not desired in logic
+					break;
+				default:
+					keyfound=(
+						data.feedback==r->output &&
+						data.input==r->input &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						);//bool
+					break;
+			};
+			/******/
+			if(keyfound){
+				status=1;
+				break;
+			}else status=2;
 		}
-	//}else status=3;
+	}
 	switch (status){
 		case 0:
 			printf("LFSMread -> No operation\n");
 			break;
 		case 1:
 			printf("LFSMread updated: %d\n",status);
-			r->output=block[LFSM_output];
+			r->page=data.page;
 			r->input=input;//detailed capture
+			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
 			break;
 		case 2:
 			printf("LFSMread not existent: %d\n",status);
@@ -161,32 +169,51 @@ int LFSMread(struct lfsm *r, int input)
 		default:
 			break;
 	}
-	printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r->output));
 	return r->output;
 }
 /***learn***/ 
-int LFSMlearn(struct lfsm *r, int input, int next)
+unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page)
 {
-	int i1;
-	int i2;
-	int block[BlockSize];
-	int keyfound;
-	int status=0;
-	for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
-		if(*(r->mem+i1)==r->page){
-			for(i2=0;i2<BlockSize;i2++){//get block from eeprom
-				block[i2]=*(r->mem+i1+i2);
-			}
-			keyfound=(
-				block[LFSM_feedback]==r->output &&
-				block[LFSM_input]==input
+	unsigned int i1;
+	unsigned int keyfound;
+	unsigned int status=0;
+	printf("LFSMlearn\n");
+	if(page>0){
+		for(i1=0;i1<r->sizeeeprom;i1++){
+			data=r->mem[i1];//upload eeprom data
+			if(data.page){
+				/******/
+				printf("LFSMlearn_page %d\n",page);
+				keyfound=(
+					(
+					data.page==1 &&
+					data.inhl==r->hl(r->input,input) && 
+					data.inlh==r->lh(r->input,input)
+					)
+						||
+					(
+					data.page==2 &&
+					data.feedback==r->output &&
+					data.inhl==r->hl(r->input,input) && 
+					data.inlh==r->lh(r->input,input)
+					)
+						||
+					(
+					data.feedback==r->output &&
+					data.input==r->input &&
+					data.inhl==r->hl(r->input,input) && 
+					data.inlh==r->lh(r->input,input)
+					)
 				);//bool
-			if(keyfound){
-				status=1;//not permited
-				break;
+				//if there is any logic entry, that entry is taken out from lfsm input options
+				/******/
+				if(keyfound){
+					status=1;//not permited
+					break;
+				}
 			}
-		}
 		status=2;//not existente
+		}
 	}
 	switch (status){
 		case 0:
@@ -197,16 +224,21 @@ int LFSMlearn(struct lfsm *r, int input, int next)
 			break;
 		case 2:
 			printf("LFSMlearn going to try add new program.\n");
-			for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
-				if(*(r->mem+i1)==EMPTY){
-					*(r->mem+i1)=r->page;
-					if(r->page<128){
-						r->output=r->page;
-						*(r->mem+i1+LFSM_feedback)=r->page;
-					}else
-						*(r->mem+i1+LFSM_feedback)=r->output;
-					*(r->mem+i1+LFSM_input)=input;
-					*(r->mem+i1+LFSM_output)=next;
+			//prepare data to write to eeprom
+			data.page=page;
+			data.feedback=r->output;
+			data.input=r->input;
+			data.inhl=r->hl(r->input,input);
+			data.inlh=r->lh(r->input,input);
+			data.outhl=r->hl(r->output,next);
+			data.outlh=r->lh(r->output,next);
+			data.output=next;
+			printf("%d  %d  %d  %d  %d  %d  %d  %d\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh,data.output);
+			for(i1=0;i1<r->sizeeeprom;i1++){
+				//search empty space em memory
+				if(r->mem[i1].page==EMPTY){
+					//write data to eeprom
+					r->mem[i1]=data;
 					status=3;//created
 					break;
 				}
@@ -224,38 +256,58 @@ int LFSMlearn(struct lfsm *r, int input, int next)
 	return status;
 }
 /***quant***/
-int LFSMquant(struct lfsm *r)
+unsigned int LFSMquant(struct lfsm *r)
 {
-	int i1;
-	int programmed;
-	printf("LFSMquant - page - %d\n",r->page);
-	for(i1=0,programmed=0;i1<r->sizeeeprom;i1+=BlockSize){
-		if(*(r->mem+i1)!=EMPTY){
-			printf("%d-%d-%d\n",*(r->mem+i1+LFSM_feedback),*(r->mem+i1+LFSM_input),*(r->mem+i1+LFSM_output));
+	unsigned int i1;
+	unsigned int programmed;
+	printf("LFSMquant\n");
+	for(i1=0,programmed=0;i1<r->sizeeeprom;i1++){
+		data=r->mem[i1];//upload data from eeprom
+		if(data.page!=EMPTY){
+			printf("page:%d feedback:%d  input:%d  inhl:%d  inlh:%d  outhl:%d  outlh:%d  output:%d\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh,data.output);
 			programmed++;
 		}
 	}
 	return programmed;
 }
 /***remove***/
-int LFSMremove(struct lfsm *r, int input)
+unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 {
-	int i1;
-	int i2;
-	int block[BlockSize];
-	int keyfound;
-	int status=0;
-	for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
-		if(*(r->mem+i1)==r->page){
-			for(i2=0;i2<BlockSize;i2++){//get block from eeprom
-				block[i2]=*(r->mem+i1+i2);
-			}
-			keyfound=(
-				block[LFSM_feedback]==r->output &&
-				block[LFSM_input]==input
-				);//bool
+	unsigned int i1;
+	unsigned int keyfound;
+	unsigned int status=0;
+	printf("LFSMremove\n");
+	for(i1=0;i1<r->sizeeeprom;i1++){
+		data=r->mem[i1];//upload data from eeprom
+		if(data.page){
+			printf("LFSMremove\n");
+			/******/	
+			switch(data.page){
+				case 1:
+					keyfound=(
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						);//bool
+					break;
+				case 2:
+					keyfound=(
+						data.feedback==r->output &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						);//bool
+					break;
+				default:
+					keyfound=(
+						data.feedback==r->output &&
+						data.input==r->input &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						);//bool
+					break;
+			};
+			/******/
 			if(keyfound){
-				status=1;//removed
+				status=1;//remove
 				break;
 			}
 		}
@@ -267,7 +319,8 @@ int LFSMremove(struct lfsm *r, int input)
 			break;
 		case 1:
 			printf("LFSMremove removed: %d\n",status);
-			*(r->mem+i1)=EMPTY;
+			//descativate memory space, write to eeprom empty space.
+			r->mem[i1].page=EMPTY;
 			break;
 		case 2:
 			printf("LFSMremove not existent: %d\n",status);
@@ -278,33 +331,59 @@ int LFSMremove(struct lfsm *r, int input)
 	return status;
 }
 /***deleteall***/
-int LFSMdeleteall(struct lfsm *r)
+unsigned int LFSMdeleteall(struct lfsm *r)
 {
-	int i1;
-	int status=0;
+	unsigned int i1;
+	unsigned int status=0;
 	if(!status){//not removed
-		for(i1=0;i1<r->sizeeeprom;i1+=BlockSize){
-			if(*(r->mem+i1)!=EMPTY){
-				*(r->mem+i1)=EMPTY;
+		for(i1=0;i1<r->sizeeeprom;i1++){
+			//read eeprom check if memory space has data
+			if(r->mem[i1].page){
+				//desactivate memory space to empty
+				r->mem[i1].page=EMPTY;
 				status=1;//all deleted
 			}
 		}
 	}
+	r->output=0;
 	printf("LFSMdeleteall deleted\n");
 	return status;
 }
 /***get***/
-int LFSMgetoutput(struct lfsm *r)
+unsigned int LFSMgetoutput(struct lfsm *r)
 {
 	return r->output;
 }
 /***set***/
-void LFSMsetoutput(struct lfsm *r, int output)
+void LFSMsetoutput(struct lfsm *r, unsigned int output)
 {
 	r->output=output;
 }
+/***lh***/
+unsigned int LFSMlh(unsigned int xi, unsigned int xf)
+{
+	unsigned int i;
+	i=xf^xi;
+	i&=xf;
+	return i;
+}
+/***hl***/
+unsigned int LFSMhl(unsigned int xi, unsigned int xf)
+{
+	unsigned int i;
+	i=xf^xi;
+	i&=xi;
+	return i;
+}
+/***output***/
+unsigned int LFSMoutputcalc(unsigned int feedback, unsigned int hl, unsigned int lh)
+{
+	feedback|=lh;
+	feedback&=~hl;
+	return feedback;
+}
 /***diff***/
-int LFSMdiff(int xi, int xf)
+unsigned int LFSMdiff(unsigned int xi, unsigned int xf)
 {
 	return xi^xf;
 }
@@ -321,8 +400,10 @@ keyfound=(
 );//bool, block[1] is masked bits, block[1] is bits state				
 **************
 NOTES:
-int vect[]=
+unsigned int vect[]=
 {
 mask,mask&pinstate,feedback,output,
 };
+**************
+try to make more depth choice of database research or option selections.
 *************/
