@@ -1,7 +1,7 @@
 /************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.h,v 0.1 2015/07/09 14:00:00 sergio Exp $
+File:     $Id: PClfsm.h,v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
 Hardware: 
 License:  GNU General Public License 
@@ -26,28 +26,43 @@ COMMENT:
 /*
 ** variable
 */
+struct lfsmdata{
+unsigned int page;
+unsigned int feedback;
+unsigned int input;
+unsigned int inhl;
+unsigned int inlh;
+unsigned int outhl;
+unsigned int outlh;
+unsigned int output;
+};
+typedef struct lfsmdata LFSMDATA;
+/******/
 struct lfsm{
 	//Local Variables
-	int *mem;
-	int sizeeeprom;
-	int page;
-	int input;
-	int output;
+	LFSMDATA *mem;
+	unsigned int sizeeeprom;
+	unsigned int page;
+	unsigned int input;
+	unsigned int output;
 	//Function Pointers
-	int (*read)(struct lfsm *r, int input);
-	int (*learn)(struct lfsm *r, int input, int next);
-	int (*quant)(struct lfsm *r);
-	int (*remove)(struct lfsm *r, int input);
-	int (*deleteall)(struct lfsm *r);
-	int (*get)(struct lfsm *r);
-	void (*set)(struct lfsm *r,int output);
-	int (*diff)(int xi, int xf);
+	unsigned int (*read)(struct lfsm *r, unsigned int input);
+	unsigned int (*learn)(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page);
+	unsigned int (*quant)(struct lfsm *r);
+	unsigned int (*remove)(struct lfsm *r, unsigned int input);
+	unsigned int (*deleteall)(struct lfsm *r);
+	unsigned int (*get)(struct lfsm *r);
+	void (*set)(struct lfsm *r,unsigned int output);
+	unsigned int (*lh)(unsigned int xi, unsigned int xf);
+	unsigned int (*hl)(unsigned int xi, unsigned int xf);
+	unsigned int (*outputcalc)(unsigned int feeddback, unsigned int hl,unsigned int lh);
+	unsigned int (*diff)(unsigned int xi, unsigned int xf);
 };
 typedef struct lfsm LFSM;
 /*
 ** procedure and function header
 */
-LFSM LFSMenable(int *eeprom, int sizeeeprom, int prog);
+LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom);
 #endif
 /***EOF***/
 /***
