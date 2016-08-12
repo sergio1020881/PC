@@ -1,7 +1,7 @@
 /************************************************************************
 Title:    PCFICHEIRO
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PCficheiro.h,v 0.1 2015/02/06 14:00:00 sergio Exp $
+File:     $Id: PCficheiro.h,v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
 Hardware: 
 License:  GNU General Public License 
@@ -30,6 +30,9 @@ COMMENT:
 struct ficheiro{
 	//Local Variables
 	FILE *fp;
+	int fd;
+	fpos_t pos;
+	int errcode;
 	char filename[128];
 	char permision[8];
 	// Function Pointers
@@ -37,6 +40,7 @@ struct ficheiro{
 	int (*colocarchar)(struct ficheiro *f, int c);
 	int (*colocarstring)(struct ficheiro *f, const char* s);
 	FILE* (*open)(struct ficheiro *f);
+	void (*rewind)(struct ficheiro *f);
 };
 typedef struct ficheiro FICHEIRO;
 /*
