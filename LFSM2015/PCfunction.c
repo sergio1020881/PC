@@ -1,7 +1,7 @@
 /**************************************************************************
 Title:    PCFUNCTION
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PCfunction.c, v 0.1 2015/07/09 14:00:00 sergio Exp $
+File:     $Id: PCfunction.c, v 0.1 2015/08/01 14:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -79,12 +79,15 @@ char* FUNCputstr(char* str);
 int FUNCgetnum(char* x);
 unsigned int FUNCgetnumv2(char* x);
 int FUNCreadint(int nmin, int nmax);
-int FUNCmayia(int xi, int xf, int nbits);
-int FUNCpinmatch(int match, int pin, int HL);
-int FUNClh(int xi, int xf);
-int FUNChl(int xi, int xf);
-int FUNCdiff(int xi, int xf);
+unsigned int FUNCmayia(unsigned int xi, unsigned int xf, unsigned int nbits);
+unsigned int FUNCpinmatch(unsigned int match, unsigned int pin, unsigned int HL);
+unsigned int FUNClh(unsigned int xi, unsigned int xf);
+unsigned int FUNChl(unsigned int xi, unsigned int xf);
+unsigned int FUNCdiff(unsigned int xi, unsigned int xf);
 char* FUNCprint_binary(int number);
+unsigned int FUNCdecimal_binary(unsigned int n);
+unsigned int FUNCbinary_decimal(unsigned int n);
+
 //char FUNCMM74C923_read(char c);
 /*
 ** Object Inicialize
@@ -109,6 +112,9 @@ FUNC FUNCenable( void )
 	func.hl=FUNChl;
 	func.diff=FUNCdiff;
 	func.print_binary=FUNCprint_binary;
+	func.decimal_binary=FUNCdecimal_binary;
+	func.binary_decimal=FUNCbinary_decimal;
+
 	//func.mm74c923_read=FUNCMM74C923_read;
 	return func;
 }
@@ -247,11 +253,11 @@ int FUNCreadint(int nmin, int nmax)
 		return num;
 }
 /***magic***/
-int FUNCmayia(int xi, int xf, int nbits)
+unsigned int FUNCmayia(unsigned int xi, unsigned int xf, unsigned int nbits)
 {
-	int mask;
-	int diff;
-	int trans;
+	unsigned int mask;
+	unsigned int diff;
+	unsigned int trans;
 	mask=pow(2,nbits)-1;
 	xi=xi&mask;
 	xf=xf&mask;
@@ -260,9 +266,9 @@ int FUNCmayia(int xi, int xf, int nbits)
 	return (trans<<nbits)|diff;
 }
 /***pinmatch***/
-int FUNCpinmatch(int match, int pin, int HL)
+unsigned int FUNCpinmatch(unsigned int match, unsigned int pin, unsigned int HL)
 {
-	int result;
+	unsigned int result;
 	result=match&pin;
 	if(HL){
 		if(result==match);
@@ -277,23 +283,23 @@ int FUNCpinmatch(int match, int pin, int HL)
 	return result;
 }
 /***lh***/
-int FUNClh(int xi, int xf)
+unsigned int FUNClh(unsigned int xi, unsigned int xf)
 {
-	int i;
+	unsigned int i;
 	i=xf^xi;
 	i&=xf;
 	return i;
 }
 /***hl***/
-int FUNChl(int xi, int xf)
+unsigned int FUNChl(unsigned int xi, unsigned int xf)
 {
-	int i;
+	unsigned int i;
 	i=xf^xi;
 	i&=xi;
 	return i;
 }
 /***diff***/
-int FUNCdiff(int xi, int xf)
+unsigned int FUNCdiff(unsigned int xi, unsigned int xf)
 {
 	return xi^xf;
 }
@@ -306,33 +312,33 @@ char* FUNCprint_binary(int number)
 	FUNCstr[c]='\0';
 	return FUNCstr;
 }
-/*
-char FUNCMM74C923_read(char c)
+/******/
+unsigned int FUNCdecimal_binary(unsigned int n)  /* Function to convert decimal to binary.*/
 {
-	char index,lh;
-	//c=*mm74c923_PIN;
-	index=0;
-	FUNC func=FUNCenable();
-	lh=func.lh(FUNCmm74c923_mem,c); // one shot low to high masked bits
-	FUNCmm74c923_mem=c;
-	if(lh&(1<<FUNCMM74C923_DATA_AVAILABLE)){
-		//*mm74c923_DDR=(1<<FUNCMM74C923_OUTPUT_ENABLE);
-		//*mm74c923_PORT&=~(1<<FUNCMM74C923_OUTPUT_ENABLE);
-		//c=*mm74c923_PIN;
-		if(c&1<<FUNCMM74C923_DATA_OUT_A) index|=1; else index&=~1;
-		if(c&1<<FUNCMM74C923_DATA_OUT_B) index|=2; else index&=~2;
-		if(c&1<<FUNCMM74C923_DATA_OUT_C) index|=4; else index&=~4;
-		if(c&1<<FUNCMM74C923_DATA_OUT_D) index|=8; else index&=~8;
-		if(c&1<<FUNCMM74C923_DATA_OUT_E) index|=16; else index&=~16;
-		if(c&1<<FUNCMM74C923_EXTRA_DATA_OUT_PIN) index|=32; else index&=~32;
-		//*mm74c923_DDR&=~(1<<FUNCMM74C923_OUTPUT_ENABLE);
-		//*mm74c923_PORT|=0xFF;
-	}else{
-		index=40;
-	}
-	return FUNCMM74C923_KEY_CODE[index];
+    unsigned int rem, i=1, binary=0;
+    while (n!=0)
+    {
+        rem=n%2;
+        n/=2;
+        binary+=rem*i;
+        i*=10;
+    }
+    return binary;
 }
-*/
+/******/
+unsigned int FUNCbinary_decimal(unsigned int n) /* Function to convert binary to decimal.*/
+
+{
+    unsigned int decimal=0, i=0, rem;
+    while (n!=0)
+    {
+        rem = n%10;
+        n/=10;
+        decimal += rem*pow(2,i);
+        ++i;
+    }
+    return decimal;
+}
 /*
 ** interrupt
 */
