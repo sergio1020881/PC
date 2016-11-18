@@ -254,7 +254,7 @@ void LILIinsert(struct lili *l, char* data)
 	ptr=(LILIDATA*)calloc(1,sizeof(LILIDATA));
 	ptr->data=data;
 	if(l->target==NULL){//INICIALIZE LIST
-		l->target=ptr
+		l->target=ptr;
 		l->target->next=l->target->back=l->target;
 		l->target->data=ptr->data;
 		/***/
