@@ -75,6 +75,10 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"play") || !strcmp(cmd,"p")){
 			printf("data:\n%s\n", l.play(&l));
 		}
+		if(!strcmp(cmd,"help") || !strcmp(cmd,"h")){
+			printf("Available commands:\n 1-quit\n 2-play\n 3-help\n 4-forward\n 5-reverse\n 6-record\n 7-remove\n 8-quant\n 9-status\n 10-replace\n 11-push\n 12-pop\n 13-non\n\n");
+			printf("This program is a simple linked list testing sample\n");
+		}
 		if(!strcmp(cmd,"forward") || !strcmp(cmd,"f")){
 			l.forward(&l);
 			printf("data:\n%s\n", l.play(&l));
