@@ -406,3 +406,4 @@ char* LILIpop(struct lili *l)
 */
 //encapsulation mandates repetition of code.
 /***EOF***/
+
