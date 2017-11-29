@@ -132,6 +132,26 @@ int main(int argc, char *argv[])
 			//l.remove(&l,number1);
 			r.remove(this(&r),number1);
 		}
+		if(!strcmp(cmd,"help") || !strcmp(cmd,"h")){
+			printf("Possible commands:\n");
+           		printf("\tquit\n");
+            		printf("\tlearn\n");
+            		printf("\thelp\n");
+            		printf("\thow many\n");
+            		printf("\tdelete all\n");
+            		printf("\tremove\n");
+            		printf("\toptions\n");
+            		printf("Page setting:\n");
+            		printf("\t1 is for global logic\n");
+            		printf("\t2 is for local logic\n");
+            		printf("\t3 is for sequencial logic\n");
+            		printf("Input procedure:\n");
+            		printf("\tProgram sequence is first input desired\n");
+			printf("\tsecond is desired ouput\n");
+			printf("\tthen select what page to store in refered as above.\n");
+			free(cmd);
+			continue;
+		}
 		if(!strcmp(cmd,"options")){
 			printf("learn or l\nquit or q\nhow many or h\ndelete all or d\nremove or r\noptions\n");
 			free(cmd);
