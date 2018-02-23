@@ -114,6 +114,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	unsigned int status=0;
 	unsigned int keyfound;
 	printf("LFSMread\n");
+	printf("r->input %d and input %d\n",r->input,input);
 	for(i1=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload eeprom data
 		if(data.page){
@@ -153,6 +154,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	switch (status){
 		case 0:
 			printf("LFSMread -> No operation\n");
+			r->input=input;//detailed capture
 			break;
 		case 1:
 			printf("LFSMread updated: %d\n",status);
@@ -162,11 +164,10 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			break;
 		case 2:
 			printf("LFSMread not existent: %d\n",status);
-			break;
-		case 3:
-			printf("LFSMread repeated reading: %d\n",status);
+			r->input=input;//detailed capture
 			break;
 		default:
+			//impossible situation
 			break;
 	}
 	return r->output;
@@ -178,6 +179,8 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 	unsigned int keyfound;
 	unsigned int status=0;
 	printf("LFSMlearn\n");
+
+	printf("r->input %d and input %d\n",r->input,input);
 	if(page>0){
 		for(i1=0;i1<r->sizeeeprom;i1++){
 			data=r->mem[i1];//upload eeprom data
