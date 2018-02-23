@@ -153,7 +153,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	}
 	switch (status){
 		case 0:
-			printf("LFSMread -> No operation\n");
+			printf("LFSMread -> No operation MEM empty\n");
 			r->input=input;//detailed capture
 			break;
 		case 1:
