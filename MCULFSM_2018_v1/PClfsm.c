@@ -87,6 +87,7 @@ LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 	//Inicialize variables
 	r.mem=eeprom;
 	r.sizeeeprom=sizeeeprom;
+	r.page=0;//page
 	r.input=0;//input
 	r.output=0;//output
 	//Function Vtable
@@ -168,6 +169,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			//impossible situation
 			break;
 	}
+	printf("input: %d\n",r->input);
 	return r->output;
 }
 /***learn***/ 
@@ -178,44 +180,41 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 	unsigned int status=0;
 	printf("\tLFSMlearn\n");
 	if(page>0){
-		for(i1=0;i1<r->sizeeeprom;i1++){
-			data=r->mem[i1];//upload eeprom data
-			if(data.page){
-				/******/
-				keyfound=(
-					(
-					data.page==1 &&
-					data.inhl==r->hl(r->input,input) && 
-					data.inlh==r->lh(r->input,input)
-					)
-						||
-					(
-					data.page==2 &&
-					data.feedback==r->output &&
-					data.inhl==r->hl(r->input,input) && 
-					data.inlh==r->lh(r->input,input)
-					)
-						||
-					(
-					data.feedback==r->output &&
-					data.input==r->input &&
-					data.inhl==r->hl(r->input,input) && 
-					data.inlh==r->lh(r->input,input)
-					)
-						||
-					(
-					r->hl(r->input,input)==0 && 
-					r->lh(r->input,input)==0	
-					)// there has to be a change
-				);//bool
-				//if there is any logic entry, that entry is taken out from lfsm input options
-				/******/
-				if(keyfound){
-					status=1;//not permitted
-					break;
+		if(r->hl(r->input,input) || r->lh(r->input,input)){
+			for(i1=0;i1<r->sizeeeprom;i1++){
+				data=r->mem[i1];//upload eeprom data
+				if(data.page){
+					/******/
+					keyfound=(
+						(
+						data.page==1 &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						)
+							||
+						(
+						data.page==2 &&
+						data.feedback==r->output &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						)
+							||
+						(
+						data.feedback==r->output &&
+						data.input==r->input &&
+						data.inhl==r->hl(r->input,input) && 
+						data.inlh==r->lh(r->input,input)
+						)
+					);//bool
+					//if there is any logic entry, that entry is taken out from lfsm input options
+					/******/
+					if(keyfound){
+						status=1;//not permitted
+						break;
+					}
 				}
+			status=2;//not existente
 			}
-		status=2;//not existente
 		}
 	}
 	switch (status){
