@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 			printf("enter output data\n");
 			free(cmd);
 			cmd=func.fltos(stdin);
-			number2=func.binary_decimal(func.getnum(cmd));
+			number2=func.getnum(cmd);
 			printf("enter page\n");
 			free(cmd);
 			cmd=func.fltos(stdin);
