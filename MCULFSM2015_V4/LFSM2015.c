@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 	free(str);
 	f.close(this(&f));
 	printf("putstringtest: %s\n", func.putstr("hello world"));
-	printf("lfsmdata size: %d\n",sizeof(LFSMDATA));
+	printf("lfsmdata size: %l\n",sizeof(LFSMDATA));
 /********************************************************/
 	printf("MAYIA\n");
 	number3=func.mayia(0,1,4);
