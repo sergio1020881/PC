@@ -4,7 +4,7 @@
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 12-08-2015 14:00
-* working on it.
+* 
 */
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
