@@ -1,1 +1,3 @@
 
+It is ready to be trialed in a MCU.
+Project testes iniciate.
