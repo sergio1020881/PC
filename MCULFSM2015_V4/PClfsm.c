@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2015/08/12 14:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2018/02/24 11:00:00 sergio Exp $
 Software: GCC
 Hardware:  
 License:  GNU General Public License        
@@ -19,7 +19,6 @@ LICENSE:
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 COMMENT:
-	working on it.
 	working pretty good, trial more.
 	page=1 is dedicated for global logic, page=2 local logic, if page>2 is sequencial program.
 	purpose is for machine programming, and encoders. General purpose algorithm.
