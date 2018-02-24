@@ -116,6 +116,7 @@ int main(int argc, char *argv[])
 			free(cmd);
 			cmd=func.fltos(stdin);
 			number3=func.getnum(cmd);
+			printf("Entered values %d %d %d\n",number1,number2,number3);
 			r.learn(this(&r),number1,number2,number3);
 		}
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"h")){
