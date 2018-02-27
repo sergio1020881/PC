@@ -114,7 +114,10 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	unsigned int i1;
 	unsigned int status=0;
 	unsigned int keyfound;
+	unsigned int HL,LH;
 	printf("\tLFSMread\n");
+	HL=r->hl(r->input,input);
+	LH=r->lh(r->input,input);
 	for(i1=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload eeprom data
 		if(data.page){
@@ -122,16 +125,16 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			switch(r->mem[i1].page){
 				case 1:
 					keyfound=(
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						);//bool
 					//it keeps track of previous input, not desired in logic
 					break;
 				case 2:
 					keyfound=(
 						data.feedback==r->output &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						);//bool
 					//it keeps track of previous input, not desired in logic
 					break;
@@ -139,8 +142,8 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 					keyfound=(
 						data.feedback==r->output &&
 						data.input==r->input &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						);//bool
 					break;
 			};
@@ -178,7 +181,10 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 	unsigned int i1;
 	unsigned int keyfound;
 	unsigned int status=0;
+	unsigned int HL,LH;
 	printf("\tLFSMlearn\n");
+	HL=r->hl(r->input,input);
+	LH=r->lh(r->input,input);
 	if(page>0){
 		if(r->hl(r->input,input) || r->lh(r->input,input)){
 			for(i1=0;i1<r->sizeeeprom;i1++){
@@ -188,22 +194,22 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 					keyfound=(
 						(
 						data.page==1 &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						)
 							||
 						(
 						data.page==2 &&
 						data.feedback==r->output &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						)
 							||
 						(
 						data.feedback==r->output &&
 						data.input==r->input &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						)
 					);//bool
 					//if there is any logic entry, that entry is taken out from lfsm input options
@@ -230,8 +236,8 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 			data.page=page;
 			data.feedback=r->output;
 			data.input=r->input;
-			data.inhl=r->hl(r->input,input);
-			data.inlh=r->lh(r->input,input);
+			data.inhl=HL;
+			data.inlh=LH;
 			data.outhl=r->hl(r->output,next);
 			data.outlh=r->lh(r->output,next);
 			data.output=next;
