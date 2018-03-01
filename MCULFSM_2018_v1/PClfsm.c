@@ -284,7 +284,10 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 	unsigned int i1;
 	unsigned int keyfound;
 	unsigned int status=0;
+	unsigned int HL,LH;
 	printf("\tLFSMremove\n");
+	HL=r->hl(r->input,input);
+	LH=r->lh(r->input,input);
 	for(i1=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload data from eeprom
 		if(data.page){
@@ -292,23 +295,23 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 			switch(data.page){
 				case 1:
 					keyfound=(
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						);//bool
 					break;
 				case 2:
 					keyfound=(
 						data.feedback==r->output &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						);//bool
 					break;
 				default:
 					keyfound=(
 						data.feedback==r->output &&
 						data.input==r->input &&
-						data.inhl==r->hl(r->input,input) && 
-						data.inlh==r->lh(r->input,input)
+						data.inhl==HL && 
+						data.inlh==LH
 						);//bool
 					break;
 			};
