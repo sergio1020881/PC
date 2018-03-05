@@ -186,7 +186,7 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 	HL=r->hl(r->input,input);
 	LH=r->lh(r->input,input);
 	if(page>0){
-		if(r->hl(r->input,input) || r->lh(r->input,input)){
+		if(HL || LH){
 			for(i1=0;i1<r->sizeeeprom;i1++){
 				data=r->mem[i1];//upload eeprom data
 				if(data.page){
