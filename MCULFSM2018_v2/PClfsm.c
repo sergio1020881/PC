@@ -112,48 +112,50 @@ LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 unsigned int LFSMread(struct lfsm *r, unsigned int input)
 {
 	unsigned int i1;
-	unsigned int status=0;
+	unsigned int status=0; //empty
 	unsigned int keyfound;
 	unsigned int HL,LH;
 	printf("\tLFSMread\n");
 	HL=r->hl(r->input,input);
 	LH=r->lh(r->input,input);
-	for(i1=0;i1<r->sizeeeprom;i1++){
-		data=r->mem[i1];//upload eeprom data
-		if(data.page){
-			/******/
-			switch(r->mem[i1].page){
-				case 1:
-					keyfound=(
-						data.inhl==HL && 
-						data.inlh==LH
-						);//bool
-					//it keeps track of previous input, not desired in logic
+	if(HL || LH){
+		for(i1=0;i1<r->sizeeeprom;i1++){
+			data=r->mem[i1];//upload eeprom data
+			if(data.page){
+				/******/
+				switch(r->mem[i1].page){
+					case 1: //read
+						keyfound=(
+							data.inhl==HL && 
+							data.inlh==LH
+							);//bool
+						//it keeps track of previous input, not desired in logic
+						break;
+					case 2: //not exist
+						keyfound=(
+							data.feedback==r->output &&
+							data.inhl==HL && 
+							data.inlh==LH
+							);//bool
+						//it keeps track of previous input, not desired in logic
+						break;
+					default:
+						keyfound=(
+							data.feedback==r->output &&
+							data.input==r->input &&
+							data.inhl==HL && 
+							data.inlh==LH
+							);//bool
+						break;
+				};
+				/******/
+				if(keyfound){
+					status=1;
 					break;
-				case 2:
-					keyfound=(
-						data.feedback==r->output &&
-						data.inhl==HL && 
-						data.inlh==LH
-						);//bool
-					//it keeps track of previous input, not desired in logic
-					break;
-				default:
-					keyfound=(
-						data.feedback==r->output &&
-						data.input==r->input &&
-						data.inhl==HL && 
-						data.inlh==LH
-						);//bool
-					break;
-			};
-			/******/
-			if(keyfound){
-				status=1;
-				break;
-			}else status=2;
+				}else status=2;
+			}
 		}
-	}
+	}else status=3; //repeat
 	switch (status){
 		case 0:
 			printf("LFSMread MEM empty\n");
@@ -166,6 +168,10 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			break;
 		case 2:
 			printf("LFSMread not existent\n");
+			r->input=input;//detailed capture
+			break;
+		case 3:
+			printf("LFSMread repeat\n");
 			r->input=input;//detailed capture
 			break;
 		default:
