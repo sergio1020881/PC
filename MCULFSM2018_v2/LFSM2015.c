@@ -4,7 +4,7 @@
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 24-02-2018 11:00
-* 
+*
 */
 // fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
 #include <stdio.h>
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 		cmd=func.fltos(stdin);
 		number1=func.getnum(cmd);
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
-			free(cmd);			
+			free(cmd);
 			goto end;
 		}
 		if(!strcmp(cmd,"learn") || !strcmp(cmd,"l")){
