@@ -3,11 +3,11 @@ Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PClfsm.c, v 0.1 2018/02/24 11:00:00 sergio Exp $
 Software: GCC
-Hardware:  
-License:  GNU General Public License        
+Hardware:
+License:  GNU General Public License
 DESCRIPTION:
 	PC emulation
-USAGE: 
+USAGE:
 NOTES:
 LICENSE:
     Copyright (C) 2015
@@ -126,7 +126,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 				switch(r->mem[i1].page){
 					case 1: //read
 						keyfound=(
-							data.inhl==HL && 
+							data.inhl==HL &&
 							data.inlh==LH
 							);//bool
 						//it keeps track of previous input, not desired in logic
@@ -134,7 +134,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 					case 2: //not exist
 						keyfound=(
 							data.feedback==r->output &&
-							data.inhl==HL && 
+							data.inhl==HL &&
 							data.inlh==LH
 							);//bool
 						//it keeps track of previous input, not desired in logic
@@ -143,7 +143,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 						keyfound=(
 							data.feedback==r->output &&
 							data.input==r->input &&
-							data.inhl==HL && 
+							data.inhl==HL &&
 							data.inlh==LH
 							);//bool
 						break;
@@ -181,7 +181,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	printf("input: %d\n",r->input);
 	return r->output;
 }
-/***learn***/ 
+/***learn***/
 unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, unsigned int page)
 {
 	unsigned int i1;
@@ -200,21 +200,21 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 					keyfound=(
 						(
 						data.page==1 &&
-						data.inhl==HL && 
+						data.inhl==HL &&
 						data.inlh==LH
 						)
 							||
 						(
 						data.page==2 &&
 						data.feedback==r->output &&
-						data.inhl==HL && 
+						data.inhl==HL &&
 						data.inlh==LH
 						)
 							||
 						(
 						data.feedback==r->output &&
 						data.input==r->input &&
-						data.inhl==HL && 
+						data.inhl==HL &&
 						data.inlh==LH
 						)
 					);//bool
@@ -296,18 +296,18 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 	for(i1=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload data from eeprom
 		if(data.page){
-			/******/	
+			/******/
 			switch(data.page){
 				case 1:
 					keyfound=(
-						data.inhl==HL && 
+						data.inhl==HL &&
 						data.inlh==LH
 						);//bool
 					break;
 				case 2:
 					keyfound=(
 						data.feedback==r->output &&
-						data.inhl==HL && 
+						data.inhl==HL &&
 						data.inlh==LH
 						);//bool
 					break;
@@ -315,7 +315,7 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 					keyfound=(
 						data.feedback==r->output &&
 						data.input==r->input &&
-						data.inhl==HL && 
+						data.inhl==HL &&
 						data.inlh==LH
 						);//bool
 					break;
@@ -417,9 +417,9 @@ unsigned int LFSMdiff(unsigned int xi, unsigned int xf)
 Reality works like this:
 keyfound=(
 	block[LFSM_feedback]==r->output &&
-	block[LFSM_mask]==mask && 
+	block[LFSM_mask]==mask &&
 	block[LFSM_maskedinput]==(mask&input)
-);//bool, block[1] is masked bits, block[1] is bits state				
+);//bool, block[1] is masked bits, block[1] is bits state
 **************
 NOTES:
 unsigned int vect[]=
