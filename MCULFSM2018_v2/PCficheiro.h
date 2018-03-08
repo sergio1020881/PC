@@ -3,9 +3,9 @@ Title:    PCFICHEIRO
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PCficheiro.h,v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
-Hardware: 
-License:  GNU General Public License 
-Usage:    
+Hardware:
+License:  GNU General Public License
+Usage: 
 LICENSE:
     Copyright (C) 2015
     This program is free software; you can redistribute it and/or modify
