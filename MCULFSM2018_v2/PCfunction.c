@@ -3,8 +3,8 @@ Title:    PCFUNCTION
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PCfunction.c, v 0.1 2015/08/01 14:00:00 sergio Exp $
 Software: GCC
-Hardware:  
-License:  GNU General Public License        
+Hardware:
+License:  GNU General Public License
 DESCRIPTION:
 	PC emulation
 USAGE:
