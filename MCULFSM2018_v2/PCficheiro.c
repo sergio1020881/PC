@@ -3,10 +3,10 @@ Title:    PCFICHEIRO
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PCficheiro.c, v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
-Hardware:  
-License:  GNU General Public License        
+Hardware:
+License:  GNU General Public License
 DESCRIPTION:  PC emulation
-USAGE: 
+USAGE:
 NOTES:
 LICENSE:
     Copyright (C) 2015
@@ -55,7 +55,7 @@ COMMENT:
 int errno;
 /*
 ** procedure and function header
-*/	
+*/
 /*
 ** Object Inicialize
 */
