@@ -1,7 +1,7 @@
 /*************************************************************************
 Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PClfsm.c, v 0.1 2018/02/24 11:00:00 sergio Exp $
+File:     $Id: PClfsm.c, v 0.1 2018/08/16 11:00:00 sergio Exp $
 Software: GCC
 Hardware:
 License:  GNU General Public License
@@ -10,7 +10,7 @@ DESCRIPTION:
 USAGE:
 NOTES:
 LICENSE:
-    Copyright (C) 2015
+    Copyright (C) 2018
     This program is free software; you can redistribute it and/or modify
     it under the consent of the code developer, in case of commercial use
     need licence.
@@ -20,7 +20,7 @@ LICENSE:
     GNU General Public License for more details.
 COMMENT:
 	working pretty good, trial more.
-	page=1 is dedicated for global logic, page>=2 local logic.
+	page=1 is dedicated for Global logic, page>=2 Local logic.
 *************************************************************************/
 /*
 ** library
@@ -111,7 +111,7 @@ LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 unsigned int LFSMread(struct lfsm *r, unsigned int input)
 {
 	unsigned int i1;
-	unsigned int status=0; //empty
+	unsigned int status=0;
 	unsigned int HL,LH;
 	printf("-\tLFSMread\n");
 	HL=r->hl(r->input,input);
@@ -119,47 +119,56 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	if(HL || LH){
 		for(i1=0;i1<r->sizeeeprom;i1++){
 			data=r->mem[i1];//upload eeprom data
-			if(data.page){
-				/******/
-				switch(data.page){
-					case 1: //read
-						if( data.inhl==HL && data.inlh==LH ){
-						    //Global logic
-                            i1=r->sizeeeprom;
-                            status=1;
-                        }
-						break;
-					default:
-						if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
-						    //Local logic
-                            i1=r->sizeeeprom;
-                            status=2;
-                        }
-						break;
-				};
-			}else
-                status=3;
+			switch(data.page){
+                case 0:
+                    status=3;
+                    break;
+				case 1:
+				    if( data.inhl==HL && data.inlh==LH ){
+				        //Global logic
+                        i1=r->sizeeeprom;
+                        status=1;
+                    }else
+                        status=4;
+				    break;
+				default:
+					if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
+						//Local logic
+                        i1=r->sizeeeprom;
+                        status=2;
+                    }else
+                        status=5;
+				    break;
+			};
 		}
 	}
 	switch (status){
 		case 0:
-			printf("LFSMread: No entry\n");
+			printf("LFSMread: [0] No entry\n");
 			r->input=input;//detailed capture
 			break;
 		case 1:
-            printf("LFSMread: Global logic\n");
+            printf("LFSMread: [1] Global logic\n");
 			r->page=data.page;
 			r->input=input;//detailed capture
 			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
 			break;
 		case 2:
-			printf("LFSMread: Local logic\n");
+			printf("LFSMread: [2] Local logic\n");
 			r->page=data.page;
 			r->input=input;//detailed capture
 			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
 			break;
 		case 3:
-			printf("LFSMread: Entry Not recognized\n");
+			printf("LFSMread: [3] Entry Not recognized\n");
+			r->input=input;//detailed capture
+			break;
+        case 4:
+			printf("LFSMread: [4] Entry Not recognized\n");
+			r->input=input;//detailed capture
+			break;
+        case 5:
+			printf("LFSMread: [5] Entry Not recognized\n");
 			r->input=input;//detailed capture
 			break;
 		default:
@@ -377,19 +386,3 @@ unsigned int LFSMdiff(unsigned int xi, unsigned int xf)
 ** interrupt
 */
 /***EOF***/
-/***Comments**
-Reality works like this:
-keyfound=(
-	block[LFSM_feedback]==r->output &&
-	block[LFSM_mask]==mask &&
-	block[LFSM_maskedinput]==(mask&input)
-);//bool, block[1] is masked bits, block[1] is bits state
-**************
-NOTES:
-unsigned int vect[]=
-{
-mask,mask&pinstate,feedback,output,
-};
-**************
-try to make more depth choice of database research or option selections.
-*************/
