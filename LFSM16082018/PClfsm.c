@@ -73,7 +73,7 @@ unsigned int LFSMdeleteall(struct lfsm *r);
 LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 {
 	/***Local Variable***/
-	printf("\tLFSMenable\n");
+	printf("-\tLFSMenable\n");
 	/***Local Function Header***/
 	unsigned int LFSMgetoutput(struct lfsm *r);
 	void LFSMsetoutput(struct lfsm *r, unsigned int output);
@@ -118,27 +118,27 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	LH=r->lh(r->input,input);
 	if(HL || LH){
 		for(i1=0;i1<r->sizeeeprom;i1++){
-			data=r->mem[i1];//upload eeprom data
-			switch(data.page){
-                	case 0:
-                    		status=3;
-                    		break;
-			case 1:
-				if( data.inhl==HL && data.inlh==LH ){
-					//Global logic
-					i1=r->sizeeeprom;
-                        		status=1;
-                    		}else
-                        		status=4;
-				 break;
-			default:
-				if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
-					//Local logic
-                       			 i1=r->sizeeeprom;
-                        		status=2;
-                    		}else
-                        		status=5;
-				break;
+            data=r->mem[i1];//upload eeprom data
+            switch(data.page){
+                case 0:
+                    status=3;
+                    break;
+			    case 1:
+			        if( data.inhl==HL && data.inlh==LH ){
+                        //Global logic
+                        i1=r->sizeeeprom;
+                        status=1;
+                    }else
+                        status=4;
+				    break;
+				default:
+					if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
+						//Local logic
+                        i1=r->sizeeeprom;
+                        status=2;
+                    }else
+                        status=5;
+				    break;
 			};
 		}
 	}
@@ -148,7 +148,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			r->input=input;//detailed capture
 			break;
 		case 1:
-           		printf("LFSMread: [1] Global logic\n");
+            printf("LFSMread: [1] Global logic\n");
 			r->page=data.page;
 			r->input=input;//detailed capture
 			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
@@ -190,27 +190,26 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 	if(page>0){
 		if(HL || LH){
 			for(i1=0;i1<r->sizeeeprom;i1++){
-				data=r->mem[i1];//upload eeprom data
+				data=r->mem[i1];
 				if(data.page){
-					/******/
 					if((data.page==1 && data.inhl==HL && data.inlh==LH) || (data.feedback==r->output && data.inhl==HL && data.inlh==LH)){
-						status=1;//not permitted
+						status=1;
 						break;
 					}
 				}
-			status=2;//not existente
+			    status=2;
 			}
 		}
 	}
 	switch (status){
 		case 0:
-			printf("LFSMlearn: No Operation.\n");
+			printf("LFSMlearn: [0] No Operation.\n");
 			break;
 		case 1:
-			printf("LFSMlearn: not permitted.\n");
+			printf("LFSMlearn: [1] not permitted.\n");
 			break;
 		case 2:
-			printf("LFSMlearn: going to try add new program.\n");
+			printf("LFSMlearn: [2] going to try add new program.\n");
 			//prepare data to write to eeprom
 			data.page=page;
 			data.feedback=r->output;
@@ -225,16 +224,16 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 				if(r->mem[i1].page==EMPTY){
 					//write data to eeprom
 					r->mem[i1]=data;
-					status=3;//created
+					status=3;
 					break;
 				}
-				status=4;//not possible
+				status=4;
 			}
 		case 3:
-			printf("LFSMlearn: succesfully added.\n");
+			printf("LFSMlearn: [3] succesfully added.\n");
 			break;
 		case 4:
-			printf("LFSMlearn: memmory full.\n");
+			printf("LFSMlearn: [4] memmory full.\n");
 			break;
 		default:
 			break;
@@ -303,15 +302,15 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 	}
 	switch (status){
 		case 0:
-			printf("LFSMremove: No operation\n");
+			printf("LFSMremove: [0] No operation\n");
 			break;
 		case 1:
-			printf("LFSMremove: Removed: %d\n",status);
+			printf("LFSMremove: [1] Removed: %d\n",status);
 			//descativate memory space, write to eeprom empty space.
 			r->mem[i1].page=EMPTY;
 			break;
 		case 2:
-			printf("LFSMremove: Not existent: %d\n",status);
+			printf("LFSMremove: [2] Not existent: %d\n",status);
 			break;
 		default:
 			break;
@@ -335,26 +334,26 @@ unsigned int LFSMdeleteall(struct lfsm *r)
 		}
 	}
 	r->output=0;
-	printf("Done\n");
+	printf("LFSMdeleteall: Done\n");
 	return status;
 }
 /***get***/
 unsigned int LFSMgetoutput(struct lfsm *r)
 {
-	printf("-\tLFSMgetoutput\n");
+	//printf("-\tLFSMgetoutput\n");
 	return r->output;
 }
 /***set***/
 void LFSMsetoutput(struct lfsm *r, unsigned int output)
 {
-	printf("-\tLFSMsetoutput\n");
+	//printf("-\tLFSMsetoutput\n");
 	r->output=output;
 }
 /***lh***/
 unsigned int LFSMlh(unsigned int xi, unsigned int xf)
 {
 	unsigned int i;
-	printf("-\tLFSMlh\n");
+	//printf("-\tLFSMlh\n");
 	i=xf^xi;
 	i&=xf;
 	return i;
@@ -363,7 +362,7 @@ unsigned int LFSMlh(unsigned int xi, unsigned int xf)
 unsigned int LFSMhl(unsigned int xi, unsigned int xf)
 {
 	unsigned int i;
-	printf("-\tLFSMhl\n");
+	//printf("-\tLFSMhl\n");
 	i=xf^xi;
 	i&=xi;
 	return i;
@@ -371,7 +370,7 @@ unsigned int LFSMhl(unsigned int xi, unsigned int xf)
 /***output***/
 unsigned int LFSMoutputcalc(unsigned int feedback, unsigned int hl, unsigned int lh)
 {
-	printf("-\tLFSMoutputcalc\n");
+	//printf("-\tLFSMoutputcalc\n");
 	feedback|=lh;
 	feedback&=~hl;
 	return feedback;
@@ -379,7 +378,7 @@ unsigned int LFSMoutputcalc(unsigned int feedback, unsigned int hl, unsigned int
 /***diff***/
 unsigned int LFSMdiff(unsigned int xi, unsigned int xf)
 {
-	printf("-\tLFSMdiff\n");
+	//printf("-\tLFSMdiff\n");
 	return xi^xf;
 }
 /*
