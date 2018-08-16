@@ -175,7 +175,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			//impossible situation
 			break;
 	}
-	printf("input: %d\n",r->input);
+	//printf("input: %d\n",r->input);
 	return r->output;
 }
 /***learn***/
