@@ -120,25 +120,25 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 		for(i1=0;i1<r->sizeeeprom;i1++){
 			data=r->mem[i1];//upload eeprom data
 			switch(data.page){
-                case 0:
-                    status=3;
-                    break;
-				case 1:
-				    if( data.inhl==HL && data.inlh==LH ){
-				        //Global logic
-                        i1=r->sizeeeprom;
-                        status=1;
-                    }else
-                        status=4;
-				    break;
-				default:
-					if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
-						//Local logic
-                        i1=r->sizeeeprom;
-                        status=2;
-                    }else
-                        status=5;
-				    break;
+                	case 0:
+                    		status=3;
+                    		break;
+			case 1:
+				if( data.inhl==HL && data.inlh==LH ){
+					//Global logic
+					i1=r->sizeeeprom;
+                        		status=1;
+                    		}else
+                        		status=4;
+				 break;
+			default:
+				if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
+					//Local logic
+                       			 i1=r->sizeeeprom;
+                        		status=2;
+                    		}else
+                        		status=5;
+				break;
 			};
 		}
 	}
@@ -148,7 +148,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			r->input=input;//detailed capture
 			break;
 		case 1:
-            printf("LFSMread: [1] Global logic\n");
+           		printf("LFSMread: [1] Global logic\n");
 			r->page=data.page;
 			r->input=input;//detailed capture
 			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
