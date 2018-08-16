@@ -98,10 +98,13 @@ int main(int argc, char *argv[])
 		printf("write string with number\nor instruction\n");
 		cmd=func.fltos(stdin);
 		number1=func.getnum(cmd);
+        printf("Entered numeral value: %d\n",number1);
+        
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			free(cmd);
 			goto end;
 		}
+
 		if(!strcmp(cmd,"learn") || !strcmp(cmd,"l")){
 			printf("enter input\n");
 			free(cmd);
@@ -119,12 +122,15 @@ int main(int argc, char *argv[])
 			printf("Entered values %d %d %d\n",number1,number2,number3);
 			r.learn(this(&r),number1,number2,number3);
 		}
+
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
-			printf("there are %d programmed.\n",r.quant(this(&r)));
+			printf("------ %d ------\n",r.quant(this(&r)));
 		}
+
 		if(!strcmp(cmd,"delete all") || !strcmp(cmd,"d")){
 			r.deleteall(this(&r));
 		}
+
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"r")){
 			printf("enter input to remove\n");
 			free(cmd);
@@ -133,6 +139,7 @@ int main(int argc, char *argv[])
 			//l.remove(&l,number1);
 			r.remove(this(&r),number1);
 		}
+
 		if(!strcmp(cmd,"help") || !strcmp(cmd,"h")){
 			printf("Possible commands:\n");
            		printf("\tquit - q\n");
@@ -144,8 +151,7 @@ int main(int argc, char *argv[])
             		printf("\toptions\n");
             		printf("Page setting:\n");
             		printf("\t1 is for global logic\n");
-            		printf("\t2 is for local logic\n");
-            		printf("\t3 is for sequencial logic\n");
+            		printf("\tAbove 1 is for local logic\n");
             		printf("Input procedure:\n");
             		printf("\tProgram sequence is first input desired\n");
 			printf("\tsecond is desired ouput\n");
@@ -153,12 +159,14 @@ int main(int argc, char *argv[])
 			free(cmd);
 			continue;
 		}
+
 		if(!strcmp(cmd,"options") || !strcmp(cmd,"o")){
 			printf("learn or l\nquit or q\nhow many or n\ndelete all or d\nremove or r\noptions\n");
 			free(cmd);
 		}
+
 		printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(this(&r),number1)));
-	free(cmd);
+	    free(cmd);
 	}
 	/******/
 	end:
