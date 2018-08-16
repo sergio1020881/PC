@@ -20,7 +20,7 @@ LICENSE:
     GNU General Public License for more details.
 COMMENT:
 	working pretty good, trial more.
-	page=1 is dedicated for global logic, page>=2 local logic, if page>2.
+	page=1 is dedicated for global logic, page>=2 local logic.
 *************************************************************************/
 /*
 ** library
