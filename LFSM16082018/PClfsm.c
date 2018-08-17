@@ -220,7 +220,7 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 			data.outlh=r->lh(r->output,next);
 			printf("%d  %d  %d  %d  %d  %d  %d\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
 			for(i1=0;i1<r->sizeeeprom;i1++){
-				//search empty space em memory
+				//search empty space in memory
 				if(r->mem[i1].page==EMPTY){
 					//write data to eeprom
 					r->mem[i1]=data;
@@ -258,8 +258,7 @@ unsigned int LFSMquant(struct lfsm *r)
 /***remove***/
 unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 {
-	unsigned int i1;
-	unsigned int keyfound;
+	unsigned int k,i1;
 	unsigned int status=0;
 	unsigned int HL,LH;
 	printf("-\tLFSMremove\n");
@@ -267,38 +266,25 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 	LH=r->lh(r->input,input);
 	for(i1=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload data from eeprom
-		if(data.page){
-			/******/
-			switch(data.page){
-				case 1:
-					keyfound=(
-						data.inhl==HL &&
-						data.inlh==LH
-						);//bool
-					break;
-				case 2:
-					keyfound=(
-						data.feedback==r->output &&
-						data.inhl==HL &&
-						data.inlh==LH
-						);//bool
-					break;
-				default:
-					keyfound=(
-						data.feedback==r->output &&
-						data.input==r->input &&
-						data.inhl==HL &&
-						data.inlh==LH
-						);//bool
-					break;
-			};
-			/******/
-			if(keyfound){
-				status=1;//remove
+		switch(data.page){
+            case 0:
+                status=2;
+                break;
+	        case 1:
+			    if(data.inhl==HL && data.inlh==LH){
+                    status=1;
+                    k=i1;
+                    i1=r->sizeeeprom;
+                }
+                break;
+		    default:
+				if(data.feedback==r->output && data.inhl==HL && data.inlh==LH){
+                    status=1;
+                    k=i1;
+                    i1=r->sizeeeprom;
+                }
 				break;
-			}
-		}
-		status=2;//does not exist
+		};
 	}
 	switch (status){
 		case 0:
@@ -307,7 +293,7 @@ unsigned int LFSMremove(struct lfsm *r, unsigned int input)
 		case 1:
 			printf("LFSMremove: [1] Removed: %d\n",status);
 			//descativate memory space, write to eeprom empty space.
-			r->mem[i1].page=EMPTY;
+			r->mem[k].page=EMPTY;
 			break;
 		case 2:
 			printf("LFSMremove: [2] Not existent: %d\n",status);
