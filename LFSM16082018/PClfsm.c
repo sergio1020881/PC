@@ -249,7 +249,7 @@ unsigned int LFSMquant(struct lfsm *r)
 	for(i1=0,programmed=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload data from eeprom
 		if(data.page!=EMPTY){
-			printf("page:%d feedback:%d  input:%d  inhl:%d  inlh:%d  outhl:%d  outlh:%d\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
+			printf("page:%d feedback:%d  input:%d : [ inhl:%d  inlh:%d ] -- [ outhl:%d  outlh:%d ]\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
 			programmed++;
 		}
 	}
