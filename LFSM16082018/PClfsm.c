@@ -55,6 +55,7 @@ COMMENT:
 ** variable
 */
 LFSMDATA data;
+unsigned int x;
 /*
 unsigned int mem[]=
 {pin state, feedback, pin mask, output}
@@ -67,6 +68,7 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 unsigned int LFSMquant(struct lfsm *r);
 unsigned int LFSMremove(struct lfsm *r, unsigned int input);
 unsigned int LFSMdeleteall(struct lfsm *r);
+unsigned int LFSMvalidate(struct lfsm *r, unsigned int n);
 /*
 ** Object Inicialize
 */
@@ -86,6 +88,7 @@ LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 	//Inicialize variables
 	r.mem=eeprom;
 	r.sizeeeprom=sizeeeprom;
+    x=0;
 	r.page=0;//page
 	r.input=0;//input
 	r.output=0;//output
@@ -101,6 +104,7 @@ LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom)
 	r.hl=LFSMhl;
 	r.outputcalc=LFSMoutputcalc;
 	r.diff=LFSMdiff;
+    r.validate=LFSMvalidate;
 	/******/
 	return r;
 }
@@ -249,7 +253,7 @@ unsigned int LFSMquant(struct lfsm *r)
 	for(i1=0,programmed=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload data from eeprom
 		if(data.page!=EMPTY){
-			printf("page:%d feedback:%d  input:%d : [ inhl:%d  inlh:%d ] -- [ outhl:%d  outlh:%d ]\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
+			printf("page:%d feedback:%d input:%d : [ inhl:%d inlh:%d ] -- [ outhl:%d  outlh:%d ]\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
 			programmed++;
 		}
 	}
@@ -367,7 +371,17 @@ unsigned int LFSMdiff(unsigned int xi, unsigned int xf)
 	//printf("-\tLFSMdiff\n");
 	return xi^xf;
 }
+unsigned int LFSMvalidate(struct lfsm *r, unsigned int n)
+{
+    unsigned int k;
+    k=r->input | (n & (1<<x));
+    if(x>7)
+        x=0;
+    x++;
+    return k;
+}
 /*
 ** interrupt
 */
 /***EOF***/
+

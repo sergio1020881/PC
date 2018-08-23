@@ -56,6 +56,7 @@ struct lfsm{
 	unsigned int (*hl)(unsigned int xi, unsigned int xf);
 	unsigned int (*outputcalc)(unsigned int feeddback, unsigned int hl,unsigned int lh);
 	unsigned int (*diff)(unsigned int xi, unsigned int xf);
+    unsigned int (*validate)(struct lfsm *r, unsigned int n);
 };
 typedef struct lfsm LFSM;
 /*

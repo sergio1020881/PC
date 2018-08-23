@@ -49,6 +49,7 @@ LFSMDATA MEM[128];
 {}
 };
 */
+
 /*****Procedure and Function*****/
 void* this(void* address){
 	return address;
@@ -68,7 +69,9 @@ int main(int argc, char *argv[])
 	unsigned int number3;
 	unsigned int number1;
 	unsigned int number2;
+    unsigned int value;
 	char* str=NULL;
+    //unsigned int count=0;
 	//char* token[10];
 /*******************************************************/
 	FUNC func=FUNCenable();
@@ -95,11 +98,10 @@ int main(int argc, char *argv[])
 	/*******************************************************************************************/
 	// Cycle
 	while(TRUE){
-		printf("write string with number\nor instruction\n");
+		printf("write string with number or instruction : ");
 		cmd=func.fltos(stdin);
 		number1=func.getnum(cmd);
-        printf("Entered numeral value: %d\n",number1);
-        
+        //printf("Entered numeral value: %d\n",number1);
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			free(cmd);
 			goto end;
@@ -164,8 +166,12 @@ int main(int argc, char *argv[])
 			printf("learn or l\nquit or q\nhow many or n\ndelete all or d\nremove or r\noptions\n");
 			free(cmd);
 		}
-
-		printf("->->->->->->->->->->->->->->-> %s \n",func.print_binary(r.read(this(&r),number1)));
+        //number1
+        //r.validate(&r,number1)
+        //for(count=0;count<8;count++){
+            value=r.read(this(&r),number1);
+        //}
+        printf("[   %s   ] \n",func.print_binary(value));
 	    free(cmd);
 	}
 	/******/
