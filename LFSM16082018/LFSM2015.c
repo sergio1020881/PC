@@ -33,6 +33,7 @@
 //#include"ssfiledescriptor.h"
 /***Definition and Macros***/
 #define TRUE 1
+#define ZERO 0
 #define EMPTY 0 //on a pc vectores are at zero therefore empty is zero.
 #define HIGH 1
 #define high 1
@@ -70,6 +71,7 @@ int main(int argc, char *argv[])
 	unsigned int number1;
 	unsigned int number2;
     unsigned int value;
+    unsigned int status=ZERO;
 	char* str=NULL;
     //unsigned int count=0;
 	//char* token[10];
@@ -123,6 +125,7 @@ int main(int argc, char *argv[])
 			number3=func.getnum(cmd);
 			printf("Entered values %d %d %d\n",number1,number2,number3);
 			r.learn(this(&r),number1,number2,number3);
+            status=1;
 		}
 
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
@@ -166,12 +169,15 @@ int main(int argc, char *argv[])
 			printf("learn or l\nquit or q\nhow many or n\ndelete all or d\nremove or r\noptions\n");
 			free(cmd);
 		}
-        //number1
-        //r.validate(&r,number1)
-        //for(count=0;count<8;count++){
+        
+        if(status)
+            status=ZERO;
+        else{
             value=r.read(this(&r),number1);
-        //}
-        printf("[   %s   ] \n",func.print_binary(value));
+            printf("[   %s   ] \n",func.print_binary(value));
+        }
+            
+            
 	    free(cmd);
 	}
 	/******/
