@@ -124,16 +124,21 @@ int main(int argc, char *argv[])
 			cmd=func.fltos(stdin);
 			number3=func.getnum(cmd);
 			printf("Entered values %d %d %d\n",number1,number2,number3);
+            free(cmd);
 			r.learn(this(&r),number1,number2,number3);
-            status=1;
+            continue;
 		}
 
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
 			printf("------ %d ------\n",r.quant(this(&r)));
+            free(cmd);
+            continue;
 		}
 
 		if(!strcmp(cmd,"delete all") || !strcmp(cmd,"d")){
 			r.deleteall(this(&r));
+            free(cmd);
+            continue;
 		}
 
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"r")){
@@ -143,6 +148,8 @@ int main(int argc, char *argv[])
 			number1=func.getnum(cmd);
 			//l.remove(&l,number1);
 			r.remove(this(&r),number1);
+            free(cmd);
+            continue;
 		}
 
 		if(!strcmp(cmd,"help") || !strcmp(cmd,"h")){
@@ -158,7 +165,7 @@ int main(int argc, char *argv[])
             		printf("\t1 is for global logic\n");
             		printf("\tAbove 1 is for local logic\n");
             		printf("Input procedure:\n");
-            		printf("\tProgram sequence is first input desired\n");
+            		printf("\tProgram sequence is first desired input\n");
 			printf("\tsecond is desired ouput\n");
 			printf("\tthen select what page to store in refered as above.\n");
 			free(cmd);
@@ -168,17 +175,13 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"options") || !strcmp(cmd,"o")){
 			printf("learn or l\nquit or q\nhow many or n\ndelete all or d\nremove or r\noptions\n");
 			free(cmd);
+            continue;
 		}
-        
-        if(status)
-            status=ZERO;
-        else{
+        if(status==ZERO){
             value=r.read(this(&r),number1);
             printf("[   %s   ] \n",func.print_binary(value));
-        }
-            
-            
-	    free(cmd);
+            free(cmd);
+        } 
 	}
 	/******/
 	end:
