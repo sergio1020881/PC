@@ -149,7 +149,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	switch (status){
 		case 0:
 			printf("LFSMread: [0] No entry\n");
-			r->input=input;//detailed capture
+			//r->input=input;//detailed capture
 			break;
 		case 1:
             printf("LFSMread: [1] Global logic\n");
@@ -164,15 +164,17 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
 			break;
 		case 3:
-			printf("LFSMread: [3] Entry Not recognized\n");
+			printf("LFSMread: [3] Memmory empty\n");
 			r->input=input;//detailed capture
 			break;
         case 4:
 			printf("LFSMread: [4] Entry Not recognized\n");
+            //Give warning or block waiting for instructions
 			r->input=input;//detailed capture
 			break;
         case 5:
 			printf("LFSMread: [5] Entry Not recognized\n");
+            //Give warning or block waiting for instructions
 			r->input=input;//detailed capture
 			break;
 		default:
@@ -384,4 +386,3 @@ unsigned int LFSMvalidate(struct lfsm *r, unsigned int n)
 ** interrupt
 */
 /***EOF***/
-
