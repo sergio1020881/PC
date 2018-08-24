@@ -121,27 +121,28 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 	HL=r->hl(r->input,input);
 	LH=r->lh(r->input,input);
 	if(HL || LH){
+        status=3;
 		for(i1=0;i1<r->sizeeeprom;i1++){
             data=r->mem[i1];//upload eeprom data
             switch(data.page){
                 case 0:
-                    status=3;
+                    //status=3;
                     break;
 			    case 1:
 			        if( data.inhl==HL && data.inlh==LH ){
                         //Global logic
                         i1=r->sizeeeprom;
                         status=1;
-                    }else
-                        status=4;
+                    }//else
+                        //status=4;
 				    break;
 				default:
 					if( data.feedback==r->output && data.inhl==HL && data.inlh==LH ){
 						//Local logic
                         i1=r->sizeeeprom;
                         status=2;
-                    }else
-                        status=5;
+                    }//else
+                        //status=5;
 				    break;
 			};
 		}
@@ -167,16 +168,16 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			printf("LFSMread: [3] Entry Not recognized\n");
 			r->input=input;//detailed capture
 			break;
-        case 4:
-			printf("LFSMread: [4] Entry Not recognized\n");
+        //case 4:
+			//printf("LFSMread: [4] Entry Not recognized\n");
             //Give warning or block waiting for instructions
-			r->input=input;//detailed capture
-			break;
-        case 5:
-			printf("LFSMread: [5] Entry Not recognized\n");
+			//r->input=input;//detailed capture
+			//break;
+        //case 5:
+			//printf("LFSMread: [5] Entry Not recognized\n");
             //Give warning or block waiting for instructions
-			r->input=input;//detailed capture
-			break;
+			//r->input=input;//detailed capture
+			//break;
 		default:
 			//impossible situation
 			break;
@@ -212,10 +213,10 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 			printf("LFSMlearn: [0] No Operation.\n");
 			break;
 		case 1:
-			printf("LFSMlearn: [1] not permitted.\n");
+			printf("LFSMlearn: [1] Not permitted.\n");
 			break;
 		case 2:
-			printf("LFSMlearn: [2] going to try add new program.\n");
+			printf("LFSMlearn: [2] Going to try add new program.\n");
 			//prepare data to write to eeprom
 			data.page=page;
 			data.feedback=r->output;
@@ -239,7 +240,7 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 			printf("LFSMlearn: [3] succesfully added.\n");
 			break;
 		case 4:
-			printf("LFSMlearn: [4] memmory full.\n");
+			printf("LFSMlearn: [4] Memmory full.\n");
 			break;
 		default:
 			break;
