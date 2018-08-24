@@ -164,7 +164,7 @@ unsigned int LFSMread(struct lfsm *r, unsigned int input)
 			r->output=r->outputcalc(data.feedback,data.outhl,data.outlh);
 			break;
 		case 3:
-			printf("LFSMread: [3] Memmory empty\n");
+			printf("LFSMread: [3] Entry Not recognized\n");
 			r->input=input;//detailed capture
 			break;
         case 4:
