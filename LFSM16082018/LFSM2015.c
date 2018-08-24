@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 	while(TRUE){
 		printf("write string with number or instruction : ");
 		cmd=func.fltos(stdin);
-		number1=func.getnum(cmd);
+		number1=func.getnumv2(cmd);
         //printf("Entered numeral value: %d\n",number1);
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			free(cmd);
