@@ -9,6 +9,7 @@ DESCRIPTION:
 	PC emulation
 USAGE:
 NOTES:
+	Soon this project will not be available in github.
 LICENSE:
     Copyright (C) 2018
     This program is free software; you can redistribute it and/or modify
