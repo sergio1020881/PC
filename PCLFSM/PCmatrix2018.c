@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 	*** Local variables
 	*/
 	char *cmd;
+    unsigned int learn;
     unsigned int block;
 	unsigned int line;
 	unsigned int column;
@@ -72,6 +73,7 @@ int main(int argc, char *argv[])
     line=0; //preset
     column=0; //preset
     nvalue=value=16; //preset
+    learn=0;
     for(i=0;i<4096;mem[i]=15,i++); //preset vector
     
     FUNC func=FUNCenable();
@@ -84,27 +86,38 @@ int main(int argc, char *argv[])
 		    cmd=func.fltos(stdin);
 		    value=func.getnumv2(cmd);
             // exit status
+            if(!strcmp(cmd,"on") || !strcmp(cmd,"ok")){
+                learn=1;
+                continue;
+            }  
+            if(!strcmp(cmd,"off") || !strcmp(cmd,"nok")){
+                learn=0;
+                continue;
+            }
 		    if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			    free(cmd);
 			    goto end;
 		    }
             if(value<16)
                 break;
+            printf("------ %d ------\n",block);
         }
         
-        if(value==nvalue)
+        if(value==nvalue){
+            printf("------ %d ------\n",block);
             continue;
-
+        }
+        
         line=func.lh(nvalue,value);
         column=func.hl(nvalue,value);
         
         nvalue=value;
         
-
+        
         address=block*lines*columns+lines*line+column;
-
-
-		if(mem[address]==15){
+        
+		
+        if(learn>0 && mem[address]==15){
             while(TRUE){
 			    printf("enter output data :\n");
 			    free(cmd);
@@ -118,15 +131,16 @@ int main(int argc, char *argv[])
                 if(value<16)
                     break;
             }
-
-            block=mem[address]=value;
+            mem[address]=value;
+		}
+        
+        if(mem[address]==15)
             printf("------ %d ------\n",block);
-            
-
-		}else{
+        else{
             block=mem[address];
             printf("------ %d ------\n",block);
         }
+        
         continue;
 	/******/
 	end:
