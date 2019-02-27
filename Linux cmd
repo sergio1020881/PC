@@ -35,3 +35,35 @@ solved !
 /**************************************************************************/
 sudo apt install hardinfo
 /**************************************************************************/
+sudo add-apt-repository ppa:c.falco/mame
+sudo apt-get update
+sudo apt-get install mame
+mame
+cd ~/.mame && mame -cc
+gedit ~/.mame/mame.ini
+mkdir  ~/.mame/nvram memcard roms inp comments sta snap diff
+sudo nautilus /usr/local/share/games/mame/roms
+/**************************************************************************/
+wget https://download.01.org/gfx/RPM-GPG-GROUP-KEY-ilg
+sudo apt-key add RPM-GPG-GROUP-KEY-ilg
+sudo apt-get update
+sudo cp /etc/lsb-release /etc/lsb-release.bk
+sudo vim /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=17.04
+DISTRIB_CODENAME=zesty
+DISTRIB_DESCRIPTION="Ubuntu 17.04"
+sudo rm -f /etc/lsb-release
+sudo cp /etc/lsb-release.bk /etc/lsb-release
+
+wget --no-check-certificate https://download.01.org/gfx/RPM-GPG-GROUP-KEY-ilg;sudo apt-key add RPM-GPG-GROUP-KEY-ilg
+sudo apt-get install ttf-ancient-fonts aptdaemon
+wget -O intel32.deb https://download.01.org/gfx/ubuntu/16.10/main/pool/main/i/intel-graphics-update-tool/intel-graphics-update-tool_2.0.4_i386.deb
+sudo dpkg -i intel32.deb
+sudo apt-get -f install
+intel-linux-graphics-update-tool
+solved !
+/***************************************************************************/
+
+
+
