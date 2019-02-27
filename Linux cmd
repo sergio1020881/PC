@@ -1,0 +1,37 @@
+/***************************************************************************/
+To download youtube videos via Linux CMD LINE:
+
+sudo wget https://yt-dl.org/downloads/latest/youtube-dl -O/usr/local/bin/youtube-dl
+
+sudo chmod a+rx /usr/local/bin/youtube-dl
+
+example:
+sudo youtube-dl https://youtu.be/shoVsQhou-8 --verbose
+
+youtube-dl -F <video_url>
+youtube-dl -f 37<video_url>
+youtube-dl --list-subs <video_url>
+youtube-dl --all-subs --skip-download <video_url>
+youtube-dl -cit <playlist_url>
+youtube-dl -x <video_url>
+youtube-dl -x --audio-format mp3 <video_url>
+solved !
+/*************************************************************************/
+smbtree -b -N
+sudo apt-get install cifs-utils
+smbtree -d3 -N
+sudo service smbd status
+sudo service nmbd status
+sudo service smbd start
+sudo service nmbd start
+hostname
+sudo apt-get install nmap
+
+Edit /etc/samba/smb.conf and right under the workgroup = WORKGROUP line add this one:
+Code: Select all
+client max protocol = NT1
+Then reboot.
+solved !
+/**************************************************************************/
+sudo apt install hardinfo
+/**************************************************************************/
