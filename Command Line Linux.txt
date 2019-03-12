@@ -33,12 +33,11 @@ client max protocol = NT1
 Then reboot.
 solved !
 /**************************************************************************/
-sudo apt install hardinfo
-/**************************************************************************/
 sudo add-apt-repository ppa:c.falco/mame
 sudo apt-get update
 sudo apt-get install mame
 mame
+mkdir ~/.mame
 cd ~/.mame && mame -cc
 gedit ~/.mame/mame.ini
 mkdir  ~/.mame/nvram memcard roms inp comments sta snap diff
@@ -81,5 +80,23 @@ Identity added: /home/computa/Documents/GITHUB/github_rsa_key (/home/computa/Doc
 Then go to the .pub file copy its contente to SSH and GPG key box.
 solved !
 /*************************************************************************/
+wget -dr <URL> --no-if-modified-since --waitretry=3 --tries=10 --ignore-length --no-cookies --no-directories --verbose
+/**************************************************************************/
+benchmark
+for i in ${PATH//:/ }; do ls $i; done | sort | uniq | wc -l
+curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
+sudo apt -y install sysbench
+sysbench cpu –cpu-max-prime=2000 run
+/**************************************************************************/
+sudo apt-get install texlive-full
+
+/**************************************************************************/
+Fomat a floppy:
+sudo mkfs.vfat -F 32 /dev/fd0
+sudo mkfs.vfat /dev/fd0
+sudo mkfs.vfat -lc -n FLOPPY /dev/fd0 -v
+
+/***************************************************************************/
+
 
 

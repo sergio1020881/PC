@@ -29,7 +29,7 @@
 // personal library
 #include"PCfunction.h"
 #include"PClfsm.h"
-#include"PCficheiro.h"
+//#include"PCficheiro.h"
 //#include"ssfiledescriptor.h"
 /***Definition and Macros***/
 #define TRUE 1

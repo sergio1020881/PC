@@ -14,7 +14,7 @@ ASSEMBLY=-S
 LIBMATH=-lm
 #LDLIBS=-lefence -pthread
 ##VARIABLES AND LISTS
-PROJECT=out
+PROJECT=out.exe
 HFILES=$(wildcard *.h)
 CFILES=$(wildcard *.c)
 
