@@ -95,6 +95,8 @@ Fomat a floppy:
 sudo mkfs.vfat -F 32 /dev/fd0
 sudo mkfs.vfat /dev/fd0
 sudo mkfs.vfat -lc -n FLOPPY /dev/fd0 -v
+sudo mkfs.vfat -F 32 -n FLOPPY /dev/fd0 -v
+sudo mkfs.vfat -n FLOPPY /dev/fd0 -v
 
 /***************************************************************************/
 
