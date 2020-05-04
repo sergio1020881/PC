@@ -22,14 +22,6 @@ COMMENT:
 #ifndef _PCFUNCTION_H_
 	#define _PCFUNCTION_H_
 /*
-**
-*/
-#include<stdio.h>
-/*
-** library
-*/
-#include<stdio.h>
-/*
 ** constant and macro
 */
 /*
@@ -39,8 +31,8 @@ struct func{
 	/***PROTOTYPES VTABLE***/
 	int (*stringlength)(const char string[]);
 	void (*reverse)(char s[]);
+	/***/
 	char* (*fltos)(FILE* stream);
-	void (*fltosv)(FILE* stream, char *value);
 	char* (*ftos)(FILE* stream);
 	int (*strtotok)(char* line,char* token[],const char* parser);
 	char* (*putstr)(char* str);
