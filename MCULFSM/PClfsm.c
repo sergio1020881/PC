@@ -22,30 +22,6 @@ COMMENT:
 	working pretty good, trial more.
 	page=1 is dedicated for Global logic, page>=2 Local logic.
 *************************************************************************/
-/*
-** library
-*/
-// fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
-#include <stdio.h>
-// calloc free realloc malloc
-//#include <stdlib.h>
-// strcpy strcmp strcat memcmp
-//#include <string.h>
-// termios tcflush
-//#include <termios.h>
-// nanosleep sleep
-//#include <time.h>
-// tcflsuh read write close
-//#include <unistd.h>
-// perror
-//#include <errno.h>
-// open
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//#include <fcntl.h>
-//#include <stdio_ext.h>
-//#include <math.h>
-/***/
 #include"PClfsm.h"
 /*
 ** constant and macro
