@@ -81,5 +81,16 @@ Identity added: /home/computa/Documents/GITHUB/github_rsa_key (/home/computa/Doc
 Then go to the .pub file copy its contente to SSH and GPG key box.
 solved !
 /*************************************************************************/
-
+#!/bin/bash
+apt-get update
+apt-get upgrade <package name>
+sudo apt-get dist-upgrade <package name>
+sudo apt install git-all
+/*
+Do not install miktex only texlive full.
+*/
+sudo apt-get update -y
+sudo apt-get install -y hunspell
+sudo apt-get install libc6-dev
+/************************************************************************/
 

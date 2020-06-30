@@ -97,7 +97,7 @@ int FICHEIROputc(struct ficheiro *f, int c)
 int FICHEIROputs(struct ficheiro *f, const char* s)
 {
 	int r;
-	r=fputs(s, f->fp);
+	r=fputs(s,(FILE*)f->fp);
 	return r;
 }
 /***open***/

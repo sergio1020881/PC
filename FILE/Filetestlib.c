@@ -6,7 +6,32 @@
 * data: 29-06-2020 16:30
 *
 */
-// personal library
+/*
+** library
+*/
+// fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
+#include <stdio.h>
+// calloc free realloc malloc
+#include <stdlib.h>
+// strcpy strcmp strcat memcmp
+#include <string.h>
+// termios tcflush
+//#include <termios.h>
+// nanosleep sleep
+//#include <time.h>
+// tcflsuh read write close
+//#include <unistd.h>
+// perror
+#include <errno.h>
+// open
+//#include <sys/types.h>
+//#include <sys/stat.h>
+//#include <fcntl.h>
+//#include <stdio_ext.h>
+#include <math.h>
+/*
+** library private
+*/
 #include"PCfunction.h"
 #include"PCficheiro.h"
 // PC library
@@ -49,8 +74,6 @@ int main(int argc, char *argv[])
 		cmd=func.fltos(stdin);
         
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
-			free(cmd);
-            free(str);
         	f.close(&f);	
 			goto end;
 		}
@@ -60,7 +83,6 @@ int main(int argc, char *argv[])
 			str=func.fltos(stdin);
 			f.colocarstring(&f,str);
             free(str);
-            free(cmd);
             continue;
 		}
 
