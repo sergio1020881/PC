@@ -93,4 +93,7 @@ sudo apt-get update -y
 sudo apt-get install -y hunspell
 sudo apt-get install libc6-dev
 /************************************************************************/
+git config --global user.email "sergio.salazar.santos@gmail.com"
+git config --global user.name "sergio1020881"
+
 

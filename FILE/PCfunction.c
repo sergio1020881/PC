@@ -144,7 +144,7 @@ char* FUNCftos(FILE* stream)
 	int i, block, NBytes;
 	char caracter;
 	char* value=NULL;
-	for(i=0, block=8, NBytes=0; (caracter=getc(stream)) != EOF; i++){
+	for(i=0, block=4, NBytes=0; (caracter=getc(stream)) != EOF; i++){
 		if(i==NBytes){
 			NBytes+=block;
 			value=(char*)realloc(value, NBytes*sizeof(char));

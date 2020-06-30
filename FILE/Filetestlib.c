@@ -7,34 +7,13 @@
 *
 */
 /*
-** library
-*/
-// fopen perror fread fwrite feof fseek ferror fclose rewind scanf sscanf getchar scanf fscanf
-#include <stdio.h>
-// calloc free realloc malloc
-#include <stdlib.h>
-// strcpy strcmp strcat memcmp
-#include <string.h>
-// termios tcflush
-//#include <termios.h>
-// nanosleep sleep
-//#include <time.h>
-// tcflsuh read write close
-//#include <unistd.h>
-// perror
-#include <errno.h>
-// open
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//#include <fcntl.h>
-//#include <stdio_ext.h>
-#include <math.h>
-/*
 ** library private
 */
 #include"PCfunction.h"
 #include"PCficheiro.h"
-// PC library
+/*
+** library
+*/
 #include <time.h>
 /***Definition and Macros***/
 #define TRUE 1
@@ -56,17 +35,22 @@ int main(int argc, char *argv[])
 	/*
 	*** Capture arguments
 	*/
-	printf("Running program - %s with - %d arguments", argv[0], argc);
+	printf("Running program - %s with - %d arguments\n", argv[0], argc);
 	/*
 	*** Local variables
 	*/
+    char memory[1024];
 	char *cmd;
-	char* str=NULL;
+	char* str;
 /*******************************************************/
 	FUNC func=FUNCenable();
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
 	printf("putstringtest: %s\n", func.putstr("hello world"));
+    printf("%ld\n",fread(memory,sizeof(char),128,(FILE*)f.fp));
+    printf("%s\n",memory);
+
+
 /********************************************************/
 	while(TRUE){
         

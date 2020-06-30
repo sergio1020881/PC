@@ -43,8 +43,8 @@ struct ficheiro{
 	FILE *fp;
 	int fd;
 	int errcode;
-	char filename[128];
-	char permision[32];
+	char pathname[128];
+	char mode[32];
 	// Function Pointers
 	int (*close)(struct ficheiro *f);
 	int (*colocarchar)(struct ficheiro *f, int c);
@@ -55,6 +55,13 @@ typedef struct ficheiro FICHEIRO;
 /*
 ** procedure and function header
 */
-FICHEIRO FICHEIROenable(char *filename);
+FICHEIRO FICHEIROenable(char *pathname);
 #endif
 /***EOF***/
+/****
+The problem with function oriented programming is that the variables of header files become global, and one making a program can face with a bug if creates a name with a pre existing on one of the libraries being use, this also applies for constantes and macros, leaving little space o freedom of the programmer, especially if working in specific area where variable names are constante. This is where encapsulation is usefull, the same variable name can be used has many times you want for diferent functions. The naming always belongs to a class. It would be nice if physical componentes could be virtually represented by an virtual object, and plug and play would be seamless having no conflicts or crashes.
+
+Also there should be a separation from program and interface using a communication protocal, so they would be independent of each other and work together easily, and one without the other would be static ignoring all interferences. three parts program, interface, communication, being plug and play with each other.
+
+Programming and technology has still centuries to achieve this.
+***/

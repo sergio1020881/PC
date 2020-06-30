@@ -35,34 +35,34 @@ int errno;
 /*
 ** Object Inicialize
 */
-FICHEIRO FICHEIROenable(char *filename)
+FICHEIRO FICHEIROenable(char *pathname)
 {
 	/***local variables***/
 	errno=0;
 	/***Declare Functions***/
 	int FICHEIROclose(struct ficheiro *f);
 	int FICHEIROputc(struct ficheiro *f, int c);
-	int FICHEIROputs(struct ficheiro *f, const char* s);
+	int FICHEIROputs(struct ficheiro *f, const char *s);
 	FILE* FICHEIROopen(struct ficheiro *f);
 	/******/
 	FICHEIRO f;
 	//Inicialize varibles
-	strcpy(f.filename,filename);
+	strcpy(f.pathname,pathname);
 	//do a checkup if exists first !
-	strcpy(f.permision,"a+");//setting as default
+	strcpy(f.mode,"a+");//setting as default
 	//Functions pointers or Vtable to declared functions
 	f.open=FICHEIROopen;
 	f.colocarchar=FICHEIROputc;
 	f.colocarstring=FICHEIROputs;
 	f.close=FICHEIROclose;
 	//procedures
-	f.fp=fopen(f.filename,f.permision);
+	f.fp=fopen(f.pathname,f.mode);
 	if(f.fp!=NULL){
-		printf("Opening file %s\n",f.filename);
+		printf("Opening file %s\n",f.pathname);
 	}else{
 		perror("Ficheiro at fopen\n");
-		printf("Creating file %s\n",f.filename);
-		f.fp=fopen(f.filename,f.permision);
+		printf("Creating file %s\n",f.pathname);
+		f.fp=fopen(f.pathname,f.mode);
 	}
 	#ifdef linux
 		f.fd=fileno(f.fp);
@@ -90,14 +90,14 @@ int FICHEIROclose(struct ficheiro *f)
 int FICHEIROputc(struct ficheiro *f, int c)
 {
 	int r;
-	r=fputc(c,(FILE*)f->fp);
+	r=fputc(c,f->fp);
 	return r;
 }
 /*colocarstring*/
 int FICHEIROputs(struct ficheiro *f, const char* s)
 {
 	int r;
-	r=fputs(s,(FILE*)f->fp);
+	r=fputs(s,f->fp);
 	return r;
 }
 /***open***/
