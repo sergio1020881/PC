@@ -35,7 +35,7 @@ $(PROJECT): $(HFILES) $(OFILES)
 
 ##PROCEDURES
 clean:
-	-rm -vf *.o *.s $(PROJECT)
+	-rm -vf *.o *.s *.ppj *.tag *.exe *.ppx $(PROJECT)
 run: $(PROJECT)
 	chmod 775 $(PROJECT)
 	./$(PROJECT)
