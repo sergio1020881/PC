@@ -43,14 +43,15 @@ struct ficheiro{
 	FILE *fp;
 	int fd;
 	int errcode;
-	char pathname[128];
-	char mode[32];
+	char filepathname[128];
+	char filemode[32];
 	// Function Pointers
 	int (*close)(struct ficheiro *f); //private
+    void (*mode)(struct ficheiro *f, const char *mode);
 	int (*colocarchar)(struct ficheiro *f, int c);
 	int (*colocarstring)(struct ficheiro *f, const char* s);
-    int (*read)(struct ficheiro *f, int c);
-	int (*write)(struct ficheiro *f, const char* s);
+    int (*read)(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
+	int (*write)(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb);
 	FILE* (*open)(struct ficheiro *f); //private
 };
 typedef struct ficheiro FICHEIRO;

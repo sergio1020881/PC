@@ -70,6 +70,30 @@ int main(int argc, char *argv[])
             continue;
 		}
 
+        if(!strcmp(cmd,"read") || !strcmp(cmd,"r")){
+			printf("read\n");
+            f.read(&f,memory,sizeof(char),32);
+            printf("read line:\n%s\n",memory);
+            continue;
+		}
+        
+        if(!strcmp(cmd,"write") || !strcmp(cmd,"w")){
+			printf("write\n");
+			str=func.fltos(stdin);
+			f.write(&f,str,sizeof(char),strlen(str));
+            free(str);
+            continue;
+		}
+
+        if(!strcmp(cmd,"mode") || !strcmp(cmd,"m")){
+			printf("mode\n");
+			str=func.fltos(stdin);
+			f.mode(&f,str);
+            free(str);
+            continue;
+		}
+
+
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
 			printf("----------------\n");
             free(cmd);
@@ -80,6 +104,9 @@ int main(int argc, char *argv[])
 			printf("Possible commands:\n");
                     printf("\thelp - h\n");           		
                     printf("\tinsert - i\n");
+                    printf("\tread - r\n");
+                    printf("\twrite - w\n");
+                    printf("\tmode - m\n");
             		printf("\tquit - q\n");	
 			free(cmd);
 			continue;

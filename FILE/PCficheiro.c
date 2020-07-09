@@ -41,19 +41,21 @@ FICHEIRO FICHEIROenable(char *pathname)
 	errno=0;
 	/***Declare Functions***/
 	int FICHEIROclose(struct ficheiro *f);
+    void FICHEIROmode(struct ficheiro *f, const char *mode);
 	int FICHEIROputc(struct ficheiro *f, int c);
 	int FICHEIROputs(struct ficheiro *f, const char *s);
-    int FICHEIROread(struct ficheiro *f, int c);
-	int FICHEIROwrite(struct ficheiro *f, const char *s);
+    int FICHEIROread(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
+	int FICHEIROwrite(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb);
 	FILE* FICHEIROopen(struct ficheiro *f);
 	/******/
 	FICHEIRO f;
 	//Inicialize varibles
-	strcpy(f.pathname,pathname);
+	strcpy(f.filepathname,pathname);
 	//do a checkup if exists first !
-	strcpy(f.mode,"a+");//setting as default
+	strcpy(f.filemode,"a+");//setting as default
 	//Functions pointers or Vtable to declared functions
 	f.open=FICHEIROopen;
+    f.mode=FICHEIROmode;
 	f.colocarchar=FICHEIROputc;
 	f.colocarstring=FICHEIROputs;
     f.read=FICHEIROread;
@@ -71,9 +73,14 @@ FICHEIRO FICHEIROenable(char *pathname)
 /*close*/
 int FICHEIROclose(struct ficheiro *f)
 {
-    printf("Closing file %s\n",f->pathname);
+    printf("Closing file %s\n",f->filepathname);
 	fclose(f->fp);
 	return 0;
+}
+/*mode*/
+void FICHEIROmode(struct ficheiro *f, const char *mode)
+{
+	strcpy(f->filemode,mode);
 }
 /*colocarchar*/
 int FICHEIROputc(struct ficheiro *f, int c)
@@ -94,33 +101,33 @@ int FICHEIROputs(struct ficheiro *f, const char* s)
 	return r;
 }
 /***read***/
-int FICHEIROread(struct ficheiro *f, int c)
+int FICHEIROread(struct ficheiro *f, void *ptr, size_t size, size_t nmemb)
 {
 	int r;
     f->open(f);
-	r=fputc(c,f->fp);
+	r=fread(ptr,size,nmemb,f->fp);
     f->close(f);
 	return r;
 }
 /***write***/
-int FICHEIROwrite(struct ficheiro *f, const char *s)
+int FICHEIROwrite(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb)
 {
 	int r;
     f->open(f);
-	r=fputs(s,f->fp);
+	r=fwrite(ptr,size,nmemb,f->fp);
     f->close(f);
 	return r;
 }
 /***open***/
 FILE* FICHEIROopen(struct ficheiro *f)
 {
-    f->fp=fopen(f->pathname,f->mode);
+    f->fp=fopen(f->filepathname,f->filemode);
 	if(f->fp!=NULL){
-		printf("Opening file %s\n",f->pathname);
+		printf("Opening file %s\n",f->filepathname);
 	}else{
 		perror("Ficheiro at fopen\n");
-		printf("Creating file %s\n",f->pathname);
-		f->fp=fopen(f->pathname,f->mode);
+		printf("Creating file %s\n",f->filepathname);
+		f->fp=fopen(f->filepathname,f->filemode);
 	}
 	#ifdef linux
 		f->fd=fileno(f->fp);
