@@ -137,7 +137,8 @@ FILE* FICHEIROopen(struct ficheiro *f)
 	#endif
 	if(f->fd<0){
 		perror("Ficheiro filedescriptor not existent\n");
-		//sprintf(f->errcode,"None errno: %d\n", errno);
+		printf("None errno: %d\n", errno);
+        f->errcode=errno;
 	}
 	return f->fp;
 }
