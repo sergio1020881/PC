@@ -43,6 +43,8 @@ FICHEIRO FICHEIROenable(char *pathname)
 	int FICHEIROclose(struct ficheiro *f);
 	int FICHEIROputc(struct ficheiro *f, int c);
 	int FICHEIROputs(struct ficheiro *f, const char *s);
+    int FICHEIROread(struct ficheiro *f, int c);
+	int FICHEIROwrite(struct ficheiro *f, const char *s);
 	FILE* FICHEIROopen(struct ficheiro *f);
 	/******/
 	FICHEIRO f;
@@ -54,6 +56,8 @@ FICHEIRO FICHEIROenable(char *pathname)
 	f.open=FICHEIROopen;
 	f.colocarchar=FICHEIROputc;
 	f.colocarstring=FICHEIROputs;
+    f.read=FICHEIROread;
+    f.write=FICHEIROwrite;
 	f.close=FICHEIROclose;
 	//procedures
     f.open((FICHEIRO*)&f);
@@ -89,7 +93,23 @@ int FICHEIROputs(struct ficheiro *f, const char* s)
 	return r;
 }
 /***read***/
+int FICHEIROread(struct ficheiro *f, int c)
+{
+	int r;
+    f->open(f);
+	r=fputc(c,f->fp);
+    f->close(f);
+	return r;
+}
 /***write***/
+int FICHEIROwrite(struct ficheiro *f, const char *s)
+{
+	int r;
+    f->open(f);
+	r=fputs(s,f->fp);
+    f->close(f);
+	return r;
+}
 /***open***/
 FILE* FICHEIROopen(struct ficheiro *f)
 {

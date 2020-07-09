@@ -49,6 +49,8 @@ struct ficheiro{
 	int (*close)(struct ficheiro *f); //private
 	int (*colocarchar)(struct ficheiro *f, int c);
 	int (*colocarstring)(struct ficheiro *f, const char* s);
+    int (*read)(struct ficheiro *f, int c);
+	int (*write)(struct ficheiro *f, const char* s);
 	FILE* (*open)(struct ficheiro *f); //private
 };
 typedef struct ficheiro FICHEIRO;
