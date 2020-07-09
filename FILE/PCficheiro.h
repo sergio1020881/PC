@@ -46,10 +46,10 @@ struct ficheiro{
 	char pathname[128];
 	char mode[32];
 	// Function Pointers
-	int (*close)(struct ficheiro *f);
+	int (*close)(struct ficheiro *f); //private
 	int (*colocarchar)(struct ficheiro *f, int c);
 	int (*colocarstring)(struct ficheiro *f, const char* s);
-	FILE* (*open)(struct ficheiro *f);
+	FILE* (*open)(struct ficheiro *f); //private
 };
 typedef struct ficheiro FICHEIRO;
 /*
