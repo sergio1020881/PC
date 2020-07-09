@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		cmd=func.fltos(stdin);
         
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
-        	f.close(&f);	
+            printf("Exiting program!\n");	
 			goto end;
 		}
 
@@ -79,8 +79,8 @@ int main(int argc, char *argv[])
 		if(!strcmp(cmd,"help") || !strcmp(cmd,"h")){
 			printf("Possible commands:\n");
                     printf("\thelp - h\n");           		
-                    printf("\tinsert - q\n");
-            		printf("\tremove - l\n");	
+                    printf("\tinsert - i\n");
+            		printf("\tquit - q\n");	
 			free(cmd);
 			continue;
 		}

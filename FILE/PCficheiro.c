@@ -71,6 +71,7 @@ FICHEIRO FICHEIROenable(char *pathname)
 /*close*/
 int FICHEIROclose(struct ficheiro *f)
 {
+    printf("Closing file %s\n",f->pathname);
 	fclose(f->fp);
 	return 0;
 }
