@@ -56,26 +56,9 @@ FICHEIRO FICHEIROenable(char *pathname)
 	f.colocarstring=FICHEIROputs;
 	f.close=FICHEIROclose;
 	//procedures
-	f.fp=fopen(f.pathname,f.mode);
-	if(f.fp!=NULL){
-		printf("Opening file %s\n",f.pathname);
-	}else{
-		perror("Ficheiro at fopen\n");
-		printf("Creating file %s\n",f.pathname);
-		f.fp=fopen(f.pathname,f.mode);
-	}
-	#ifdef linux
-		f.fd=fileno(f.fp);
-	#elif _WIN32
-		f.fd=_fileno(f.fp);
-	#else
-	#endif
-	if(f.fd<0){
-		perror("Ficheiro filedescriptor not existent\n");
-		//sprintf(f.errcode,"None errno: %d\n", errno);
-	}
+    f.open((FICHEIRO*)&f);
 	//return result
-    f.close(&f);
+    f.close((FICHEIRO*)&f);
 	return f;
 }
 /*
@@ -91,24 +74,7 @@ int FICHEIROclose(struct ficheiro *f)
 int FICHEIROputc(struct ficheiro *f, int c)
 {
 	int r;
-    f->fp=fopen(f->pathname,f->mode);
-	if(f->fp!=NULL){
-		printf("Opening file %s\n",f->pathname);
-	}else{
-		perror("Ficheiro at fopen\n");
-		printf("Creating file %s\n",f->pathname);
-		f->fp=fopen(f->pathname,f->mode);
-	}
-	#ifdef linux
-		f->fd=fileno(f->fp);
-	#elif _WIN32
-		f->fd=_fileno(f->fp);
-	#else
-	#endif
-	if(f->fd<0){
-		perror("Ficheiro filedescriptor not existent\n");
-		//sprintf(f->errcode,"None errno: %d\n", errno);
-	}
+    f->open(f);
 	r=fputc(c,f->fp);
     f->close(f);
 	return r;
@@ -117,24 +83,7 @@ int FICHEIROputc(struct ficheiro *f, int c)
 int FICHEIROputs(struct ficheiro *f, const char* s)
 {
 	int r;
-    f->fp=fopen(f->pathname,f->mode);
-	if(f->fp!=NULL){
-		printf("Opening file %s\n",f->pathname);
-	}else{
-		perror("Ficheiro at fopen\n");
-		printf("Creating file %s\n",f->pathname);
-		f->fp=fopen(f->pathname,f->mode);
-	}
-	#ifdef linux
-		f->fd=fileno(f->fp);
-	#elif _WIN32
-		f->fd=_fileno(f->fp);
-	#else
-	#endif
-	if(f->fd<0){
-		perror("Ficheiro filedescriptor not existent\n");
-		//sprintf(f->errcode,"None errno: %d\n", errno);
-	}
+    f->open(f);
 	r=fputs(s,f->fp);
     f->close(f);
 	return r;
@@ -144,6 +93,24 @@ int FICHEIROputs(struct ficheiro *f, const char* s)
 /***open***/
 FILE* FICHEIROopen(struct ficheiro *f)
 {
+    f->fp=fopen(f->pathname,f->mode);
+	if(f->fp!=NULL){
+		printf("Opening file %s\n",f->pathname);
+	}else{
+		perror("Ficheiro at fopen\n");
+		printf("Creating file %s\n",f->pathname);
+		f->fp=fopen(f->pathname,f->mode);
+	}
+	#ifdef linux
+		f->fd=fileno(f->fp);
+	#elif _WIN32
+		f->fd=_fileno(f->fp);
+	#else
+	#endif
+	if(f->fd<0){
+		perror("Ficheiro filedescriptor not existent\n");
+		//sprintf(f->errcode,"None errno: %d\n", errno);
+	}
 	return f->fp;
 }
 /*
