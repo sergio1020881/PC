@@ -146,3 +146,4 @@ FILE* FICHEIROopen(struct ficheiro *f)
 ** interrupt
 */
 /***EOF***/
+
