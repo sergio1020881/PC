@@ -54,7 +54,7 @@ FICHEIRO FICHEIROenable(char *pathname)
 	strcpy(f.filepathname,pathname);
 	//do a checkup if exists first !
 	strcpy(f.filemode,"a+");//setting as default
-    f.whence=SEEK_END;
+    f.whence=SEEK_SET;
     f.offset=0;
 	//Functions pointers or Vtable to declared functions
 	f.open=FICHEIROopen;
@@ -69,7 +69,7 @@ FICHEIRO FICHEIROenable(char *pathname)
     f.open((FICHEIRO*)&f);
 	//return result
     f.close((FICHEIRO*)&f);
-    f.mode((FICHEIRO*)&f,"r+");
+    f.mode((FICHEIRO*)&f,"r+");//enable seek
 	return f;
 }
 /*
@@ -92,6 +92,12 @@ int FICHEIROputc(struct ficheiro *f, int c)
 {
 	int r;
     f->open(f);
+    r=fseek(f->fp,f->offset,f->whence);
+    if(r!=0){
+        printf("SEEK Error: %d\n", errno);
+    }else{
+        printf("At position: %ld\n",ftell(f->fp));
+    }
 	r=fputc(c,f->fp);
     f->close(f);
 	return r;
@@ -108,8 +114,6 @@ int FICHEIROputs(struct ficheiro *f, const char* s)
         printf("At position: %ld\n",ftell(f->fp));
     }
 	r=fputs(s,f->fp);
-    f->whence=SEEK_CUR;
-    f->offset=0;
     f->close(f);    
 	return r;
 }
@@ -133,6 +137,12 @@ int FICHEIROwrite(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb
 {
 	int r;
     f->open(f);
+    r=fseek(f->fp,f->offset,f->whence);
+    if(r!=0){
+        printf("SEEK Error: %d\n", errno);
+    }else{
+        printf("At position: %ld\n",ftell(f->fp));
+    }
 	r=fwrite(ptr,size,nmemb,f->fp);
     f->close(f);
 	return r;

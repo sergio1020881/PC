@@ -46,10 +46,10 @@ int main(int argc, char *argv[])
 	FUNC func=FUNCenable();
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
-	printf("putstringtest: %s\n", func.putstr("hello world"));
-    printf("%ld\n",fread(memory,sizeof(char),128,(FILE*)f.fp));
-    printf("%s\n",memory);
-
+	//printf("putstringtest: %s\n", func.putstr("hello world"));
+    //printf("%ld\n",fread(memory,sizeof(char),128,(FILE*)f.fp));
+    //printf("%s\n",memory);
+    printf("/********************************************************/\n");
 
 /********************************************************/
 	while(TRUE){
@@ -94,16 +94,17 @@ int main(int argc, char *argv[])
 		}
 
         if(!strcmp(cmd,"ol") || !strcmp(cmd,"o")){
-            //f.mode(&f,"w+");
 			f.seek(&f,25,SEEK_SET);
-            //f.mode(&f,"a+");
             continue;
 		}
 
+        if(!strcmp(cmd,"beginning") || !strcmp(cmd,"b")){
+			f.seek(&f,0,SEEK_SET);
+            continue;
+		}
 
-		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
-			printf("----------------\n");
-            free(cmd);
+        if(!strcmp(cmd,"end") || !strcmp(cmd,"e")){
+			f.seek(&f,0,SEEK_END);
             continue;
 		}
 
@@ -115,6 +116,8 @@ int main(int argc, char *argv[])
                     printf("\twrite - w\n");
                     printf("\tmode - m\n");
                     printf("\tol - o\n");
+                    printf("\tbeginning - b\n");
+                    printf("\tend - e\n");
             		printf("\tquit - q\n");	
 			free(cmd);
 			continue;
