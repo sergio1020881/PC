@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
         if(!strcmp(cmd,"ol") || !strcmp(cmd,"o")){
             //f.mode(&f,"w+");
-			f.seek(&f,25L,SEEK_SET);
+			f.seek(&f,25,SEEK_SET);
             //f.mode(&f,"a+");
             continue;
 		}
