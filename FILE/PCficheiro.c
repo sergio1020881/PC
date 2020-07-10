@@ -46,6 +46,7 @@ FICHEIRO FICHEIROenable(char *pathname)
 	int FICHEIROputs(struct ficheiro *f, const char *s);
     int FICHEIROread(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
 	int FICHEIROwrite(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb);
+    int FICHEIROseek(struct ficheiro *f, long offset, int whence);
 	FILE* FICHEIROopen(struct ficheiro *f);
 	/******/
 	FICHEIRO f;
@@ -60,6 +61,7 @@ FICHEIRO FICHEIROenable(char *pathname)
 	f.colocarstring=FICHEIROputs;
     f.read=FICHEIROread;
     f.write=FICHEIROwrite;
+    f.seek=FICHEIROseek;
 	f.close=FICHEIROclose;
 	//procedures
     f.open((FICHEIRO*)&f);
@@ -96,6 +98,7 @@ int FICHEIROputs(struct ficheiro *f, const char* s)
 {
 	int r;
     f->open(f);
+    rewind(f->fp);
 	r=fputs(s,f->fp);
     f->close(f);
 	return r;
@@ -115,6 +118,20 @@ int FICHEIROwrite(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb
 	int r;
     f->open(f);
 	r=fwrite(ptr,size,nmemb,f->fp);
+    f->close(f);
+	return r;
+}
+/***seek***/
+int FICHEIROseek(struct ficheiro *f, long offset, int whence)
+{
+	int r;
+    f->mode(f,"r+");
+    //0L SEEK_SET  SEEK_CUR  SEEK_END
+    f->open(f);
+	r=fseek(f->fp,offset,whence);
+    if(r!=0){
+        printf("SEEK Error: %d\n", errno);
+    }
     f->close(f);
 	return r;
 }

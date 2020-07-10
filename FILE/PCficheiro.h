@@ -52,6 +52,7 @@ struct ficheiro{
 	int (*colocarstring)(struct ficheiro *f, const char* s);
     int (*read)(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
 	int (*write)(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb);
+    int (*seek)(struct ficheiro *f, long offset, int whence);
 	FILE* (*open)(struct ficheiro *f); //private
 };
 typedef struct ficheiro FICHEIRO;

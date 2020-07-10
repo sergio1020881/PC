@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
         if(!strcmp(cmd,"read") || !strcmp(cmd,"r")){
 			printf("read\n");
-            f.read(&f,memory,sizeof(char),32);
+            f.read(&f,memory,sizeof(char),1024);
             printf("read line:\n%s\n",memory);
             continue;
 		}
@@ -93,6 +93,11 @@ int main(int argc, char *argv[])
             continue;
 		}
 
+        if(!strcmp(cmd,"ol") || !strcmp(cmd,"o")){
+			f.seek(&f,10L,SEEK_SET);
+            continue;
+		}
+
 
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
 			printf("----------------\n");
@@ -107,6 +112,7 @@ int main(int argc, char *argv[])
                     printf("\tread - r\n");
                     printf("\twrite - w\n");
                     printf("\tmode - m\n");
+                    printf("\tol - o\n");
             		printf("\tquit - q\n");	
 			free(cmd);
 			continue;
