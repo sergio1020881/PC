@@ -98,7 +98,6 @@ int FICHEIROputs(struct ficheiro *f, const char* s)
 {
 	int r;
     f->open(f);
-    rewind(f->fp);
 	r=fputs(s,f->fp);
     f->close(f);
 	return r;
@@ -125,7 +124,6 @@ int FICHEIROwrite(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb
 int FICHEIROseek(struct ficheiro *f, long offset, int whence)
 {
 	int r;
-    f->mode(f,"r+");
     //0L SEEK_SET  SEEK_CUR  SEEK_END
     f->open(f);
 	r=fseek(f->fp,offset,whence);
