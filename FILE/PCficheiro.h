@@ -50,6 +50,7 @@ struct ficheiro{
 	// Function Pointers
 	int (*close)(struct ficheiro *f); //private
     void (*mode)(struct ficheiro *f, const char *mode);
+    void (*position)(struct ficheiro *f, int position);
 	int (*colocarchar)(struct ficheiro *f, int c);
 	int (*colocarstring)(struct ficheiro *f, const char* s);
     int (*read)(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
@@ -70,5 +71,6 @@ The problem with function oriented programming is that the variables of header f
 Also there should be a separation from program and interface using a communication protocal, so they would be independent of each other and work together easily, and one without the other would be static ignoring all interferences. three parts program, interface, communication, being plug and play with each other.
 
 Programming and technology has still centuries to achieve this.
+fseek only works in r+ mode !!!!!
 ***/
 

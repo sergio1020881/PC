@@ -42,6 +42,7 @@ FICHEIRO FICHEIROenable(char *pathname)
 	/***Declare Functions***/
 	int FICHEIROclose(struct ficheiro *f);
     void FICHEIROmode(struct ficheiro *f, const char *mode);
+    void FICHEIROsetposition(struct ficheiro *f, int position);
 	int FICHEIROputc(struct ficheiro *f, int c);
 	int FICHEIROputs(struct ficheiro *f, const char *s);
     int FICHEIROread(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
@@ -59,6 +60,7 @@ FICHEIRO FICHEIROenable(char *pathname)
 	//Functions pointers or Vtable to declared functions
 	f.open=FICHEIROopen;
     f.mode=FICHEIROmode;
+    f.position=FICHEIROsetposition;
 	f.colocarchar=FICHEIROputc;
 	f.colocarstring=FICHEIROputs;
     f.read=FICHEIROread;
@@ -86,6 +88,12 @@ int FICHEIROclose(struct ficheiro *f)
 void FICHEIROmode(struct ficheiro *f, const char *mode)
 {
 	strcpy(f->filemode,mode);
+}
+/*setposition*/
+void FICHEIROsetposition(struct ficheiro *f, int position)
+{
+    f->whence=SEEK_SET;
+    f->offset=position;
 }
 /*colocarchar*/
 int FICHEIROputc(struct ficheiro *f, int c)
@@ -181,4 +189,7 @@ FILE* FICHEIROopen(struct ficheiro *f)
 ** interrupt
 */
 /***EOF***/
+/***Comment***/
+//fseek only works in r+ mode.
+
 

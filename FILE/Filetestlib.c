@@ -4,7 +4,7 @@
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 29-06-2020 16:30
-*
+* test library
 */
 /*
 ** library private
@@ -105,6 +105,11 @@ int main(int argc, char *argv[])
 
         if(!strcmp(cmd,"end") || !strcmp(cmd,"e")){
 			f.seek(&f,0,SEEK_END);
+            continue;
+		}
+
+        if(!strcmp(cmd,"position") || !strcmp(cmd,"p")){
+			f.position(&f,func.getnum(func.fltos(stdin)));
             continue;
 		}
 
