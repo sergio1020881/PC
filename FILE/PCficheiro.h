@@ -1,7 +1,7 @@
 /************************************************************************
 Title:    PCFICHEIRO
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
-File:     $Id: PCficheiro.h,v 0.1 2015/08/12 14:00:00 sergio Exp $
+File:     $Id: PCficheiro.h,v 0.1 2020/07/13 14:00:00 sergio Exp $
 Software: GCC
 Hardware:
 License:  GNU General Public License
@@ -48,7 +48,7 @@ struct ficheiro{
     int whence;
     long offset;
 	// Function Pointers
-	int (*close)(struct ficheiro *f); //private
+	int (*close)(struct ficheiro *f); //private and public
     void (*mode)(struct ficheiro *f, const char *mode);
     void (*position)(struct ficheiro *f, int position);
 	int (*colocarchar)(struct ficheiro *f, int c);
@@ -56,7 +56,7 @@ struct ficheiro{
     int (*read)(struct ficheiro *f, void *ptr, size_t size, size_t nmemb);
 	int (*write)(struct ficheiro *f, const void *ptr, size_t size, size_t nmemb);
     void (*seek)(struct ficheiro *f, long offset, int whence);
-	FILE* (*open)(struct ficheiro *f); //private
+	FILE* (*open)(struct ficheiro *f); //private and public
 };
 typedef struct ficheiro FICHEIRO;
 /*
