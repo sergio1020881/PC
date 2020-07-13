@@ -1,6 +1,6 @@
 /*
 * Research
-* PCLFSM2018.c
+* Filetestlib.c
 * Nome: sergio santos
 * Contacto: 916919898; sergio.salazar.santos@gmail.com
 * data: 29-06-2020 16:30
@@ -39,6 +39,15 @@ int main(int argc, char *argv[])
 	/*
 	*** Local variables
 	*/
+    struct example{
+    int a;
+    char b;
+    };
+    struct example c,saida;
+    c.a=10;
+    c.b='A';
+    struct example *ptr = &saida;
+    
     char memory[1024];
 	char *cmd;
 	char* str;
@@ -76,11 +85,25 @@ int main(int argc, char *argv[])
             printf("read line:\n%s\n",memory);
             continue;
 		}
+
+        if(!strcmp(cmd,"r c") || !strcmp(cmd,"c r")){
+			printf("read\n");
+            f.read(&f,ptr,sizeof(struct example),1);
+            printf("read line:\n%d  %c\n",ptr->a,ptr->b);
+            continue;
+		}
         
         if(!strcmp(cmd,"write") || !strcmp(cmd,"w")){
 			printf("write\n");
 			str=func.fltos(stdin);
 			f.write(&f,str,sizeof(char),strlen(str));
+            free(str);
+            continue;
+		}
+
+        if(!strcmp(cmd,"w c") || !strcmp(cmd,"c w")){
+			printf("write\n");
+			f.write(&f,&c,sizeof(struct example),1);
             free(str);
             continue;
 		}
