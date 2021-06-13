@@ -15,15 +15,15 @@
 // termios tcflush
 //#include <termios.h>
 // nanosleep sleep
-#include <time.h>
+//#include <time.h>
 // tcflsuh read write close
 //#include <unistd.h>
 // perror
-#include <errno.h>
+//#include <errno.h>
 // open
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+//#include <sys/types.h>
+//#include <sys/stat.h>
+//#include <fcntl.h>
 //#include <stdio_ext.h>
 #include <math.h>
 // personal library

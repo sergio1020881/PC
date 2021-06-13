@@ -10,15 +10,6 @@ DESCRIPTION:
 USAGE:
 NOTES:
 	Soon this project will not be available in github.
-LICENSE:
-    Copyright (C) 2018
-    This program is free software; you can redistribute it and/or modify
-    it under the consent of the code developer, in case of commercial use
-    need licence.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
 COMMENT:
 	working pretty good, trial more.
 	page=1 is dedicated for Global logic, page>=2 Local logic.
@@ -364,4 +355,3 @@ unsigned int LFSMvalidate(struct lfsm *r, unsigned int n)
 ** interrupt
 */
 /***EOF***/
-
