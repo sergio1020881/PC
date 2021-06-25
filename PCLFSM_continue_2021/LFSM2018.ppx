@@ -20,4 +20,14 @@
 			<property name="Active" type="integer">1</property>
 		</category>
 	</category>
+	<category name="PCfunction.c">
+		<category name="Window">
+			<property name="Left" type="integer">52</property>
+			<property name="Top" type="integer">52</property>
+			<property name="Right" type="integer">832</property>
+			<property name="Bottom" type="integer">400</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
+		</category>
+	</category>
 </settings>

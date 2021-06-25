@@ -282,9 +282,8 @@ unsigned int FUNCdiff(unsigned int xi, unsigned int xf)
 char* FUNCprint_binary(int number)
 {
 	int i,c;
-    for(i=128,c=0;i;i>>=1,c++){
-	(number & i) ? (FUNCstr[c]='1') : (FUNCstr[c]='0');
-	}
+    for(i=(1<<7), c=0; i; i >>= 1, c++)
+		(number & i) ? (FUNCstr[c]='1') : (FUNCstr[c]='0');
 	FUNCstr[c]='\0';
 	return FUNCstr;
 }
@@ -303,7 +302,6 @@ unsigned int FUNCdecimal_binary(unsigned int n)  /* Function to convert decimal 
 }
 /******/
 unsigned int FUNCbinary_decimal(unsigned int n) /* Function to convert binary to decimal.*/
-
 {
     unsigned int decimal=0, i=0, rem;
     while (n!=0)

@@ -6,15 +6,6 @@ Software: GCC
 Hardware:
 License:  GNU General Public License
 Usage:
-LICENSE:
-    Copyright (C) 2015
-    This program is free software; you can redistribute it and/or modify
-    it under the consent of the code developer, in case of commercial use
-    need licence.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
 COMMENT:
 	review
 ************************************************************************/
