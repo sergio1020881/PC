@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 		printf("write string with number or instruction : ");
 		cmd=func.fltos(stdin);
 		number1=func.getnumv2(cmd);
-		printf("[Input ->  %s  ]\n",func.print_binary(number1));
+		printf("[Input ->  %s  ]\n",func.print_binary(8, number1));
         //printf("Entered numeral value: %d\n",number1);
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
 			free(cmd);
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 		}
         if(status==ZERO){
             value=r.read(this(&r),number1);
-            printf("\t\t\t[Output ->  %s  ]\n",func.print_binary(value));
+            printf("\t\t\t\t\t[Output ->  %s  ]\n",func.print_binary(8, value));
             free(cmd);
         } 
 	}

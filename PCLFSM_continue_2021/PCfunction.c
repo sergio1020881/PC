@@ -22,27 +22,15 @@ LICENSE:
 COMMENT:
 	Very Stable
 *************************************************************************/
+#include<inttypes.h>
 #include"PCfunction.h"
 /*
 ** constant and macro
 */
-#define FUNCMM74C923_DATA_OUT_A 0 //ic pin 19 LSB
-#define FUNCMM74C923_DATA_OUT_B 1 //ic pin 18
-#define FUNCMM74C923_DATA_OUT_C 2 //ic pin 17
-#define FUNCMM74C923_DATA_OUT_D 3 //ic pin 16
-#define FUNCMM74C923_DATA_OUT_E 4 //ic pin 15
-#define FUNCMM74C923_EXTRA_DATA_OUT_PIN 5 // MSB
-#define FUNCMM74C923_OUTPUT_ENABLE 6 //ic pin 14 flow
-#define FUNCMM74C923_DATA_AVAILABLE 7 //ic pin 13 control
 /*
 ** variable
 */
-char FUNCstr[16];
-char FUNCmm74c923_mem;
-char FUNCMM74C923_KEY_CODE[]={
-	'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J',
-	'K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d'
-};
+char FUNCstr[128];
 /*
 ** procedure and function header
 */
@@ -60,17 +48,14 @@ unsigned int FUNCpinmatch(unsigned int match, unsigned int pin, unsigned int HL)
 unsigned int FUNClh(unsigned int xi, unsigned int xf);
 unsigned int FUNChl(unsigned int xi, unsigned int xf);
 unsigned int FUNCdiff(unsigned int xi, unsigned int xf);
-char* FUNCprint_binary(int number);
+char* FUNCprint_binary(unsigned int n_bits, int number);
 unsigned int FUNCdecimal_binary(unsigned int n);
 unsigned int FUNCbinary_decimal(unsigned int n);
-
-//char FUNCMM74C923_read(char c);
 /*
 ** Object Inicialize
 */
 FUNC FUNCenable( void )
 {
-	FUNCmm74c923_mem=0;
 	// struct object
 	FUNC func;
 	func.stringlength=StringLength;
@@ -90,8 +75,6 @@ FUNC FUNCenable( void )
 	func.print_binary=FUNCprint_binary;
 	func.decimal_binary=FUNCdecimal_binary;
 	func.binary_decimal=FUNCbinary_decimal;
-
-	//func.mm74c923_read=FUNCMM74C923_read;
 	return func;
 }
 /*
@@ -279,16 +262,16 @@ unsigned int FUNCdiff(unsigned int xi, unsigned int xf)
 {
 	return xi^xf;
 }
-char* FUNCprint_binary(int number)
+char* FUNCprint_binary(unsigned int n_bits, int number)
 {
 	int i,c;
-    for(i=(1<<7), c=0; i; i >>= 1, c++)
+    for(i=(1<<(n_bits-1)), c=0; i; i >>= 1, c++)
 		(number & i) ? (FUNCstr[c]='1') : (FUNCstr[c]='0');
 	FUNCstr[c]='\0';
 	return FUNCstr;
 }
 /******/
-unsigned int FUNCdecimal_binary(unsigned int n)  /* Function to convert decimal to binary.*/
+unsigned int FUNCdecimal_binary(unsigned int n) /*Function to convert decimal to binary*/
 {
     unsigned int rem, i=1, binary=0;
     while (n!=0)
