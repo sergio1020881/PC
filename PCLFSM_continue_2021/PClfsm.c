@@ -3,14 +3,11 @@ Title:    PCLFSM
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PClfsm.c, v 0.1 2018/08/16 11:00:00 sergio Exp $
 Software: GCC
-Hardware:
+Hardware: PC
 License:  GNU General Public License
-DESCRIPTION:
+Description:
 	PC emulation
-USAGE:
-NOTES:
-	Soon this project will not be available in github.
-COMMENT:
+Comment:
 	working pretty good, trial more.
 	page=1 is dedicated for Global logic, page>=2 Local logic.
 *************************************************************************/
@@ -188,12 +185,12 @@ unsigned int LFSMlearn(struct lfsm *r, unsigned int input, unsigned int next, un
 			//prepare data to write to eeprom
 			data.page=page;
 			data.feedback=r->output;
-			data.input=r->input;
+			//data.input=r->input;
 			data.inhl=HL;
 			data.inlh=LH;
 			data.outhl=r->hl(r->output,next);
 			data.outlh=r->lh(r->output,next);
-			printf("%d  %d  %d  %d  %d  %d  %d\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
+			printf("%d  %d  %d  %d  %d  %d\n",data.page,data.feedback,data.inhl,data.inlh,data.outhl,data.outlh);
 			for(i1=0;i1<r->sizeeeprom;i1++){
 				//search empty space in memory
 				if(r->mem[i1].page==EMPTY){
@@ -224,7 +221,7 @@ unsigned int LFSMquant(struct lfsm *r)
 	for(i1=0,programmed=0;i1<r->sizeeeprom;i1++){
 		data=r->mem[i1];//upload data from eeprom
 		if(data.page!=EMPTY){
-			printf("page:%d feedback:%d input:%d : [ inhl:%d inlh:%d ] -- [ outhl:%d  outlh:%d ]\n",data.page,data.feedback,data.input,data.inhl,data.inlh,data.outhl,data.outlh);
+			printf("page:%d feedback:%d : [ inhl:%d inlh:%d ] -- [ outhl:%d  outlh:%d ]\n",data.page,data.feedback,data.inhl,data.inlh,data.outhl,data.outlh);
 			programmed++;
 		}
 	}

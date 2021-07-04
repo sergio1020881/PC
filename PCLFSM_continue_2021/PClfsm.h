@@ -43,7 +43,7 @@ COMMENT:
 struct lfsmdata{
 unsigned int page;
 unsigned int feedback;
-unsigned int input;
+//unsigned int input;
 unsigned int inhl;
 unsigned int inlh;
 unsigned int outhl;
@@ -80,8 +80,8 @@ LFSM LFSMenable(LFSMDATA *eeprom, unsigned int sizeeeprom);
 #endif
 /***EOF***/
 /***
-Sintax Semantic Pragmatic.
-Sintax is a key principle able to follow a sintactical work flow that solves any problem,
+Syntax Semantic Pragmatic.
+Syntax is a key principle able to follow a sintactical work flow that solves any problem,
 having a concise structural work flow is very importante.
 The method used is C object oriented aproach, do not know anybody using this type of aproach,
 but all the programs made here follow this type of paradigm, it is very very stable either in

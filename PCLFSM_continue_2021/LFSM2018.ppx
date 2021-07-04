@@ -10,8 +10,7 @@
 			<property name="Active" type="integer">0</property>
 		</category>
 	</category>
-	<category name="PClfsm.c" />
-	<category name="PCfunction.c">
+	<category name="PClfsm.c">
 		<category name="Window">
 			<property name="Left" type="integer">4294967288</property>
 			<property name="Top" type="integer">4294967265</property>
@@ -21,4 +20,6 @@
 			<property name="Active" type="integer">1</property>
 		</category>
 	</category>
+	<category name="PCfunction.c" />
+	<category name="PCficheiro.c" />
 </settings>

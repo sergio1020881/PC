@@ -3,22 +3,10 @@ Title:    PCFICHEIRO
 Author:   Sergio Manuel Santos <sergio.salazar.santos@gmail.com>
 File:     $Id: PCficheiro.c, v 0.1 2015/08/12 14:00:00 sergio Exp $
 Software: GCC
-Hardware:
+Hardware: PC
 License:  GNU General Public License
-DESCRIPTION:  PC emulation
-USAGE:
-NOTES:
-LICENSE:
-    Copyright (C) 2015
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-COMMENT:
+Description:  PC emulation
+Comment:
 	Very Stable
 *************************************************************************/
 #include"PCficheiro.h"
