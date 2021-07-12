@@ -351,4 +351,8 @@ unsigned int LFSMvalidate(struct lfsm *r, unsigned int n)
 /*
 ** interrupt
 */
+/**Comment**
+If one can not see what is in front of them, let them stay in ignorance.
+
+************/
 /***EOF***/
