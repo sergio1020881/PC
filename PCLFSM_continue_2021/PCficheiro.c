@@ -96,4 +96,10 @@ FILE* FICHEIROopen(struct ficheiro *f)
 /*
 ** interrupt
 */
+/***Comment
+Need to add more funtionality to file library, such has rewind, etc.
+Also make it more readeable.
+
+***/
 /***EOF***/
+

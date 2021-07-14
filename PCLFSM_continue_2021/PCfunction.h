@@ -51,6 +51,7 @@ COMMENT:
 ** variable
 */
 struct func{
+	//char *value;
 	/***PROTOTYPES VTABLE***/
 	int (*stringlength)(const char string[]);
 	void (*reverse)(char s[]);

@@ -19,6 +19,7 @@ Comment:
 ** variable
 */
 char FUNCstr[128];
+char *value;
 /*
 ** procedure and function header
 */
@@ -44,8 +45,10 @@ unsigned int FUNCbinary_decimal(unsigned int n);
 */
 FUNC FUNCenable( void )
 {
+	value=NULL;
 	// struct object
 	FUNC func;
+	//func.value=NULL;
 	func.stringlength=StringLength;
 	func.reverse=Reverse;
 	func.fltos=FUNCfltos;
@@ -91,7 +94,8 @@ char* FUNCfltos(FILE* stream)
 {
 	int i, block, NBytes;
 	char caracter;
-	char* value=NULL;
+	//make it a file variable so do not need to free it up all the time except on exitting program.
+	//char* value=NULL;
 	for(i=0, block=4, NBytes=0; (caracter=getc(stream)) != EOF; i++){
 		if(i==NBytes){
 			NBytes+=block;
@@ -114,7 +118,8 @@ char* FUNCftos(FILE* stream)
 {
 	int i, block, NBytes;
 	char caracter;
-	char* value=NULL;
+	//make it a file variable so do not need to free it up all the time except on exiting program.
+	//char* value=NULL;
 	for(i=0, block=8, NBytes=0; (caracter=getc(stream)) != EOF; i++){
 		if(i==NBytes){
 			NBytes+=block;

@@ -80,11 +80,11 @@ int main(int argc, char *argv[])
 	LFSM r = LFSMenable(MEM, 128);
 	/***************************/
 	FICHEIRO f=FICHEIROenable("file.txt");
-	//f.rewind(this(&f));
-	f.colocarchar(this(&f),'A');
-	f.colocarstring(this(&f),"qualquer coisa");
-	str=func.fltos(f.open(this(&f)));
-	printf("%s\n\n",str);
+	f.colocarchar(&f,'A');
+	f.colocarstring(&f," qualquer coisa\n");
+	rewind(f.open(&f));
+	str=func.ftos(f.open(&f));
+	printf("string in file:\n%s\n\n",str);
 	//func.strtotok(str,token," ");
 	free(str);
 	f.close(this(&f));
@@ -106,50 +106,41 @@ int main(int argc, char *argv[])
 		printf("[Input ->  %s  ]\n",func.print_binary(8, number1));
         //printf("Entered numeral value: %d\n",number1);
 		if(!strcmp(cmd,"quit") || !strcmp(cmd,"q")){
-			free(cmd);
 			goto end;
 		}
 
 		if(!strcmp(cmd,"learn") || !strcmp(cmd,"l")){
 			printf("enter input\n");
-			free(cmd);
 			cmd=func.fltos(stdin);
 			//number1=func.binary_decimal(func.getnum(cmd));
 			number1=func.getnum(cmd);
 			printf("enter output data\n");
-			free(cmd);
 			cmd=func.fltos(stdin);
 			number2=func.getnum(cmd);
 			printf("enter page\n");
-			free(cmd);
 			cmd=func.fltos(stdin);
 			number3=func.getnum(cmd);
 			printf("Entered values %d %d %d\n",number1,number2,number3);
-            free(cmd);
 			r.learn(this(&r),number1,number2,number3);
             continue;
 		}
 
 		if(!strcmp(cmd,"how many") || !strcmp(cmd,"n")){
 			printf("------ %d ------\n",r.quant(this(&r)));
-            free(cmd);
             continue;
 		}
 
 		if(!strcmp(cmd,"delete all") || !strcmp(cmd,"d")){
 			r.deleteall(this(&r));
-            free(cmd);
             continue;
 		}
 
 		if(!strcmp(cmd,"remove") || !strcmp(cmd,"r")){
 			printf("enter input to remove\n");
-			free(cmd);
 			cmd=func.fltos(stdin);
 			number1=func.getnum(cmd);
 			//l.remove(&l,number1);
 			r.remove(this(&r),number1);
-            free(cmd);
             continue;
 		}
 
@@ -169,23 +160,21 @@ int main(int argc, char *argv[])
             		printf("\tProgram sequence is first desired input\n");
 			printf("\tsecond is desired ouput\n");
 			printf("\tthen select what page to store in refered as above.\n");
-			free(cmd);
 			continue;
 		}
 
 		if(!strcmp(cmd,"options") || !strcmp(cmd,"o")){
 			printf("learn or l\nquit or q\nhow many or n\ndelete all or d\nremove or r\noptions\n");
-			free(cmd);
             continue;
 		}
         if(status==ZERO){
             value=r.read(this(&r),number1);
             printf("\t\t\t\t\t[Output ->  %s  ]\n",func.print_binary(8, value));
-            free(cmd);
         } 
 	}
 	/******/
 	end:
+		free(cmd);
 		//system("PAUSE");
 		return 0;
 }
