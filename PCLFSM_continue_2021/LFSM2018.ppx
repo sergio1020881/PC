@@ -5,7 +5,7 @@
 			<property name="Left" type="integer">0</property>
 			<property name="Top" type="integer">0</property>
 			<property name="Right" type="integer">1024</property>
-			<property name="Bottom" type="integer">513</property>
+			<property name="Bottom" type="integer">348</property>
 			<property name="Maximized" type="integer">0</property>
 			<property name="Active" type="integer">0</property>
 		</category>
@@ -13,22 +13,22 @@
 	<category name="PClfsm.c" />
 	<category name="PCfunction.c">
 		<category name="Window">
-			<property name="Left" type="integer">52</property>
-			<property name="Top" type="integer">52</property>
-			<property name="Right" type="integer">832</property>
-			<property name="Bottom" type="integer">400</property>
-			<property name="Maximized" type="integer">0</property>
-			<property name="Active" type="integer">0</property>
-		</category>
-	</category>
-	<category name="PCficheiro.c">
-		<category name="Window">
 			<property name="Left" type="integer">4294967288</property>
 			<property name="Top" type="integer">4294967265</property>
 			<property name="Right" type="integer">1048</property>
 			<property name="Bottom" type="integer">473</property>
 			<property name="Maximized" type="integer">1</property>
 			<property name="Active" type="integer">1</property>
+		</category>
+	</category>
+	<category name="PCficheiro.c">
+		<category name="Window">
+			<property name="Left" type="integer">52</property>
+			<property name="Top" type="integer">52</property>
+			<property name="Right" type="integer">1076</property>
+			<property name="Bottom" type="integer">400</property>
+			<property name="Maximized" type="integer">0</property>
+			<property name="Active" type="integer">0</property>
 		</category>
 	</category>
 </settings>

@@ -94,7 +94,7 @@ char* FUNCfltos(FILE* stream)
 {
 	int i, block, NBytes;
 	char caracter;
-	//make it a file variable so do not need to free it up all the time except on exitting program.
+	//made it a file variable so do not need to free it up all the time except on exitting program.
 	//char* value=NULL;
 	for(i=0, block=4, NBytes=0; (caracter=getc(stream)) != EOF; i++){
 		if(i==NBytes){
@@ -118,7 +118,7 @@ char* FUNCftos(FILE* stream)
 {
 	int i, block, NBytes;
 	char caracter;
-	//make it a file variable so do not need to free it up all the time except on exiting program.
+	//made it a file variable so do not need to free it up all the time except on exiting program.
 	//char* value=NULL;
 	for(i=0, block=8, NBytes=0; (caracter=getc(stream)) != EOF; i++){
 		if(i==NBytes){
